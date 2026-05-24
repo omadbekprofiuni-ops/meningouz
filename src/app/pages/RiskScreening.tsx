@@ -16,6 +16,7 @@ import clsx from "clsx";
 import { RadarPanel } from "../components/RadarPanel";
 import { PageHeader } from "../components/PageHeader";
 import { TYPICAL_PROFILE } from "../data/stats";
+import { useI18n } from "../i18n";
 
 // axis = radar o'qi (TYPICAL_PROFILE bilan mos kelishi kerak)
 const SYMPTOMS = [
@@ -32,7 +33,9 @@ const SYMPTOMS = [
 const AXES = ["Isitma", "Toshma", "Bo'yin/meningial", "Ong holati", "Umumiy intoksikatsiya"];
 
 export function RiskScreening() {
+  const { t } = useI18n();
   const [selected, setSelected] = useState<string[]>([]);
+  const noneSelected = selected.length === 0;
 
   const toggleSymptom = (id: string) => {
     setSelected(prev => 
@@ -182,14 +185,17 @@ export function RiskScreening() {
             </div>
 
             <div className="text-center mb-6">
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full mb-3" style={{ backgroundColor: bg }}>
-                <AlertCircle className="w-4 h-4" style={{ color }} />
-                <span className="text-[14px] font-semibold" style={{ color }}>{text}</span>
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full mb-3" style={{ backgroundColor: noneSelected ? "#F3F4F6" : bg }}>
+                <AlertCircle className="w-4 h-4" style={{ color: noneSelected ? "#9CA3AF" : color }} />
+                <span className="text-[14px] font-semibold" style={{ color: noneSelected ? "#6B7280" : color }}>
+                  {noneSelected ? t("Simptom tanlanmagan") : t(text)}
+                </span>
               </div>
               <p className="text-[14px] text-[#4B5563]">
-                {score >= 60 ? "Bemorda meningokokk infeksiyasiga gumon yuqori." : 
-                 score >= 30 ? "Bemorni nazoratga olish va qo'shimcha tekshiruvlar zarur." : 
-                 "Hozirgi simptomlar asosida xavf past darajada."}
+                {noneSelected ? t("Bemorda kuzatilayotgan simptomlarni belgilang.") :
+                 score >= 60 ? t("Bemorda meningokokk infeksiyasiga gumon yuqori.") :
+                 score >= 30 ? t("Bemorni nazoratga olish va qo'shimcha tekshiruvlar zarur.") :
+                 t("Hozirgi simptomlar asosida xavf past darajada.")}
               </p>
             </div>
 

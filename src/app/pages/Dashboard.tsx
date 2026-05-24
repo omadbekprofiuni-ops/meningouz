@@ -56,12 +56,12 @@ export function Dashboard() {
       <HeroBriefing />
 
       {/* 1b. HIGHLIGHTS (Worldometer uslubida asosiy faktlar) */}
-      <div className="bg-[#FFFBEB] border-l-4 border-[#F59E0B] border-y border-r border-[#FDE68A] rounded-r-xl rounded-l-sm p-5">
-        <h2 className="text-[13px] font-bold text-[#92400E] uppercase tracking-wide mb-3">{t("Asosiy faktlar")}</h2>
-        <ul className="grid sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-2">
+      <div className="bg-white border border-[#E5E7EB] border-l-4 border-l-[#F59E0B] rounded-r-xl rounded-l-sm p-5 shadow-sm">
+        <h2 className="text-[13px] font-bold text-[#B45309] uppercase tracking-wide mb-3">{t("Asosiy faktlar")}</h2>
+        <ul className="grid sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-2.5">
           {HIGHLIGHTS.map((h) => (
-            <li key={h} className="flex gap-2 text-[13px] text-[#78350F] leading-snug">
-              <span className="text-[#F59E0B] mt-0.5">▸</span>
+            <li key={h} className="flex gap-2 text-[13px] text-[#374151] leading-snug">
+              <span className="text-[#F59E0B] mt-0.5 flex-shrink-0">▸</span>
               {t(h)}
             </li>
           ))}
@@ -280,7 +280,7 @@ export function Dashboard() {
                   <td className="px-4 py-2.5 text-[13px] text-[#6B7280] border-r border-[#E5E7EB] text-center font-medium">{idx + 1}</td>
                   <td className="px-4 py-2.5 font-bold text-[#3B82F6] text-[14px] border-r border-[#E5E7EB]">{row.name}</td>
                   <td className="px-4 py-2.5 font-semibold text-[#111827] tabular-nums text-right border-r border-[#E5E7EB]">{row.cases.toLocaleString()}</td>
-                  <td className="px-4 py-2.5 text-[#EF4444] font-semibold tabular-nums text-right border-r border-[#E5E7EB]">{row.deaths || "-"}</td>
+                  <td className="px-4 py-2.5 font-semibold tabular-nums text-right border-r border-[#E5E7EB]" style={{ color: row.deaths ? "#EF4444" : "#9CA3AF" }}>{row.deaths}</td>
                   <td className="px-4 py-2.5 text-[#6B7280] tabular-nums text-right border-r border-[#E5E7EB] font-medium">{row.per100k}</td>
                   <td className="px-4 py-2.5 text-right">
                     <span

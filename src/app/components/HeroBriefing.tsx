@@ -87,11 +87,11 @@ export function HeroBriefing() {
             {stats.map((s) => (
               <div key={s.label} className="relative rounded-xl bg-white/[0.04] border border-white/[0.06] px-3 py-3 overflow-hidden">
                 <div className="absolute top-0 left-0 right-0 h-[3px]" style={{ backgroundColor: s.color }} />
-                <div className="text-[10px] font-semibold uppercase tracking-wide text-slate-400 mb-1">{t(s.label)}</div>
+                <div className="text-[10px] font-semibold uppercase tracking-wide text-slate-300 mb-1">{t(s.label)}</div>
                 <div className="font-display text-[28px] md:text-[32px] leading-none" style={{ color: s.color }}>
                   {s.value}
                 </div>
-                <div className="text-[10px] text-slate-500 mt-1 leading-tight">{t(s.sub)}</div>
+                <div className="text-[10px] text-slate-400 mt-1 leading-tight">{t(s.sub)}</div>
               </div>
             ))}
           </div>

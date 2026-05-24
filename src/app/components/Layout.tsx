@@ -248,7 +248,7 @@ export function Layout() {
               <div>
                 <h4 className="text-white font-semibold text-[13px] mb-3 uppercase tracking-wide">{t("Bog‘lanish")}</h4>
                 <ul className="space-y-2 text-[12px]">
-                  <li className="flex items-center gap-2"><Phone className="w-3.5 h-3.5" /> +998 71 120 55 77</li>
+                  <li className="flex items-center gap-2"><Phone className="w-3.5 h-3.5" /> +998 (71) 120-55-77</li>
                   <li className="flex items-center gap-2"><Mail className="w-3.5 h-3.5" /> info@ssv.uz</li>
                   <li className="flex items-center gap-2"><Globe className="w-3.5 h-3.5" /> ssv.uz · sanepid.uz</li>
                 </ul>

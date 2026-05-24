@@ -98,11 +98,9 @@ const RU: Record<string, string> = {
   "Kasallanganlar": "Заболевшие",
   "aprelda": "в апреле",
   "respublika": "республика",
-  "Vafot etgan": "Умерло",
   "85% bolalar": "85% — дети",
   "Tuzalgan": "Выздоровело",
   "uyga chiqarilgan": "выписаны домой",
-  "Lab. tasdiq": "Лаб. подтв.",
   "O'lim koeffitsiyenti (CFR)": "Коэффициент летальности (CFR)",
 
   // Highlights
@@ -182,7 +180,6 @@ const RU: Record<string, string> = {
     "Статистический анализ по г. Ташкент · 277 случаев (14.04.2026–17.04.2026)",
   "Tumanlar reytingi": "Рейтинг районов",
   "Toshkent shahridagi 12 tuman bo'yicha": "По 12 районам г. Ташкент",
-  "Holatlar soni": "Число случаев",
   "Intensivlik (100k)": "Интенсивность (100т)",
   "† — tumanda qayd etilgan vafot soni. Rang: intensivlik darajasi (qizil ≥11, sariq ≥8).":
     "† — число смертей в районе. Цвет: уровень интенсивности (красный ≥11, жёлтый ≥8).",
@@ -349,11 +346,9 @@ const EN: Record<string, string> = {
   "Kasallanganlar": "Cases",
   "aprelda": "in April",
   "respublika": "republic",
-  "Vafot etgan": "Deaths",
   "85% bolalar": "85% children",
   "Tuzalgan": "Recovered",
   "uyga chiqarilgan": "discharged home",
-  "Lab. tasdiq": "Lab confirmed",
   "O'lim koeffitsiyenti (CFR)": "Case fatality rate (CFR)",
 
   "Epidemiya 23-fevraldan (9-hafta) keskin ko'tarildi.": "Epidemic surged from Feb 23 (week 9).",
@@ -427,7 +422,6 @@ const EN: Record<string, string> = {
     "Statistical analysis for Tashkent city · 277 cases (14.04.2026–17.04.2026)",
   "Tumanlar reytingi": "District ranking",
   "Toshkent shahridagi 12 tuman bo'yicha": "Across the 12 districts of Tashkent",
-  "Holatlar soni": "Case count",
   "Intensivlik (100k)": "Incidence (100k)",
   "† — tumanda qayd etilgan vafot soni. Rang: intensivlik darajasi (qizil ≥11, sariq ≥8).":
     "† — deaths recorded in the district. Color: incidence level (red ≥11, amber ≥8).",
