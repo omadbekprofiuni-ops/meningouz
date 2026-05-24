@@ -176,6 +176,41 @@ const RU: Record<string, string> = {
   "O'rta": "Средний",
   "Past": "Низкий",
   "JAMI": "ИТОГО",
+
+  // Tahlil
+  "Toshkent shahri · 277 holat kesimida statistik tahlil (14.04.2026–17.04.2026)":
+    "Статистический анализ по г. Ташкент · 277 случаев (14.04.2026–17.04.2026)",
+  "Tumanlar reytingi": "Рейтинг районов",
+  "Toshkent shahridagi 12 tuman bo'yicha": "По 12 районам г. Ташкент",
+  "Holatlar soni": "Число случаев",
+  "Intensivlik (100k)": "Интенсивность (100т)",
+  "† — tumanda qayd etilgan vafot soni. Rang: intensivlik darajasi (qizil ≥11, sariq ≥8).":
+    "† — число смертей в районе. Цвет: уровень интенсивности (красный ≥11, жёлтый ≥8).",
+  "Yosh taqsimoti": "Возрастное распределение",
+  "14 yoshgacha bolalar — 97,5%": "Дети до 14 лет — 97,5%",
+  "Ijtimoiy guruh / o'choq": "Социальная группа / очаг",
+  "Holatlar qayerda qayd etilgani": "Где зарегистрированы случаи",
+  "Laboratoriya natijalari": "Результаты лабораторий",
+  "69.3% — N. meningitidis tasdiqlangan": "69,3% — подтверждён N. meningitidis",
+  "Tasdiqlangan": "Подтверждено",
+  "Aniqlanmagan": "Не выявлено",
+  "Kasallik yakunlari": "Исходы заболевания",
+  "1-son YuKSh · 292 bemor ro'yxatga olingan": "1-я ГИКБ · зарегистрировано 292 больных",
+  "Ro'yxatga olingan": "Зарегистрировано",
+  "Tuzalgan / chiqarilgan": "Выздоровело / выписано",
+  "Davolanmoqda": "Лечатся",
+  "Taxminiy yuqish manbalari": "Предполагаемые источники заражения",
+  "Epidemiologik surishtiruv natijalari": "Результаты эпидрасследования",
+  "Yopiq bolalar o'yingohlari (savdo majmualari)": "Закрытые детские игровые зоны (ТЦ)",
+  "Oila a'zolari / yaqin qarindosh (sog'lom tashuvchi)": "Члены семьи / близкие (носители)",
+  "\"Umra\" ziyoratidan kelganlar (O'RI belgili)": "Вернувшиеся из \"Умры\" (с признаками ОРИ)",
+  "Jazoni o'tash muassasasi (1 xona)": "Исправительное учреждение (1 палата)",
+  "31,4% holat savdo majmualaridagi yopiq bolalar o'yingohlarida yuqtirilgan deb gumon qilinmoqda.":
+    "Предполагается, что 31,4% случаев заразились в закрытых детских игровых зонах ТЦ.",
+  "2025 — 2026 taqqoslash": "Сравнение 2025 — 2026",
+  "Kasallanish 17.6 barobar oshgan": "Заболеваемость выросла в 17,6 раза",
+  "Toshkent shahar Hokimiyatiga ma'lumotnoma (14.04.2026), MKI beмorlar ro'yxati (17.04.2026), 2026 tumanlar jadvali, ССВ respublika ma'lumotnomasi (28.03.2026). Tumanlar kesimi 277 ta holatga asoslangan.":
+    "Справка хокимияту г. Ташкент (14.04.2026), список больных МКИ (17.04.2026), таблица районов 2026, республиканская справка Минздрава (28.03.2026). Разрез по районам основан на 277 случаях.",
 };
 
 const EN: Record<string, string> = {
@@ -340,6 +375,41 @@ const EN: Record<string, string> = {
   "O'rta": "Medium",
   "Past": "Low",
   "JAMI": "TOTAL",
+
+  // Tahlil
+  "Toshkent shahri · 277 holat kesimida statistik tahlil (14.04.2026–17.04.2026)":
+    "Statistical analysis for Tashkent city · 277 cases (14.04.2026–17.04.2026)",
+  "Tumanlar reytingi": "District ranking",
+  "Toshkent shahridagi 12 tuman bo'yicha": "Across the 12 districts of Tashkent",
+  "Holatlar soni": "Case count",
+  "Intensivlik (100k)": "Incidence (100k)",
+  "† — tumanda qayd etilgan vafot soni. Rang: intensivlik darajasi (qizil ≥11, sariq ≥8).":
+    "† — deaths recorded in the district. Color: incidence level (red ≥11, amber ≥8).",
+  "Yosh taqsimoti": "Age distribution",
+  "14 yoshgacha bolalar — 97,5%": "Children under 14 — 97.5%",
+  "Ijtimoiy guruh / o'choq": "Social group / setting",
+  "Holatlar qayerda qayd etilgani": "Where cases were registered",
+  "Laboratoriya natijalari": "Laboratory results",
+  "69.3% — N. meningitidis tasdiqlangan": "69.3% — N. meningitidis confirmed",
+  "Tasdiqlangan": "Confirmed",
+  "Aniqlanmagan": "Not detected",
+  "Kasallik yakunlari": "Disease outcomes",
+  "1-son YuKSh · 292 bemor ro'yxatga olingan": "City Infectious Hospital #1 · 292 patients registered",
+  "Ro'yxatga olingan": "Registered",
+  "Tuzalgan / chiqarilgan": "Recovered / discharged",
+  "Davolanmoqda": "In treatment",
+  "Taxminiy yuqish manbalari": "Suspected transmission sources",
+  "Epidemiologik surishtiruv natijalari": "Epidemiological investigation results",
+  "Yopiq bolalar o'yingohlari (savdo majmualari)": "Indoor children's playgrounds (malls)",
+  "Oila a'zolari / yaqin qarindosh (sog'lom tashuvchi)": "Family members / close relatives (carriers)",
+  "\"Umra\" ziyoratidan kelganlar (O'RI belgili)": "Returnees from \"Umrah\" (with ARI signs)",
+  "Jazoni o'tash muassasasi (1 xona)": "Penal institution (1 cell)",
+  "31,4% holat savdo majmualaridagi yopiq bolalar o'yingohlarida yuqtirilgan deb gumon qilinmoqda.":
+    "An estimated 31.4% of cases are suspected to have been infected at indoor children's playgrounds in malls.",
+  "2025 — 2026 taqqoslash": "2025 — 2026 comparison",
+  "Kasallanish 17.6 barobar oshgan": "Incidence increased 17.6-fold",
+  "Toshkent shahar Hokimiyatiga ma'lumotnoma (14.04.2026), MKI beмorlar ro'yxati (17.04.2026), 2026 tumanlar jadvali, ССВ respublika ma'lumotnomasi (28.03.2026). Tumanlar kesimi 277 ta holatga asoslangan.":
+    "Report to Tashkent khokimiyat (14.04.2026), MKI patient list (17.04.2026), 2026 districts table, Ministry republic report (28.03.2026). District breakdown based on 277 cases.",
 };
 
 const DICT = { ru: RU, en: EN } as const;
