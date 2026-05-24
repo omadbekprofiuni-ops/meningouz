@@ -122,10 +122,10 @@ export function RiskScreening() {
                   </div>
                   <div>
                     <h3 className={clsx("font-semibold text-[15px]", isSelected ? "text-[#059669]" : "text-[#111827]")}>
-                      {sym.name}
+                      {t(sym.name)}
                     </h3>
                     <p className={clsx("text-[13px] mt-1", isSelected ? "text-[#059669]" : "text-[#6B7280]")}>
-                      {sym.desc}
+                      {t(sym.desc)}
                     </p>
                   </div>
                   
@@ -160,7 +160,7 @@ export function RiskScreening() {
         {/* Right Column - Results */}
         <div className="lg:col-span-4">
           <div className="bg-white rounded-2xl border border-[#E5E7EB] p-6 shadow-sm sticky top-6">
-            <h2 className="text-[16px] font-semibold text-[#111827] mb-6 text-center">Natija va Tavsiyalar</h2>
+            <h2 className="text-[16px] font-semibold text-[#111827] mb-6 text-center">{t("Natija va Tavsiyalar")}</h2>
             
             {/* Circular Progress */}
             <div className="relative w-[200px] h-[200px] mx-auto mb-6">
@@ -180,7 +180,7 @@ export function RiskScreening() {
               </svg>
               <div className="absolute inset-0 flex flex-col items-center justify-center">
                 <span className="text-[48px] font-semibold tabular-nums leading-none" style={{ color }}>{score}</span>
-                <span className="text-[13px] text-[#6B7280] font-medium mt-1">Risk Ball</span>
+                <span className="text-[13px] text-[#6B7280] font-medium mt-1">{t("Risk Ball")}</span>
               </div>
             </div>
 
@@ -200,25 +200,25 @@ export function RiskScreening() {
             </div>
 
             <div className="space-y-3 mb-8">
-              <h3 className="text-[13px] font-semibold text-[#111827] uppercase tracking-wider">Tavsiyalar:</h3>
+              <h3 className="text-[13px] font-semibold text-[#111827] uppercase tracking-wider">{t("Tavsiyalar:")}</h3>
               <ul className="text-[13px] text-[#4B5563] space-y-2">
                 {score >= 60 ? (
                   <>
-                    <li className="flex gap-2"><span className="text-[#EF4444]">•</span> Zudlik bilan reanimatsiya yoki yuqumli kasalliklar bo'limiga yotqizish.</li>
-                    <li className="flex gap-2"><span className="text-[#EF4444]">•</span> Lumbal punksiya va qon tahlili o'tkazish.</li>
-                    <li className="flex gap-2"><span className="text-[#EF4444]">•</span> Empirik antibiotik terapiyani boshlash.</li>
+                    <li className="flex gap-2"><span className="text-[#EF4444]">•</span> {t("Zudlik bilan reanimatsiya yoki yuqumli kasalliklar bo'limiga yotqizish.")}</li>
+                    <li className="flex gap-2"><span className="text-[#EF4444]">•</span> {t("Lumbal punksiya va qon tahlili o'tkazish.")}</li>
+                    <li className="flex gap-2"><span className="text-[#EF4444]">•</span> {t("Empirik antibiotik terapiyani boshlash.")}</li>
                   </>
                 ) : score >= 30 ? (
                   <>
-                    <li className="flex gap-2"><span className="text-[#F59E0B]">•</span> Bemorni 24 soatlik qat'iy nazoratga olish.</li>
-                    <li className="flex gap-2"><span className="text-[#F59E0B]">•</span> Tana harorati va qon bosimi monitoringi.</li>
-                    <li className="flex gap-2"><span className="text-[#F59E0B]">•</span> Simptomlar kuchaysa shifoxonaga yuborish.</li>
+                    <li className="flex gap-2"><span className="text-[#F59E0B]">•</span> {t("Bemorni 24 soatlik qat'iy nazoratga olish.")}</li>
+                    <li className="flex gap-2"><span className="text-[#F59E0B]">•</span> {t("Tana harorati va qon bosimi monitoringi.")}</li>
+                    <li className="flex gap-2"><span className="text-[#F59E0B]">•</span> {t("Simptomlar kuchaysa shifoxonaga yuborish.")}</li>
                   </>
                 ) : (
                   <>
-                    <li className="flex gap-2"><span className="text-[#10B981]">•</span> Suyuqlik ichish tartibini nazorat qilish.</li>
-                    <li className="flex gap-2"><span className="text-[#10B981]">•</span> Isitma tushiruvchi vositalar qabul qilish.</li>
-                    <li className="flex gap-2"><span className="text-[#10B981]">•</span> Oila shifokori nazoratida bo'lish.</li>
+                    <li className="flex gap-2"><span className="text-[#10B981]">•</span> {t("Suyuqlik ichish tartibini nazorat qilish.")}</li>
+                    <li className="flex gap-2"><span className="text-[#10B981]">•</span> {t("Isitma tushiruvchi vositalar qabul qilish.")}</li>
+                    <li className="flex gap-2"><span className="text-[#10B981]">•</span> {t("Oila shifokori nazoratida bo'lish.")}</li>
                   </>
                 )}
               </ul>
@@ -227,13 +227,13 @@ export function RiskScreening() {
             {score >= 60 && (
               <button className="w-full bg-[#EF4444] hover:bg-[#DC2626] text-white font-medium py-3 rounded-xl transition-all shadow-lg shadow-[#EF4444]/30 flex items-center justify-center gap-2 animate-pulse">
                 <PhoneCall className="w-5 h-5" />
-                Shoshilinch murojaat
+                {t("Shoshilinch murojaat")}
               </button>
             )}
             
             {score < 60 && (
               <button className="w-full bg-[#F3F4F6] hover:bg-[#E5E7EB] text-[#374151] font-medium py-3 rounded-xl transition-colors">
-                Natijani saqlash
+                {t("Natijani saqlash")}
               </button>
             )}
           </div>

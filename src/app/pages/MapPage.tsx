@@ -3,6 +3,7 @@ import { Search, ZoomIn, ZoomOut, Maximize, AlertCircle } from "lucide-react";
 import clsx from "clsx";
 import { REGIONS } from "../data/stats";
 import { UZ_REGIONS, UZ_VIEWBOX } from "../data/uzbekistan-geo";
+import { useI18n } from "../i18n";
 
 type Risk = "high" | "medium" | "low";
 
@@ -22,6 +23,7 @@ function fillForCases(cases: number | undefined): string {
 }
 
 export function MapPage() {
+  const { t } = useI18n();
   const [selectedRegion, setSelectedRegion] = useState<string>("Toshkent sh.");
   const [hovered, setHovered] = useState<string | null>(null);
   const [riskFilter, setRiskFilter] = useState<"all" | Risk>("all");
@@ -51,7 +53,7 @@ export function MapPage() {
               type="text"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="Viloyat qidirish..."
+              placeholder={t("Viloyat qidirish...")}
               className="w-[150px] text-[13px] py-1.5 outline-none border-none placeholder:text-[#9CA3AF]"
             />
           </div>
@@ -72,7 +74,7 @@ export function MapPage() {
                 riskFilter === key ? "bg-[#F3F4F6] text-[#111827]" : "text-[#6B7280] hover:bg-[#F9FAFB]"
               )}
             >
-              {label}
+              {t(label)}
             </button>
           ))}
         </div>
@@ -141,7 +143,7 @@ export function MapPage() {
                 const data = geo && byName[geo.name];
                 if (!geo || !data) return null;
                 if (riskFilter !== "all" && !filteredNames.has(geo.name)) return null;
-                const text = `${geo.name} · ${data.cases} ta holat`;
+                const text = `${geo.name} · ${data.cases} ${t("ta holat")}`;
                 const labelW = text.length * 6.2 + 20;
                 const labelLeft = geo.cx + labelW + 14 > UZ_VIEWBOX.w;
                 const lx = labelLeft ? geo.cx - labelW - 12 : geo.cx + 12;
@@ -165,13 +167,13 @@ export function MapPage() {
         {hoveredData && (
           <div className="absolute top-20 left-6 bg-white rounded-lg shadow-lg border border-[#E5E7EB] px-4 py-2.5 z-10 pointer-events-none">
             <div className="text-[13px] font-bold text-[#111827]">{hovered}</div>
-            <div className="text-[12px] text-[#6B7280]">{hoveredData.cases} ta holat · {hoveredData.deaths} vafot · {hoveredData.per100k}/100k</div>
+            <div className="text-[12px] text-[#6B7280]">{hoveredData.cases} {t("ta holat")} · {hoveredData.deaths} {t("vafot")} · {hoveredData.per100k}/100k</div>
           </div>
         )}
 
         {/* Legend */}
         <div className="absolute bottom-6 left-6 bg-white rounded-lg shadow-sm border border-[#E5E7EB] p-3 text-[12px] space-y-1.5 z-10">
-          <div className="font-semibold text-[#374151] mb-1">Holatlar soni</div>
+          <div className="font-semibold text-[#374151] mb-1">{t("Holatlar soni")}</div>
           {[
             ["#EF4444", "150+"],
             ["#FBBF24", "51–150"],
@@ -181,7 +183,7 @@ export function MapPage() {
           ].map(([c, l]) => (
             <div key={l} className="flex items-center gap-2 text-[#6B7280]">
               <span className="w-3.5 h-3.5 rounded-sm border border-[#E5E7EB]" style={{ backgroundColor: c }} />
-              {l}
+              {t(l)}
             </div>
           ))}
         </div>
@@ -202,18 +204,18 @@ export function MapPage() {
       {/* Right Sidebar - Region Details */}
       <div className="absolute top-0 right-0 bottom-0 w-full md:w-[320px] bg-white border-l border-[#E5E7EB] shadow-xl z-20 flex flex-col overflow-y-auto hidden md:flex">
         <div className="p-5 border-b border-[#E5E7EB]">
-          <h2 className="text-[16px] font-semibold text-[#111827]">Viloyatlar ro'yxati</h2>
-          <p className="text-[13px] text-[#6B7280] mt-1">{filtered.length} ta hudud · ССВ ma'lumoti (28.03.2026)</p>
+          <h2 className="text-[16px] font-semibold text-[#111827]">{t("Viloyatlar ro'yxati")}</h2>
+          <p className="text-[13px] text-[#6B7280] mt-1">{filtered.length} {t("ta hudud · ССВ ma'lumoti (28.03.2026)")}</p>
         </div>
 
         {selected && (
           <div className="p-4 m-3 rounded-xl bg-[#ECFDF5] border border-[#A7F3D0]">
-            <p className="text-[12px] text-[#059669] font-medium">Tanlangan hudud</p>
+            <p className="text-[12px] text-[#059669] font-medium">{t("Tanlangan hudud")}</p>
             <h3 className="text-[18px] font-bold text-[#111827]">{selected.name}</h3>
             <div className="grid grid-cols-3 gap-2 mt-3 text-center">
-              <div><div className="text-[18px] font-bold text-[#111827] tabular-nums">{selected.cases}</div><div className="text-[11px] text-[#6B7280]">Holat</div></div>
-              <div><div className="text-[18px] font-bold text-[#EF4444] tabular-nums">{selected.deaths}</div><div className="text-[11px] text-[#6B7280]">Vafot</div></div>
-              <div><div className="text-[18px] font-bold text-[#3B82F6] tabular-nums">{selected.per100k}</div><div className="text-[11px] text-[#6B7280]">100k ga</div></div>
+              <div><div className="text-[18px] font-bold text-[#111827] tabular-nums">{selected.cases}</div><div className="text-[11px] text-[#6B7280]">{t("Holat")}</div></div>
+              <div><div className="text-[18px] font-bold text-[#EF4444] tabular-nums">{selected.deaths}</div><div className="text-[11px] text-[#6B7280]">{t("Vafot")}</div></div>
+              <div><div className="text-[18px] font-bold text-[#3B82F6] tabular-nums">{selected.per100k}</div><div className="text-[11px] text-[#6B7280]">{t("100k ga")}</div></div>
             </div>
           </div>
         )}
@@ -236,7 +238,7 @@ export function MapPage() {
               </div>
               <div className="flex justify-between items-end">
                 <div>
-                  <p className="text-[12px] text-[#6B7280] mb-0.5">Jami holat</p>
+                  <p className="text-[12px] text-[#6B7280] mb-0.5">{t("Jami holat")}</p>
                   <p className="text-[18px] font-semibold text-[#111827] tabular-nums leading-none">{r.cases.toLocaleString()}</p>
                 </div>
                 <div
