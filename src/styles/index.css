@@ -1,0 +1,56 @@
+@import './fonts.css';
+@import './tailwind.css';
+@import './theme.css';
+
+/* ============================================================
+   MeningoUz — CUSTOM tematik dizayn tizimi
+   Identifikatsiya: meningokokksemiya petexiyasi (binafsha-qizil
+   toshma) + epidemiologik "command center" estetikasi.
+   ============================================================ */
+:root {
+  --mng-ink: #0A0E1A;        /* eng to'q fon */
+  --mng-panel: #0F1626;      /* panel */
+  --mng-violet: #8B5CF6;     /* petexiya binafsha (brend) */
+  --mng-violet-2: #A78BFA;
+  --mng-crimson: #F43F5E;    /* xavf / o'lim */
+  --mng-cyan: #22D3EE;       /* ma'lumot */
+  --mng-amber: #FBBF24;
+  --mng-emerald: #34D399;    /* ijobiy / tuzalish */
+}
+
+.font-display {
+  font-family: 'Space Grotesk', 'Inter', sans-serif;
+  font-feature-settings: 'tnum' 1;
+  letter-spacing: -0.02em;
+}
+
+/* Petexiya (toshma) motivi — tasodifiy binafsha/qizil nuqtalar */
+.petechiae {
+  background-image:
+    radial-gradient(circle at 12% 18%, rgba(244, 63, 94, 0.55) 0 2px, transparent 3px),
+    radial-gradient(circle at 22% 62%, rgba(139, 92, 246, 0.5) 0 3px, transparent 4px),
+    radial-gradient(circle at 31% 30%, rgba(244, 63, 94, 0.4) 0 1.5px, transparent 2.5px),
+    radial-gradient(circle at 8% 78%, rgba(139, 92, 246, 0.45) 0 2px, transparent 3px),
+    radial-gradient(circle at 42% 80%, rgba(244, 63, 94, 0.35) 0 2.5px, transparent 3.5px),
+    radial-gradient(circle at 18% 42%, rgba(167, 139, 250, 0.4) 0 1.5px, transparent 2.5px),
+    radial-gradient(circle at 37% 12%, rgba(244, 63, 94, 0.3) 0 2px, transparent 3px),
+    radial-gradient(circle at 27% 90%, rgba(139, 92, 246, 0.35) 0 1.5px, transparent 2.5px);
+  background-repeat: no-repeat;
+}
+
+/* Nozik to'q to'r (hujayra/molekula hissi) */
+.grid-mesh {
+  background-image:
+    linear-gradient(rgba(148, 163, 184, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(148, 163, 184, 0.06) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+.text-glow-crimson { text-shadow: 0 0 28px rgba(244, 63, 94, 0.45); }
+.text-glow-violet  { text-shadow: 0 0 28px rgba(139, 92, 246, 0.45); }
+
+@keyframes mng-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.85); }
+}
+.animate-mng-pulse { animation: mng-pulse 1.8s ease-in-out infinite; }
