@@ -1,4 +1,5 @@
 import { TOTALS, OUTCOMES, LAB, WEEKLY, MONTHLY } from "../data/stats";
+import { useI18n } from "../i18n";
 
 // Epidemik egri (backdrop sparkline) — WEEKLY ma'lumotidan SVG area path
 function curvePath(w: number, h: number) {
@@ -10,6 +11,7 @@ function curvePath(w: number, h: number) {
 }
 
 export function HeroBriefing() {
+  const { t } = useI18n();
   const { line, area } = curvePath(800, 200);
   const aprel = MONTHLY[MONTHLY.length - 1].cases;
 
@@ -46,12 +48,12 @@ export function HeroBriefing() {
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#F43F5E] opacity-75" />
               <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#F43F5E]" />
             </span>
-            <span className="text-[11px] font-semibold tracking-[0.18em] text-[#F43F5E] uppercase">Jonli o'choq monitoringi</span>
+            <span className="text-[11px] font-semibold tracking-[0.18em] text-[#F43F5E] uppercase">{t("Jonli o'choq monitoringi")}</span>
           </div>
           <div className="flex items-center gap-3">
-            <span className="text-[12px] text-slate-400">Toshkent shahri · 17.04.2026</span>
+            <span className="text-[12px] text-slate-400">{t("Toshkent shahri")} · 17.04.2026</span>
             <span className="text-[11px] font-bold tracking-wide text-[#FCA5A5] bg-[#F43F5E]/15 border border-[#F43F5E]/30 px-2.5 py-1 rounded-full">
-              XAVF: YUQORI
+              {t("XAVF: YUQORI")}
             </span>
           </div>
         </div>
@@ -60,10 +62,10 @@ export function HeroBriefing() {
           {/* big number */}
           <div>
             <h2 className="text-[15px] md:text-[17px] font-semibold text-slate-300 mb-1">
-              Meningokokk infeksiyasi o'chog'i
+              {t("Meningokokk infeksiyasi o'chog'i")}
             </h2>
             <div className="text-[11px] font-semibold tracking-[0.2em] text-slate-500 uppercase mb-2">
-              Kasallanganlar · Toshkent sh.
+              {t("Kasallanganlar")} · Toshkent sh.
             </div>
             <div className="flex items-end gap-4">
               <span className="font-display text-white text-[72px] md:text-[96px] leading-[0.85] text-glow-violet">
@@ -71,10 +73,10 @@ export function HeroBriefing() {
               </span>
               <div className="pb-2 space-y-1.5">
                 <div className="inline-flex items-center gap-1.5 text-[12px] font-semibold text-[#FCA5A5] bg-[#F43F5E]/10 px-2 py-0.5 rounded">
-                  ↑ +{aprel} aprelda
+                  ↑ +{aprel} {t("aprelda")}
                 </div>
                 <div className="text-[12px] text-slate-400">
-                  2025 yilga nisbatan <span className="text-[#FBBF24] font-bold">{TOTALS.growthVs2025}×</span> · respublika {TOTALS.republicCases}
+                  {t("2025 yilga nisbatan")} <span className="text-[#FBBF24] font-bold">{TOTALS.growthVs2025}×</span> · {t("respublika")} {TOTALS.republicCases}
                 </div>
               </div>
             </div>
@@ -85,11 +87,11 @@ export function HeroBriefing() {
             {stats.map((s) => (
               <div key={s.label} className="relative rounded-xl bg-white/[0.04] border border-white/[0.06] px-3 py-3 overflow-hidden">
                 <div className="absolute top-0 left-0 right-0 h-[3px]" style={{ backgroundColor: s.color }} />
-                <div className="text-[10px] font-semibold uppercase tracking-wide text-slate-400 mb-1">{s.label}</div>
+                <div className="text-[10px] font-semibold uppercase tracking-wide text-slate-400 mb-1">{t(s.label)}</div>
                 <div className="font-display text-[28px] md:text-[32px] leading-none" style={{ color: s.color }}>
                   {s.value}
                 </div>
-                <div className="text-[10px] text-slate-500 mt-1 leading-tight">{s.sub}</div>
+                <div className="text-[10px] text-slate-500 mt-1 leading-tight">{t(s.sub)}</div>
               </div>
             ))}
           </div>
@@ -98,7 +100,7 @@ export function HeroBriefing() {
         {/* severity meter */}
         <div className="mt-7 pt-5 border-t border-white/[0.06]">
           <div className="flex items-center justify-between text-[11px] text-slate-400 mb-2">
-            <span>O'lim koeffitsiyenti (CFR)</span>
+            <span>{t("O'lim koeffitsiyenti (CFR)")}</span>
             <span className="text-[#F43F5E] font-bold">{TOTALS.cfr}%</span>
           </div>
           <div className="h-1.5 w-full bg-white/[0.06] rounded-full overflow-hidden">

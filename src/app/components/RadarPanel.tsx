@@ -7,6 +7,7 @@ import {
   Tooltip as RechartsTooltip,
   Legend,
 } from "recharts";
+import { useI18n } from "../i18n";
 
 export interface RadarSeries {
   name: string;
@@ -27,6 +28,7 @@ interface RadarPanelProps {
 }
 
 export function RadarPanel({ title, subtitle, data, axisKey, series, dark }: RadarPanelProps) {
+  const { t } = useI18n();
   return (
     <div
       className={
@@ -37,11 +39,11 @@ export function RadarPanel({ title, subtitle, data, axisKey, series, dark }: Rad
     >
       <div className="flex items-baseline justify-between mb-1">
         <h2 className={dark ? "text-[16px] font-semibold text-white" : "text-[16px] font-semibold text-[#111827]"}>
-          {title}
+          {t(title)}
         </h2>
       </div>
       {subtitle && (
-        <p className={dark ? "text-[12px] text-slate-400 mb-2" : "text-[12px] text-[#6B7280] mb-2"}>{subtitle}</p>
+        <p className={dark ? "text-[12px] text-slate-400 mb-2" : "text-[12px] text-[#6B7280] mb-2"}>{t(subtitle)}</p>
       )}
 
       <div className="h-[320px] w-full">
@@ -50,12 +52,13 @@ export function RadarPanel({ title, subtitle, data, axisKey, series, dark }: Rad
             <PolarGrid stroke={dark ? "#334155" : "#E5E7EB"} />
             <PolarAngleAxis
               dataKey={axisKey}
+              tickFormatter={(v: string) => t(v)}
               tick={{ fill: dark ? "#CBD5E1" : "#374151", fontSize: 11, fontWeight: 500 }}
             />
             {series.map((s) => (
               <Radar
                 key={s.key}
-                name={s.name}
+                name={t(s.name)}
                 dataKey={s.key}
                 stroke={s.color}
                 fill={s.color}

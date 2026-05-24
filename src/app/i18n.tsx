@@ -89,6 +89,93 @@ const RU: Record<string, string> = {
   "Tanlangan hudud": "Выбранный регион",
   "Holat": "Случаи",
   "Vafot": "Смерти",
+
+  // Hero
+  "Jonli o'choq monitoringi": "Мониторинг очага в реальном времени",
+  "Toshkent shahri": "город Ташкент",
+  "XAVF: YUQORI": "РИСК: ВЫСОКИЙ",
+  "Meningokokk infeksiyasi o'chog'i": "Очаг менингококковой инфекции",
+  "Kasallanganlar": "Заболевшие",
+  "aprelda": "в апреле",
+  "respublika": "республика",
+  "Vafot etgan": "Умерло",
+  "85% bolalar": "85% — дети",
+  "Tuzalgan": "Выздоровело",
+  "uyga chiqarilgan": "выписаны домой",
+  "Lab. tasdiq": "Лаб. подтв.",
+  "O'lim koeffitsiyenti (CFR)": "Коэффициент летальности (CFR)",
+
+  // Highlights
+  "Epidemiya 23-fevraldan (9-hafta) keskin ko'tarildi.": "Эпидемия резко выросла с 23 февраля (9-я неделя).",
+  "Vafot etganlarning 85% — bolalar.": "85% умерших — дети.",
+  "Holatlarning 97,5% — 14 yoshgacha bo'lgan bolalar.": "97,5% случаев — дети до 14 лет.",
+  "Eng yuqori intensivlik: Sergeli (13,4) va Chilonzor (12,3).": "Наивысшая интенсивность: Сергели (13,4) и Чиланзар (12,3).",
+  "Kasallikning ustun shakli — yashin tezligidagi meningokokksemiya.": "Преобладающая форма — молниеносная менингококцемия.",
+
+  // Prevention cards
+  "Surtma topshirdi": "Сдали мазок",
+  "Sog'lom tashuvchi": "Носители",
+  "Kimyoviy profilaktika": "Химиопрофилактика",
+  "muloqotdagilar": "контактные лица",
+  "aniqlangan (0,5%)": "выявлено (0,5%)",
+  "tavsiya etilgan": "рекомендовано",
+
+  // Chart captions / live updates
+  "Epidemiya 9-haftada (23-fevral) keskin ko'tarildi.": "Эпидемия резко выросла на 9-й неделе (23 февраля).",
+  "* Aprel — 17-aprelgacha bo'lgan ma'lumot.": "* Апрель — данные по 17 апреля.",
+  "Toshkent shahri bo'yicha jami 277 ta holat ro'yxatga olindi. Aprel oyida 105 ta yangi holat qayd etildi.":
+    "По г. Ташкент зарегистрировано 277 случаев. В апреле выявлено 105 новых случаев.",
+  "Hokimiyatga ma'lumotnoma: 264 holat, 8,3/100k — 2025 yilga nisbatan 17,6 barobar ko'p. 183 ta (69,3%) lab. tasdiqlangan.":
+    "Справка хокимияту: 264 случая, 8,3/100т — в 17,6 раза больше, чем в 2025. Лаб. подтверждено 183 (69,3%).",
+  "1,5 oylik chaqaloq Saidov M.X. meningokokksemiya asoratidan vafot etdi (23-vafot holati).":
+    "1,5-месячный младенец Саидов М.Х. умер от осложнений менингококцемии (23-й случай смерти).",
+  "9-haftadan boshlab kasallanish keskin ko'tarildi. Epidemik ko'rsatma bo'yicha emlash boshlandi.":
+    "С 9-й недели заболеваемость резко выросла. Начата вакцинация по эпидпоказаниям.",
+  "Muloqotdagilardan 8 358 nafar surtma topshirdi, 3 502 nafar emlandi.":
+    "Из контактных лиц 8 358 сдали мазок, 3 502 вакцинированы.",
+
+  // Age / social labels
+  "97,5% — 14 yoshgacha bo'lgan bolalar": "97,5% — дети до 14 лет",
+  "ta": "шт.",
+  "1 yoshgacha": "до 1 года",
+  "1–2 yosh": "1–2 года",
+  "3–5 yosh": "3–5 лет",
+  "6–14 yosh": "6–14 лет",
+  "15 yosh va katta": "15 лет и старше",
+  "Holatlar qayerda qayd etilgani bo'yicha": "По месту регистрации случаев",
+  "Uy bolalari": "Домашние дети",
+  "Bog'cha (MTT)": "Детсад (ДДУ)",
+  "Maktab": "Школа",
+  "Kattalar": "Взрослые",
+
+  // Radar (clinical)
+  "Klinik belgilar profili": "Профиль клинических признаков",
+  "Beмorlarda kuzatilgan belgilar chastotasi (%) — septik (meningokokksemiya) shakli ustun":
+    "Частота признаков у больных (%) — преобладает септическая (менингококцемия) форма",
+  "Chastota": "Частота",
+  "Isitma >38°": "Лихорадка >38°",
+  "Toshma": "Сыпь",
+  "Qayt qilish": "Рвота",
+  "Es-hush yo'qolishi": "Потеря сознания",
+  "Meningial belgilar": "Менингеальные признаки",
+  "Profil nimani ko'rsatadi?": "Что показывает профиль?",
+  "Isitma va toshma deyarli har bir bemorda kuzatilgan — bu kasallikning eng erta va doimiy belgisi.":
+    "Лихорадка и сыпь почти у каждого больного — самый ранний и постоянный признак болезни.",
+  "Es-hush yo'qolishi va qayt qilish — og'ir intoksikatsiya alomatlari.":
+    "Потеря сознания и рвота — признаки тяжёлой интоксикации.",
+  "Meningial belgilar kam — bu o'choq meningokokksemiya (qon sepsisi) shaklida kechgani, klassik meningit emasligini ko'rsatadi. Shu sabab kasallik yashin tezligida kechib, yuqori letallikka olib kelgan.":
+    "Менингеальные признаки редки — очаг протекал в форме менингококцемии (сепсиса крови), а не классического менингита. Поэтому болезнь протекала молниеносно и привела к высокой летальности.",
+
+  // Table
+  "ССВ ma'lumotnomasi": "Справка Минздрава",
+  "Hudud": "Регион",
+  "Jami Holat": "Всего случаев",
+  "100k aholiga": "на 100т населения",
+  "Xavf": "Риск",
+  "Yuqori": "Высокий",
+  "O'rta": "Средний",
+  "Past": "Низкий",
+  "JAMI": "ИТОГО",
 };
 
 const EN: Record<string, string> = {
@@ -172,6 +259,87 @@ const EN: Record<string, string> = {
   "Tanlangan hudud": "Selected region",
   "Holat": "Cases",
   "Vafot": "Deaths",
+
+  // Hero
+  "Jonli o'choq monitoringi": "Live outbreak monitoring",
+  "Toshkent shahri": "Tashkent city",
+  "XAVF: YUQORI": "RISK: HIGH",
+  "Meningokokk infeksiyasi o'chog'i": "Meningococcal infection outbreak",
+  "Kasallanganlar": "Cases",
+  "aprelda": "in April",
+  "respublika": "republic",
+  "Vafot etgan": "Deaths",
+  "85% bolalar": "85% children",
+  "Tuzalgan": "Recovered",
+  "uyga chiqarilgan": "discharged home",
+  "Lab. tasdiq": "Lab confirmed",
+  "O'lim koeffitsiyenti (CFR)": "Case fatality rate (CFR)",
+
+  "Epidemiya 23-fevraldan (9-hafta) keskin ko'tarildi.": "Epidemic surged from Feb 23 (week 9).",
+  "Vafot etganlarning 85% — bolalar.": "85% of deaths are children.",
+  "Holatlarning 97,5% — 14 yoshgacha bo'lgan bolalar.": "97.5% of cases are children under 14.",
+  "Eng yuqori intensivlik: Sergeli (13,4) va Chilonzor (12,3).": "Highest incidence: Sergeli (13.4) and Chilonzor (12.3).",
+  "Kasallikning ustun shakli — yashin tezligidagi meningokokksemiya.": "Predominant form — fulminant meningococcemia.",
+
+  "Surtma topshirdi": "Swabbed",
+  "Sog'lom tashuvchi": "Carriers",
+  "Kimyoviy profilaktika": "Chemoprophylaxis",
+  "muloqotdagilar": "contacts",
+  "aniqlangan (0,5%)": "detected (0.5%)",
+  "tavsiya etilgan": "recommended",
+
+  "Epidemiya 9-haftada (23-fevral) keskin ko'tarildi.": "Epidemic surged in week 9 (Feb 23).",
+  "* Aprel — 17-aprelgacha bo'lgan ma'lumot.": "* April — data through April 17.",
+  "Toshkent shahri bo'yicha jami 277 ta holat ro'yxatga olindi. Aprel oyida 105 ta yangi holat qayd etildi.":
+    "277 cases registered in Tashkent city. 105 new cases recorded in April.",
+  "Hokimiyatga ma'lumotnoma: 264 holat, 8,3/100k — 2025 yilga nisbatan 17,6 barobar ko'p. 183 ta (69,3%) lab. tasdiqlangan.":
+    "Report to khokimiyat: 264 cases, 8.3/100k — 17.6× more than 2025. 183 (69.3%) lab-confirmed.",
+  "1,5 oylik chaqaloq Saidov M.X. meningokokksemiya asoratidan vafot etdi (23-vafot holati).":
+    "A 1.5-month-old infant, Saidov M.X., died of meningococcemia complications (23rd death).",
+  "9-haftadan boshlab kasallanish keskin ko'tarildi. Epidemik ko'rsatma bo'yicha emlash boshlandi.":
+    "Incidence surged from week 9. Vaccination by epidemic indication began.",
+  "Muloqotdagilardan 8 358 nafar surtma topshirdi, 3 502 nafar emlandi.":
+    "Of contacts, 8,358 were swabbed and 3,502 vaccinated.",
+
+  "97,5% — 14 yoshgacha bo'lgan bolalar": "97.5% — children under 14",
+  "ta": "",
+  "1 yoshgacha": "Under 1 year",
+  "1–2 yosh": "1–2 years",
+  "3–5 yosh": "3–5 years",
+  "6–14 yosh": "6–14 years",
+  "15 yosh va katta": "15 years and older",
+  "Holatlar qayerda qayd etilgani bo'yicha": "By place of case registration",
+  "Uy bolalari": "Home children",
+  "Bog'cha (MTT)": "Kindergarten",
+  "Maktab": "School",
+  "Kattalar": "Adults",
+
+  "Klinik belgilar profili": "Clinical signs profile",
+  "Beмorlarda kuzatilgan belgilar chastotasi (%) — septik (meningokokksemiya) shakli ustun":
+    "Frequency of signs in patients (%) — septic (meningococcemia) form predominates",
+  "Chastota": "Frequency",
+  "Isitma >38°": "Fever >38°",
+  "Toshma": "Rash",
+  "Qayt qilish": "Vomiting",
+  "Es-hush yo'qolishi": "Loss of consciousness",
+  "Meningial belgilar": "Meningeal signs",
+  "Profil nimani ko'rsatadi?": "What does the profile show?",
+  "Isitma va toshma deyarli har bir bemorda kuzatilgan — bu kasallikning eng erta va doimiy belgisi.":
+    "Fever and rash in almost every patient — the earliest and most constant sign of the disease.",
+  "Es-hush yo'qolishi va qayt qilish — og'ir intoksikatsiya alomatlari.":
+    "Loss of consciousness and vomiting — signs of severe intoxication.",
+  "Meningial belgilar kam — bu o'choq meningokokksemiya (qon sepsisi) shaklida kechgani, klassik meningit emasligini ko'rsatadi. Shu sabab kasallik yashin tezligida kechib, yuqori letallikka olib kelgan.":
+    "Meningeal signs were rare — the outbreak ran as meningococcemia (blood sepsis), not classic meningitis. Hence the fulminant course and high lethality.",
+
+  "ССВ ma'lumotnomasi": "Ministry report",
+  "Hudud": "Region",
+  "Jami Holat": "Total cases",
+  "100k aholiga": "per 100k pop.",
+  "Xavf": "Risk",
+  "Yuqori": "High",
+  "O'rta": "Medium",
+  "Past": "Low",
+  "JAMI": "TOTAL",
 };
 
 const DICT = { ru: RU, en: EN } as const;

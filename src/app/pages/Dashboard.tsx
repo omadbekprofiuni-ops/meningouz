@@ -28,6 +28,7 @@ import {
 import { AGE_DISTRIBUTION, SOCIAL_DISTRIBUTION } from "../data/districts";
 import { RadarPanel } from "../components/RadarPanel";
 import { HeroBriefing } from "../components/HeroBriefing";
+import { useI18n } from "../i18n";
 
 const AGE_GROUPS = AGE_DISTRIBUTION;
 const SETTINGS = SOCIAL_DISTRIBUTION;
@@ -41,6 +42,7 @@ const liveUpdates = [
 ];
 
 export function Dashboard() {
+  const { t } = useI18n();
   const [chartMetric, setChartMetric] = useState<"monthly" | "weekly">("monthly");
 
   const chartData =
@@ -55,12 +57,12 @@ export function Dashboard() {
 
       {/* 1b. HIGHLIGHTS (Worldometer uslubida asosiy faktlar) */}
       <div className="bg-[#FFFBEB] border-l-4 border-[#F59E0B] border-y border-r border-[#FDE68A] rounded-r-xl rounded-l-sm p-5">
-        <h2 className="text-[13px] font-bold text-[#92400E] uppercase tracking-wide mb-3">Asosiy faktlar</h2>
+        <h2 className="text-[13px] font-bold text-[#92400E] uppercase tracking-wide mb-3">{t("Asosiy faktlar")}</h2>
         <ul className="grid sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-2">
           {HIGHLIGHTS.map((h) => (
             <li key={h} className="flex gap-2 text-[13px] text-[#78350F] leading-snug">
               <span className="text-[#F59E0B] mt-0.5">▸</span>
-              {h}
+              {t(h)}
             </li>
           ))}
         </ul>
@@ -78,10 +80,10 @@ export function Dashboard() {
             <div className="absolute left-0 top-0 bottom-0 w-1" style={{ backgroundColor: c.color }} />
             <div className="flex items-center gap-2 mb-2">
               <c.icon className="w-4 h-4" style={{ color: c.color }} />
-              <span className="text-[12px] font-medium text-[#6B7280] uppercase tracking-wide">{c.label}</span>
+              <span className="text-[12px] font-medium text-[#6B7280] uppercase tracking-wide">{t(c.label)}</span>
             </div>
             <div className="text-[28px] font-bold text-[#111827] tabular-nums leading-none">{c.value.toLocaleString()}</div>
-            <p className="text-[12px] text-[#9CA3AF] mt-1">{c.sub}</p>
+            <p className="text-[12px] text-[#9CA3AF] mt-1">{t(c.sub)}</p>
           </div>
         ))}
       </div>
@@ -91,7 +93,7 @@ export function Dashboard() {
         {/* Main Chart */}
         <div className="lg:col-span-2 bg-white rounded-xl border border-[#E5E7EB] p-5 shadow-sm">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 gap-4">
-            <h2 className="text-[16px] font-semibold text-[#111827]">Kasallanish dinamikasi</h2>
+            <h2 className="text-[16px] font-semibold text-[#111827]">{t("Kasallanish dinamikasi")}</h2>
             <div className="flex bg-[#F3F4F6] p-1 rounded-lg">
               <button
                 onClick={() => setChartMetric("monthly")}
@@ -100,7 +102,7 @@ export function Dashboard() {
                   chartMetric === "monthly" ? "bg-white text-[#111827] shadow-sm" : "text-[#6B7280] hover:text-[#111827]"
                 )}
               >
-                Oylik
+                {t("Oylik")}
               </button>
               <button
                 onClick={() => setChartMetric("weekly")}
@@ -109,7 +111,7 @@ export function Dashboard() {
                   chartMetric === "weekly" ? "bg-white text-[#111827] shadow-sm" : "text-[#6B7280] hover:text-[#111827]"
                 )}
               >
-                Haftalik
+                {t("Haftalik")}
               </button>
             </div>
           </div>
@@ -137,8 +139,8 @@ export function Dashboard() {
           </div>
           <p className="text-[12px] text-[#9CA3AF] mt-2">
             {chartMetric === "weekly"
-              ? "Epidemiya 9-haftada (23-fevral) keskin ko'tarildi."
-              : "* Aprel — 17-aprelgacha bo'lgan ma'lumot."}
+              ? t("Epidemiya 9-haftada (23-fevral) keskin ko'tarildi.")
+              : t("* Aprel — 17-aprelgacha bo'lgan ma'lumot.")}
           </p>
         </div>
 
@@ -146,7 +148,7 @@ export function Dashboard() {
         <div className="bg-white rounded-xl border border-[#E5E7EB] p-5 shadow-sm flex flex-col h-full">
           <div className="flex items-center gap-2 mb-6">
             <ShieldAlert className="w-5 h-5 text-[#EF4444]" />
-            <h2 className="text-[16px] font-semibold text-[#111827]">So'nggi Yangiliklar</h2>
+            <h2 className="text-[16px] font-semibold text-[#111827]">{t("So'nggi Yangiliklar")}</h2>
           </div>
 
           <div className="flex-1 overflow-y-auto pr-2 space-y-6">
@@ -160,7 +162,7 @@ export function Dashboard() {
                   <Clock className="w-3.5 h-3.5" />
                   {update.time}
                 </div>
-                <p className="text-[13px] text-[#111827] leading-relaxed">{update.text}</p>
+                <p className="text-[13px] text-[#111827] leading-relaxed">{t(update.text)}</p>
               </div>
             ))}
           </div>
@@ -171,8 +173,8 @@ export function Dashboard() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Age groups pie */}
         <div className="bg-white rounded-xl border border-[#E5E7EB] p-5 shadow-sm">
-          <h2 className="text-[16px] font-semibold text-[#111827] mb-1">Yosh guruhlari kesimi</h2>
-          <p className="text-[13px] text-[#6B7280] mb-4">97,5% — 14 yoshgacha bo'lgan bolalar</p>
+          <h2 className="text-[16px] font-semibold text-[#111827] mb-1">{t("Yosh guruhlari kesimi")}</h2>
+          <p className="text-[13px] text-[#6B7280] mb-4">{t("97,5% — 14 yoshgacha bo'lgan bolalar")}</p>
           <div className="flex items-center gap-4">
             <div className="h-[180px] w-[180px] flex-shrink-0">
               <ResponsiveContainer width="100%" height="100%">
@@ -191,9 +193,9 @@ export function Dashboard() {
                 <div key={g.label} className="flex items-center justify-between text-[13px]">
                   <span className="flex items-center gap-2">
                     <span className="w-3 h-3 rounded-sm" style={{ backgroundColor: g.color }} />
-                    {g.label}
+                    {t(g.label)}
                   </span>
-                  <span className="font-semibold tabular-nums">{g.value} ta</span>
+                  <span className="font-semibold tabular-nums">{g.value} {t("ta")}</span>
                 </div>
               ))}
             </div>
@@ -202,13 +204,13 @@ export function Dashboard() {
 
         {/* Settings / o'choq */}
         <div className="bg-white rounded-xl border border-[#E5E7EB] p-5 shadow-sm">
-          <h2 className="text-[16px] font-semibold text-[#111827] mb-1">Kasallik o'choqlari</h2>
-          <p className="text-[13px] text-[#6B7280] mb-4">Holatlar qayerda qayd etilgani bo'yicha</p>
+          <h2 className="text-[16px] font-semibold text-[#111827] mb-1">{t("Kasallik o'choqlari")}</h2>
+          <p className="text-[13px] text-[#6B7280] mb-4">{t("Holatlar qayerda qayd etilgani bo'yicha")}</p>
           <div className="space-y-3">
             {SETTINGS.map((s) => (
               <div key={s.label}>
                 <div className="flex justify-between text-[13px] mb-1">
-                  <span className="text-[#374151]">{s.label}</span>
+                  <span className="text-[#374151]">{t(s.label)}</span>
                   <span className="font-semibold tabular-nums text-[#111827]">
                     {s.value} <span className="text-[#9CA3AF] font-normal">({s.pct}%)</span>
                   </span>
@@ -233,19 +235,19 @@ export function Dashboard() {
           series={[{ name: "Chastota", key: "value", color: "#10B981" }]}
         />
         <div className="lg:col-span-2 bg-white rounded-2xl border border-[#E5E7EB] p-6 shadow-sm flex flex-col justify-center">
-          <h3 className="text-[16px] font-semibold text-[#111827] mb-3">Profil nimani ko'rsatadi?</h3>
+          <h3 className="text-[16px] font-semibold text-[#111827] mb-3">{t("Profil nimani ko'rsatadi?")}</h3>
           <ul className="space-y-3 text-[14px] text-[#4B5563]">
             <li className="flex gap-3">
               <span className="text-[#10B981] font-bold">100%</span>
-              <span><b>Isitma</b> va <b>toshma</b> deyarli har bir bemorda kuzatilgan — bu kasallikning eng erta va doimiy belgisi.</span>
+              <span>{t("Isitma va toshma deyarli har bir bemorda kuzatilgan — bu kasallikning eng erta va doimiy belgisi.")}</span>
             </li>
             <li className="flex gap-3">
               <span className="text-[#10B981] font-bold">99%</span>
-              <span><b>Es-hush yo'qolishi</b> va <b>qayt qilish</b> — og'ir intoksikatsiya alomatlari.</span>
+              <span>{t("Es-hush yo'qolishi va qayt qilish — og'ir intoksikatsiya alomatlari.")}</span>
             </li>
             <li className="flex gap-3">
               <span className="text-[#EF4444] font-bold">1%</span>
-              <span><b>Meningial belgilar</b> kam — bu o'choq <b>meningokokksemiya</b> (qon sepsisi) shaklida kechgani, klassik meningit emasligini ko'rsatadi. Aynan shu sabab kasallik "yashin tezligida" kechib, yuqori letallikка olib kelgan.</span>
+              <span>{t("Meningial belgilar kam — bu o'choq meningokokksemiya (qon sepsisi) shaklida kechgani, klassik meningit emasligini ko'rsatadi. Shu sabab kasallik yashin tezligida kechib, yuqori letallikka olib kelgan.")}</span>
             </li>
           </ul>
         </div>
@@ -255,8 +257,8 @@ export function Dashboard() {
       <div className="bg-white rounded-xl border border-[#E5E7EB] shadow-sm overflow-hidden flex flex-col">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-5 border-b border-[#E5E7EB] bg-[#FAFAFA] gap-4">
           <div>
-            <h2 className="text-[18px] font-bold text-[#111827]">Hududlar kesimida tahlil</h2>
-            <p className="text-[13px] text-[#6B7280]">ССВ ma'lumotnomasi · {META.reportDate} holatiga</p>
+            <h2 className="text-[18px] font-bold text-[#111827]">{t("Hududlar kesimida tahlil")}</h2>
+            <p className="text-[13px] text-[#6B7280]">{t("ССВ ma'lumotnomasi")} · {META.reportDate}</p>
           </div>
         </div>
 
@@ -265,11 +267,11 @@ export function Dashboard() {
             <thead>
               <tr className="bg-[#F9FAFB] border-b-2 border-[#E5E7EB]">
                 <th className="px-4 py-3 text-[11px] font-bold text-[#6B7280] uppercase tracking-wider border-r border-[#E5E7EB] w-12 text-center">#</th>
-                <th className="px-4 py-3 text-[11px] font-bold text-[#6B7280] uppercase tracking-wider border-r border-[#E5E7EB]">Hudud</th>
-                <th className="px-4 py-3 text-[11px] font-bold text-[#6B7280] uppercase tracking-wider border-r border-[#E5E7EB] text-right">Jami Holat</th>
-                <th className="px-4 py-3 text-[11px] font-bold text-[#6B7280] uppercase tracking-wider border-r border-[#E5E7EB] text-right">Vafot</th>
-                <th className="px-4 py-3 text-[11px] font-bold text-[#6B7280] uppercase tracking-wider border-r border-[#E5E7EB] text-right">100k aholiga</th>
-                <th className="px-4 py-3 text-[11px] font-bold text-[#6B7280] uppercase tracking-wider text-right">Xavf</th>
+                <th className="px-4 py-3 text-[11px] font-bold text-[#6B7280] uppercase tracking-wider border-r border-[#E5E7EB]">{t("Hudud")}</th>
+                <th className="px-4 py-3 text-[11px] font-bold text-[#6B7280] uppercase tracking-wider border-r border-[#E5E7EB] text-right">{t("Jami Holat")}</th>
+                <th className="px-4 py-3 text-[11px] font-bold text-[#6B7280] uppercase tracking-wider border-r border-[#E5E7EB] text-right">{t("Vafot")}</th>
+                <th className="px-4 py-3 text-[11px] font-bold text-[#6B7280] uppercase tracking-wider border-r border-[#E5E7EB] text-right">{t("100k aholiga")}</th>
+                <th className="px-4 py-3 text-[11px] font-bold text-[#6B7280] uppercase tracking-wider text-right">{t("Xavf")}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-[#E5E7EB]">
@@ -287,7 +289,7 @@ export function Dashboard() {
                         row.risk === "high" ? "text-[#EF4444] bg-[#FEE2E2]" : row.risk === "medium" ? "text-[#F59E0B] bg-[#FEF3C7]" : "text-[#10B981] bg-[#D1FAE5]"
                       )}
                     >
-                      {row.risk === "high" ? "Yuqori" : row.risk === "medium" ? "O'rta" : "Past"}
+                      {row.risk === "high" ? t("Yuqori") : row.risk === "medium" ? t("O'rta") : t("Past")}
                     </span>
                   </td>
                 </tr>
@@ -296,7 +298,7 @@ export function Dashboard() {
             <tfoot className="bg-[#F9FAFB] border-t-2 border-[#E5E7EB]">
               <tr>
                 <td className="px-4 py-3 border-r border-[#E5E7EB]"></td>
-                <td className="px-4 py-3 font-bold text-[#111827] text-[14px] border-r border-[#E5E7EB] text-right">JAMI:</td>
+                <td className="px-4 py-3 font-bold text-[#111827] text-[14px] border-r border-[#E5E7EB] text-right">{t("JAMI")}:</td>
                 <td className="px-4 py-3 font-bold text-[#111827] tabular-nums text-right border-r border-[#E5E7EB]">
                   {REGIONS.reduce((a, r) => a + r.cases, 0).toLocaleString()}
                 </td>
