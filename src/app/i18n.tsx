@@ -211,6 +211,52 @@ const RU: Record<string, string> = {
   "Kasallanish 17.6 barobar oshgan": "Заболеваемость выросла в 17,6 раза",
   "Toshkent shahar Hokimiyatiga ma'lumotnoma (14.04.2026), MKI beмorlar ro'yxati (17.04.2026), 2026 tumanlar jadvali, ССВ respublika ma'lumotnomasi (28.03.2026). Tumanlar kesimi 277 ta holatga asoslangan.":
     "Справка хокимияту г. Ташкент (14.04.2026), список больных МКИ (17.04.2026), таблица районов 2026, республиканская справка Минздрава (28.03.2026). Разрез по районам основан на 277 случаях.",
+
+  // Choralar
+  "Amalga oshirilgan tadbirlar": "Проведённые мероприятия",
+  "Aholini ogohlantirish kampaniyasi": "Кампания по информированию населения",
+  "Tavsiya etilgan chora-tadbirlar": "Рекомендуемые меры",
+  "Emlanganlar (muloqotdagilar)": "Привито (контактные)",
+  "Harid qilingan vaksina (doza)": "Закуплено вакцины (доз)",
+  "Emlangan tibbiyot xodimlari": "Привито медработников",
+  "Tarqatma material (nusxa)": "Раздаточный материал (экз.)",
+  "Qamrab olingan xonadon": "Охвачено домохозяйств",
+  "Mahalla yig'ilishlari": "Махаллинские собрания",
+  "Teleko'rsatuvlar": "Телепередачи",
+  "Radio eshittirishlar": "Радиопередачи",
+  "Ijtimoiy tarmoq chiqishlari": "Публикации в соцсетях",
+  "Infografika": "Инфографика",
+  "Tibbiy seminarlar": "Медицинские семинары",
+  "Manba: O'zR ССВ huzuridagi Sanepidqo'm respublika ma'lumotnomasi (28.03.2026) va Toshkent shahar Hokimiyatiga ma'lumotnoma (14.04.2026).":
+    "Источник: республиканская справка Санэпидконтроля при Минздраве РУз (28.03.2026) и справка хокимияту г. Ташкент (14.04.2026).",
+  "Aholi orasida tashuvchanlik darajasini o'rganish, xavf guruhlarida (bolalar va o'smirlar) laboratoriya tekshiruvlarini tashkil etish va tibbiy kuzatuvni kuchaytirish.":
+    "Изучение уровня носительства среди населения, организация лабораторных обследований в группах риска (дети и подростки) и усиление медицинского наблюдения.",
+  "Davlat va nodavlat muassasalarda \"Nazofaringit\" tashxisi qo'yilganlardan diagnostik laborator tahlillarni o'tkazish.":
+    "Проведение диагностических лабораторных анализов у лиц с диагнозом «Назофарингит» в государственных и частных учреждениях.",
+  "Muloqotdagilarni aniqlash doirasini kengaytirish, barchasini bir vaqtda to'liq kimyoviy profilaktika bilan qamrash.":
+    "Расширение круга выявления контактных лиц и одновременный полный охват химиопрофилактикой.",
+  "Kasallik o'choqlarida 10 kunlik qat'iy tibbiy kuzatuvni ta'minlash.":
+    "Обеспечение строгого 10-дневного медицинского наблюдения в очагах заболевания.",
+  "Vaksina zaxirasini yaratish uchun qo'shimcha mablag' ajratish (oyiga ~1000 doza).":
+    "Выделение дополнительных средств для создания запаса вакцины (~1000 доз в месяц).",
+  "\"Haj\" va \"Umra\" safari oldidan meningokokk infeksiyasiga qarshi emlashni qat'iy belgilash.":
+    "Обязательная вакцинация против менингококковой инфекции перед поездкой на «Хадж» и «Умру».",
+  "Tez-tez kasallanuvchi va dispanser nazoratidagi bolalarni sog'lomlashtirish.":
+    "Оздоровление часто болеющих и состоящих на диспансерном учёте детей.",
+  "Ma'lumotlarni \"DMED\" elektron tizimiga kiritish.":
+    "Внесение данных в электронную систему «DMED».",
+  "Rekonvalessentlarni 2 yil davomida dispanser nazoratiga olish (UASh, nevropatolog).":
+    "Диспансерное наблюдение реконвалесцентов в течение 2 лет (ВОП, невропатолог).",
+  "Nodavlat maktab va MTTlarni tibbiyot xodimlari bilan ta'minlash.":
+    "Обеспечение частных школ и ДДУ медицинскими работниками.",
+  "Maktab va MTTlarda filtr, tozalash, zararsizlantirish va shamollatishni muntazam amalga oshirish.":
+    "Регулярные фильтр, уборка, дезинфекция и проветривание в школах и ДДУ.",
+  "Savdo majmualaridagi yopiq bolalar o'yingohlarida kundalik tozalash tadbirlarini yo'lga qo'yish.":
+    "Налаживание ежедневной уборки в закрытых детских игровых зонах торговых центров.",
+  "Laboratoriyada ozuqa muhitlar va zardoblar zaxirasini yaratish, seroguruhni aniqlash.":
+    "Создание запаса питательных сред и сывороток в лаборатории, определение серогруппы.",
+  "OAV va ijtimoiy tarmoqlar orqali tushuntirish ishlarini kuchaytirish.":
+    "Усиление разъяснительной работы через СМИ и социальные сети.",
 };
 
 const EN: Record<string, string> = {
@@ -410,6 +456,52 @@ const EN: Record<string, string> = {
   "Kasallanish 17.6 barobar oshgan": "Incidence increased 17.6-fold",
   "Toshkent shahar Hokimiyatiga ma'lumotnoma (14.04.2026), MKI beмorlar ro'yxati (17.04.2026), 2026 tumanlar jadvali, ССВ respublika ma'lumotnomasi (28.03.2026). Tumanlar kesimi 277 ta holatga asoslangan.":
     "Report to Tashkent khokimiyat (14.04.2026), MKI patient list (17.04.2026), 2026 districts table, Ministry republic report (28.03.2026). District breakdown based on 277 cases.",
+
+  // Choralar
+  "Amalga oshirilgan tadbirlar": "Measures taken",
+  "Aholini ogohlantirish kampaniyasi": "Public awareness campaign",
+  "Tavsiya etilgan chora-tadbirlar": "Recommended measures",
+  "Emlanganlar (muloqotdagilar)": "Vaccinated (contacts)",
+  "Harid qilingan vaksina (doza)": "Vaccine purchased (doses)",
+  "Emlangan tibbiyot xodimlari": "Medical staff vaccinated",
+  "Tarqatma material (nusxa)": "Leaflets (copies)",
+  "Qamrab olingan xonadon": "Households covered",
+  "Mahalla yig'ilishlari": "Mahalla meetings",
+  "Teleko'rsatuvlar": "TV broadcasts",
+  "Radio eshittirishlar": "Radio broadcasts",
+  "Ijtimoiy tarmoq chiqishlari": "Social media posts",
+  "Infografika": "Infographics",
+  "Tibbiy seminarlar": "Medical seminars",
+  "Manba: O'zR ССВ huzuridagi Sanepidqo'm respublika ma'lumotnomasi (28.03.2026) va Toshkent shahar Hokimiyatiga ma'lumotnoma (14.04.2026).":
+    "Source: republic report of the Sanitary-Epidemiological Service under the MoH (28.03.2026) and report to Tashkent khokimiyat (14.04.2026).",
+  "Aholi orasida tashuvchanlik darajasini o'rganish, xavf guruhlarida (bolalar va o'smirlar) laboratoriya tekshiruvlarini tashkil etish va tibbiy kuzatuvni kuchaytirish.":
+    "Study carriage rates in the population, organize lab testing in risk groups (children and adolescents) and strengthen medical surveillance.",
+  "Davlat va nodavlat muassasalarda \"Nazofaringit\" tashxisi qo'yilganlardan diagnostik laborator tahlillarni o'tkazish.":
+    "Perform diagnostic lab tests on those diagnosed with \"Nasopharyngitis\" in public and private facilities.",
+  "Muloqotdagilarni aniqlash doirasini kengaytirish, barchasini bir vaqtda to'liq kimyoviy profilaktika bilan qamrash.":
+    "Expand contact tracing and cover all contacts with full chemoprophylaxis simultaneously.",
+  "Kasallik o'choqlarida 10 kunlik qat'iy tibbiy kuzatuvni ta'minlash.":
+    "Ensure strict 10-day medical surveillance in disease foci.",
+  "Vaksina zaxirasini yaratish uchun qo'shimcha mablag' ajratish (oyiga ~1000 doza).":
+    "Allocate additional funds to build a vaccine reserve (~1000 doses per month).",
+  "\"Haj\" va \"Umra\" safari oldidan meningokokk infeksiyasiga qarshi emlashni qat'iy belgilash.":
+    "Make meningococcal vaccination mandatory before \"Hajj\" and \"Umrah\" trips.",
+  "Tez-tez kasallanuvchi va dispanser nazoratidagi bolalarni sog'lomlashtirish.":
+    "Rehabilitate frequently-ill and dispensary-registered children.",
+  "Ma'lumotlarni \"DMED\" elektron tizimiga kiritish.":
+    "Enter data into the \"DMED\" electronic system.",
+  "Rekonvalessentlarni 2 yil davomida dispanser nazoratiga olish (UASh, nevropatolog).":
+    "Place convalescents under dispensary follow-up for 2 years (GP, neurologist).",
+  "Nodavlat maktab va MTTlarni tibbiyot xodimlari bilan ta'minlash.":
+    "Staff private schools and kindergartens with medical workers.",
+  "Maktab va MTTlarda filtr, tozalash, zararsizlantirish va shamollatishni muntazam amalga oshirish.":
+    "Regularly carry out filtering, cleaning, disinfection and ventilation in schools and kindergartens.",
+  "Savdo majmualaridagi yopiq bolalar o'yingohlarida kundalik tozalash tadbirlarini yo'lga qo'yish.":
+    "Establish daily cleaning in indoor children's playgrounds in malls.",
+  "Laboratoriyada ozuqa muhitlar va zardoblar zaxirasini yaratish, seroguruhni aniqlash.":
+    "Build a reserve of culture media and sera in the lab, determine the serogroup.",
+  "OAV va ijtimoiy tarmoqlar orqali tushuntirish ishlarini kuchaytirish.":
+    "Strengthen awareness work through media and social networks.",
 };
 
 const DICT = { ru: RU, en: EN } as const;

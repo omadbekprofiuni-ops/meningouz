@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { AWARENESS, PREVENTION } from "../data/stats";
 import { PageHeader } from "../components/PageHeader";
+import { useI18n } from "../i18n";
 
 // ССВ ma'lumotnomasidagi tavsiya etilgan chora-tadbirlar
 const RECOMMENDATIONS = [
@@ -50,6 +51,7 @@ const awarenessTiles = [
 ];
 
 export function Choralar() {
+  const { t } = useI18n();
   return (
     <div className="p-4 md:p-8 max-w-[1200px] mx-auto space-y-8">
       <PageHeader
@@ -66,14 +68,14 @@ export function Choralar() {
 
       {/* Done measures */}
       <div>
-        <h2 className="text-[15px] font-semibold text-[#111827] mb-3">Amalga oshirilgan tadbirlar</h2>
+        <h2 className="text-[15px] font-semibold text-[#111827] mb-3">{t("Amalga oshirilgan tadbirlar")}</h2>
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           {doneMeasures.map((m) => (
             <div key={m.label} className="bg-white rounded-xl border border-[#E5E7EB] p-5 shadow-sm relative overflow-hidden">
               <div className="absolute left-0 top-0 bottom-0 w-1" style={{ backgroundColor: m.color }} />
               <m.icon className="w-5 h-5 mb-2" style={{ color: m.color }} />
               <div className="text-[26px] font-bold text-[#111827] tabular-nums leading-none">{m.value.toLocaleString()}</div>
-              <p className="text-[12px] text-[#6B7280] mt-1">{m.label}</p>
+              <p className="text-[12px] text-[#6B7280] mt-1">{t(m.label)}</p>
             </div>
           ))}
         </div>
@@ -83,17 +85,17 @@ export function Choralar() {
       <div className="bg-white rounded-2xl border border-[#E5E7EB] p-6 shadow-sm">
         <div className="flex items-center gap-2 mb-4">
           <Megaphone className="w-5 h-5 text-[#10B981]" />
-          <h2 className="text-[16px] font-semibold text-[#111827]">Aholini ogohlantirish kampaniyasi</h2>
+          <h2 className="text-[16px] font-semibold text-[#111827]">{t("Aholini ogohlantirish kampaniyasi")}</h2>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {awarenessTiles.map((t) => (
-            <div key={t.label} className="flex items-center gap-3 bg-[#FAFAFA] rounded-xl p-4">
+          {awarenessTiles.map((tile) => (
+            <div key={tile.label} className="flex items-center gap-3 bg-[#FAFAFA] rounded-xl p-4">
               <div className="w-10 h-10 rounded-lg bg-[#ECFDF5] flex items-center justify-center flex-shrink-0">
-                <t.icon className="w-5 h-5 text-[#10B981]" />
+                <tile.icon className="w-5 h-5 text-[#10B981]" />
               </div>
               <div>
-                <div className="text-[20px] font-bold text-[#111827] tabular-nums leading-none">{t.value.toLocaleString()}</div>
-                <p className="text-[11px] text-[#6B7280] mt-1 leading-tight">{t.label}</p>
+                <div className="text-[20px] font-bold text-[#111827] tabular-nums leading-none">{tile.value.toLocaleString()}</div>
+                <p className="text-[11px] text-[#6B7280] mt-1 leading-tight">{t(tile.label)}</p>
               </div>
             </div>
           ))}
@@ -104,20 +106,20 @@ export function Choralar() {
       <div className="bg-white rounded-2xl border border-[#E5E7EB] p-6 shadow-sm">
         <div className="flex items-center gap-2 mb-4">
           <CheckCircle2 className="w-5 h-5 text-[#10B981]" />
-          <h2 className="text-[16px] font-semibold text-[#111827]">Tavsiya etilgan chora-tadbirlar</h2>
+          <h2 className="text-[16px] font-semibold text-[#111827]">{t("Tavsiya etilgan chora-tadbirlar")}</h2>
         </div>
         <div className="grid md:grid-cols-2 gap-x-8 gap-y-3">
           {RECOMMENDATIONS.map((r, i) => (
             <div key={i} className="flex gap-3">
               <span className="w-6 h-6 rounded-full bg-[#ECFDF5] text-[#059669] text-[12px] font-bold flex items-center justify-center flex-shrink-0">{i + 1}</span>
-              <p className="text-[13px] text-[#4B5563] leading-snug">{r}</p>
+              <p className="text-[13px] text-[#4B5563] leading-snug">{t(r)}</p>
             </div>
           ))}
         </div>
       </div>
 
       <div className="text-[12px] text-[#9CA3AF] border-t border-[#E5E7EB] pt-4">
-        Manba: O'zR ССВ huzuridagi Sanepidqo'm respublika ma'lumotnomasi (28.03.2026) va Toshkent shahar Hokimiyatiga ma'lumotnoma (14.04.2026).
+        {t("Manba: O'zR ССВ huzuridagi Sanepidqo'm respublika ma'lumotnomasi (28.03.2026) va Toshkent shahar Hokimiyatiga ma'lumotnoma (14.04.2026).")}
       </div>
     </div>
   );
