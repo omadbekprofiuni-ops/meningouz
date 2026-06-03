@@ -120,8 +120,8 @@ fi
 echo ""
 echo "============================================"
 systemctl is-active "${SERVICE}" >/dev/null && echo "✅ Xizmat ishlayapti: ${SERVICE}"
-if [ -n "$DOMAIN" ]; then
-  echo "🌐 Sayt:  https://${DOMAIN}"
+if [ -n "${DOMAINS:-}" ]; then
+  for d in $DOMAINS; do echo "🌐 Sayt:  https://${d}"; done
 else
   IP="$(hostname -I | awk '{print $1}')"
   echo "🌐 Sayt:  http://${IP}"
