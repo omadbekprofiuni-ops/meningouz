@@ -8,6 +8,9 @@ import { Vaksinatsiya } from "./pages/Vaksinatsiya";
 import { Kabinet } from "./pages/Kabinet";
 import { Tahlil } from "./pages/Tahlil";
 import { Choralar } from "./pages/Choralar";
+import { Metodologiya } from "./pages/Metodologiya";
+import { Statistika } from "./pages/Statistika";
+import { Tadqiqot } from "./pages/Tadqiqot";
 
 export const router = createBrowserRouter([
   {
@@ -20,11 +23,14 @@ export const router = createBrowserRouter([
     children: [
       { index: true, Component: Dashboard },
       { path: "tahlil", Component: Tahlil },
+      { path: "statistika", Component: Statistika },
       { path: "map", Component: MapPage },
       { path: "risk", Component: RiskScreening },
       { path: "vaksinatsiya", Component: Vaksinatsiya },
       { path: "choralar", Component: Choralar },
       { path: "kabinet", Component: Kabinet },
+      { path: "metodologiya", Component: Metodologiya },
+      { path: "tadqiqot", Component: Tadqiqot },
     ],
   },
 ]);

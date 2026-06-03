@@ -1,14 +1,30 @@
-import { createContext, useContext, useState, useCallback, type ReactNode } from "react";
+import { createContext, useContext, useState, useCallback, useEffect, type ReactNode } from "react";
 
 export type Lang = "uz" | "ru" | "en";
+
+// Brauzer yorlig'i (document.title) — har til uchun (issue #7, SEO/a11y)
+const TITLES: Record<Lang, string> = {
+  uz: "MeningoUz — Meningokokk infeksiyasi monitoringi",
+  ru: "MeningoUz — Мониторинг менингококковой инфекции",
+  en: "MeningoUz — Meningococcal infection monitoring",
+};
+
+// Raqam formatlash locali — uz/ru: vergul (kasr) + bo'sh joy (ming);
+// en: nuqta (kasr) + vergul (ming). Intl orqali (issue #13).
+const LOCALE: Record<Lang, string> = { uz: "uz-UZ", ru: "ru-RU", en: "en-US" };
 
 // Manba til — o'zbekcha (kalit). ru/en lug'atlari quyida.
 const RU: Record<string, string> = {
   // Chrome / nav
   "Bosh sahifa": "Главная",
   "Tahlil": "Аналитика",
+  "Statistika": "Статистика",
   "Xarita": "Карта",
+  "Metodologiya": "Методология",
   "Risk skrining": "Риск-скрининг",
+  "Tadqiqot": "Исследование",
+  "Akademik": "Академический",
+  "2025 yilga nisbatan": "по сравнению с 2025",
   "Kabinet": "Кабинет",
   "Vaksinatsiya": "Вакцинация",
   "Choralar": "Меры",
@@ -21,7 +37,7 @@ const RU: Record<string, string> = {
   "Yangilangan: 17.04.2026": "Обновлено: 17.04.2026",
   "Epidemiolog": "Эпидемиолог",
   "O‘ZBEKISTON RESPUBLIKASI SOG‘LIQNI SAQLASH VAZIRLIGI": "МИНИСТЕРСТВО ЗДРАВООХРАНЕНИЯ РЕСПУБЛИКИ УЗБЕКИСТАН",
-  " · Sanitariya-epidemiologik osoyishtalik agentligi (Sanepidqo‘m)": " · Агентство санитарно-эпидемиологического благополучия (Санэпидконтроль)",
+  "Sanitariya-epidemiologik osoyishtalik agentligi (Sanepidqo‘m)": "Агентство санитарно-эпидемиологического благополучия (Санэпидконтроль)",
   "— epidemiologik monitoring": "— эпидемиологический мониторинг",
   "Hudud yoki ko'rsatkich qidirish...": "Поиск региона или показателя...",
   "Epidemik holat: YUQORI": "Эпид. ситуация: ВЫСОКАЯ",
@@ -45,7 +61,7 @@ const RU: Record<string, string> = {
   "Risk skrining kalkulyatori": "Калькулятор риск-скрининга",
   "Klinik reestr, laboratoriya natijalari va statistik hisobot":
     "Клинический реестр, результаты лабораторий и статотчёт",
-  "Amalga oshirilgan tadbirlar va ССВ tavsiyalari (14.04.2026 holatiga)":
+  "Amalga oshirilgan tadbirlar va SSV tavsiyalari (14.04.2026 holatiga)":
     "Проведённые мероприятия и рекомендации Минздрава (на 14.04.2026)",
   "Bemorda kuzatilayotgan simptomlarni belgilang — tizim avtomatik ravishda xavf darajasini hisoblaydi.":
     "Отметьте наблюдаемые симптомы — система автоматически рассчитает уровень риска.",
@@ -97,15 +113,16 @@ const RU: Record<string, string> = {
   "Meningokokk infeksiyasi o'chog'i": "Очаг менингококковой инфекции",
   "Kasallanganlar": "Заболевшие",
   "aprelda": "в апреле",
+  "yangi holat · aprel (1–17.04)": "новых случаев · апрель (1–17.04)",
   "respublika": "республика",
-  "85% bolalar": "85% — дети",
+  "83% bolalar": "83% — дети",
   "Tuzalgan": "Выздоровело",
   "uyga chiqarilgan": "выписаны домой",
   "O'lim koeffitsiyenti (CFR)": "Коэффициент летальности (CFR)",
 
   // Highlights
   "Epidemiya 23-fevraldan (9-hafta) keskin ko'tarildi.": "Эпидемия резко выросла с 23 февраля (9-я неделя).",
-  "Vafot etganlarning 85% — bolalar.": "85% умерших — дети.",
+  "Vafot etganlarning 83% — bolalar.": "83% умерших — дети.",
   "Holatlarning 97,5% — 14 yoshgacha bo'lgan bolalar.": "97,5% случаев — дети до 14 лет.",
   "Eng yuqori intensivlik: Sergeli (13,4) va Chilonzor (12,3).": "Наивысшая интенсивность: Сергели (13,4) и Чиланзар (12,3).",
   "Kasallikning ustun shakli — yashin tezligidagi meningokokksemiya.": "Преобладающая форма — молниеносная менингококцемия.",
@@ -125,8 +142,8 @@ const RU: Record<string, string> = {
     "По г. Ташкент зарегистрировано 277 случаев. В апреле выявлено 105 новых случаев.",
   "Hokimiyatga ma'lumotnoma: 264 holat, 8,3/100k — 2025 yilga nisbatan 17,6 barobar ko'p. 183 ta (69,3%) lab. tasdiqlangan.":
     "Справка хокимияту: 264 случая, 8,3/100т — в 17,6 раза больше, чем в 2025. Лаб. подтверждено 183 (69,3%).",
-  "1,5 oylik chaqaloq Saidov M.X. meningokokksemiya asoratidan vafot etdi (23-vafot holati).":
-    "1,5-месячный младенец Саидов М.Х. умер от осложнений менингококцемии (23-й случай смерти).",
+  "1,5 oylik chaqaloq (Yashnobod tumani) meningokokksemiya asoratidan vafot etdi (23-vafot holati).":
+    "1,5-месячный младенец (Яшнабадский район) умер от осложнений менингококцемии (23-й случай смерти).",
   "9-haftadan boshlab kasallanish keskin ko'tarildi. Epidemik ko'rsatma bo'yicha emlash boshlandi.":
     "С 9-й недели заболеваемость резко выросла. Начата вакцинация по эпидпоказаниям.",
   "Muloqotdagilardan 8 358 nafar surtma topshirdi, 3 502 nafar emlandi.":
@@ -148,7 +165,7 @@ const RU: Record<string, string> = {
 
   // Radar (clinical)
   "Klinik belgilar profili": "Профиль клинических признаков",
-  "Beмorlarda kuzatilgan belgilar chastotasi (%) — septik (meningokokksemiya) shakli ustun":
+  "Bemorlarda kuzatilgan belgilar chastotasi (%) — septik (meningokokksemiya) shakli ustun":
     "Частота признаков у больных (%) — преобладает септическая (менингококцемия) форма",
   "Chastota": "Частота",
   "Isitma >38°": "Лихорадка >38°",
@@ -165,7 +182,7 @@ const RU: Record<string, string> = {
     "Менингеальные признаки редки — очаг протекал в форме менингококцемии (сепсиса крови), а не классического менингита. Поэтому болезнь протекала молниеносно и привела к высокой летальности.",
 
   // Table
-  "ССВ ma'lumotnomasi": "Справка Минздрава",
+  "SSV ma'lumotnomasi": "Справка Минздрава",
   "Hudud": "Регион",
   "Jami Holat": "Всего случаев",
   "100k aholiga": "на 100т населения",
@@ -174,6 +191,25 @@ const RU: Record<string, string> = {
   "O'rta": "Средний",
   "Past": "Низкий",
   "JAMI": "ИТОГО",
+
+  // Chrome — qidiruv / bildirishnoma / sozlamalar / footer (issue #1, #3, #4, #9)
+  "Bildirishnomalar": "Уведомления",
+  "Sozlamalar": "Настройки",
+  "Til": "Язык",
+  "Hech narsa topilmadi": "Ничего не найдено",
+  "Natijaga o‘tish uchun Enter": "Enter — перейти к результату",
+  "Tez orada": "Скоро",
+  "Barcha bo‘limlar": "Все разделы",
+  "Interfeys tili": "Язык интерфейса",
+  "Yordam va qo‘llanma": "Помощь и руководство",
+  "Vafot reestri": "Реестр умерших",
+  "CFR / o‘lim koeffitsiyenti": "CFR / коэффициент летальности",
+  "Vaksina ACYW135": "Вакцина ACYW135",
+  "Yangi": "Новое",
+  "28.03.2026 holatiga · viloyatlararo taqsimot (yangilanmoqda).": "на 28.03.2026 · межрегиональное распределение (обновляется).",
+  "Eng so‘nggi shahar ko‘rsatkichi — 277 holat / 23 vafot (17.04.2026), yuqorida berilgan.": "Последний городской показатель — 277 случаев / 23 смерти (17.04.2026), приведён выше.",
+  "Doimiy": "Постоянно",
+  "Amaldagi standart yo‘riqnoma (operativ sanaga bog‘liq emas) — emlash sxemasi va profilaktika ko‘rsatkichlari uchun.": "Действующая стандартная инструкция (не привязана к оперативной дате) — для схемы вакцинации и показателей профилактики.",
 
   // Tahlil
   "Toshkent shahri · 277 holat kesimida statistik tahlil (14.04.2026–17.04.2026)":
@@ -206,8 +242,82 @@ const RU: Record<string, string> = {
     "Предполагается, что 31,4% случаев заразились в закрытых детских игровых зонах ТЦ.",
   "2025 — 2026 taqqoslash": "Сравнение 2025 — 2026",
   "Kasallanish 17.6 barobar oshgan": "Заболеваемость выросла в 17,6 раза",
-  "Toshkent shahar Hokimiyatiga ma'lumotnoma (14.04.2026), MKI beмorlar ro'yxati (17.04.2026), 2026 tumanlar jadvali, ССВ respublika ma'lumotnomasi (28.03.2026). Tumanlar kesimi 277 ta holatga asoslangan.":
-    "Справка хокимияту г. Ташкент (14.04.2026), список больных МКИ (17.04.2026), таблица районов 2026, республиканская справка Минздрава (28.03.2026). Разрез по районам основан на 277 случаях.",
+  "Toshkent shahar Hokimiyatiga ma'lumotnoma (14.04.2026), MKI bemorlar ro'yxati (17.04.2026), 2026 tumanlar jadvali, SSV respublika ma'lumotnomasi (28.03.2026). Tumanlar kesimi 277 ta holatga asoslangan.":
+    "Справка хокимияту г. Ташкент (14.04.2026), список больных MKI (17.04.2026), таблица районов 2026, республиканская справка Минздрава (28.03.2026). Разрез по районам основан на 277 случаях.",
+
+  // Statistika — tarixiy dinamika
+  "15 yillik tarixiy dinamika (2012–2026)": "Динамика за 15 лет (2012–2026)",
+  "Tarixiy qamrov": "Исторический охват",
+
+  // Tahlil — statistik aniqlik (95% CI)
+  "Statistik aniqlik (95% ishonch oralig‘i)": "Статистическая точность (95% ДИ)",
+  "Nuqta-baholar 95% CI bilan; nisbatlar uchun Wilson, kasallanish nisbati uchun Poisson usuli": "Точечные оценки с 95% ДИ; для долей — метод Уилсона, для отношения заболеваемости — Пуассона",
+  "Ko‘rsatkich": "Показатель",
+  "Nuqta-baho": "Точечная оценка",
+  "Asos": "Основа",
+  "Usul": "Метод",
+  "O‘lim koeffitsiyenti (CFR)": "Коэффициент летальности (CFR)",
+  "14 yoshgacha bolalar ulushi (holatlar)": "Доля детей до 14 лет (случаи)",
+  "Bolalar ulushi (vafot etganlar)": "Доля детей (среди умерших)",
+  "Kasallanish nisbati (IRR, 2026 ÷ 2025)": "Отношение заболеваемости (IRR, 2026 ÷ 2025)",
+  "Ahamiyatlilik testi (χ²)": "Тест значимости (χ²)",
+  "2026 vs 2025 kasallanish farqi": "Различие заболеваемости 2026 и 2025",
+  "Farq statistik jihatdan yuqori ahamiyatli (p < 0,05).": "Различие статистически высоко значимо (p < 0,05).",
+
+  // Metodologiya — codebook / xalqaro kontekst / adabiyotlar
+  "Manba": "Источник",
+  "Yangilangan": "Обновлено",
+  "Codebook (ma‘lumotlar lug‘ati)": "Кодбук (словарь данных)",
+  "O‘zgaruvchi": "Переменная",
+  "Ta‘rifi": "Определение",
+  "Birlik": "Единица",
+  "FAIR printsipi: ma‘lumotlar Topiladigan, Ochiq, O‘zaro moslashuvchan va Qayta ishlatiladigan.": "Принцип FAIR: данные Находимые, Доступные, Совместимые и Переиспользуемые.",
+  "Xalqaro kontekst va taqqoslash": "Международный контекст и сравнение",
+  "Toshkent sh. (joriy)": "г. Ташкент (текущее)",
+  "Xalqaro (WHO/ECDC/CDC)": "Мир (ВОЗ/ECDC/CDC)",
+  "Adabiyotlar": "Литература",
+  "Eslatma: mintaqaviy taqqoslash (Rossiya, Qozog‘iston epidemiyalari) uchun aniq raqamlar va iqtiboslar dissertatsiya matnidan qo‘shiladi.": "Примечание: точные цифры и ссылки для регионального сравнения (эпидемии в России, Казахстане) добавляются из текста диссертации.",
+
+  // Tadqiqot (research) sahifasi
+  "Tadqiqot pasporti": "Паспорт исследования",
+  "Dissertatsiya maqsadi, vazifalari, dizayni, material va usullari hamda etika asoslari": "Цель, задачи, дизайн, материалы и методы, а также этические основы диссертации",
+  "Mavzu va identifikatsiya": "Тема и идентификация",
+  "Dissertatsiya mavzusi": "Тема диссертации",
+  "Muallif": "Автор",
+  "Ilmiy rahbar": "Научный руководитель",
+  "Ilmiy maslahatchi": "Научный консультант",
+  "Muassasa": "Учреждение",
+  "Ixtisoslik shifri": "Шифр специальности",
+  "Himoya yili": "Год защиты",
+  "Sariq bilan belgilangan maydonlar real qiymatlar bilan to‘ldiriladi (research.ts).": "Поля, выделенные жёлтым, заполняются реальными значениями (research.ts).",
+  "Tadqiqot maqsadi": "Цель исследования",
+  "Tadqiqot vazifalari": "Задачи исследования",
+  "Ilmiy gipoteza": "Научная гипотеза",
+  "Material va usullar": "Материалы и методы",
+  "Tadqiqot dizayni": "Дизайн исследования",
+  "Davr": "Период",
+  "Statistik dastur": "Статистическая программа",
+  "Inklyuziya mezonlari": "Критерии включения",
+  "Eksklyuziya mezonlari": "Критерии исключения",
+  "Statistik usullar": "Статистические методы",
+  "Natijalar «Tahlil» sahifasida 95% CI bilan ko‘rsatilgan.": "Результаты приведены с 95% ДИ на странице «Аналитика».",
+  "Etika asoslari": "Этические основы",
+  "Ilmiy yangilik": "Научная новизна",
+  "Dissertatsiya maqsadi, vazifalari, ko‘p yillik dinamika va TBATS bashorat tahlili": "Цель, задачи диссертации, многолетняя динамика и прогноз TBATS",
+  "Kirish (mavzuning dolzarbligi)": "Введение (актуальность темы)",
+  "Ilmiy rahbarlar": "Научные руководители",
+  "Ixtisosliklar": "Специальности",
+  "Ko‘p yillik dinamika (2012–2021)": "Многолетняя динамика (2012–2021)",
+  "Respublika · 2019": "Республика · 2019",
+  "Toshkent sh. · 2019": "г. Ташкент · 2019",
+  "100 000 aholiga": "на 100 000 населения",
+  "Tahlil va xulosalar": "Анализ и выводы",
+  "TBATS eksponensial model bilan bashoratlash": "Прогнозирование экспоненциальной моделью TBATS",
+  "Model": "Модель",
+  "Bashorat ufqi": "Горизонт прогноза",
+  "yil": "лет",
+  "Bashorat qilingan epidemik cho‘qqilar": "Прогнозируемые эпидемические пики",
+  "holat": "случаев",
 
   // Choralar
   "Amalga oshirilgan tadbirlar": "Проведённые мероприятия",
@@ -224,7 +334,7 @@ const RU: Record<string, string> = {
   "Ijtimoiy tarmoq chiqishlari": "Публикации в соцсетях",
   "Infografika": "Инфографика",
   "Tibbiy seminarlar": "Медицинские семинары",
-  "Manba: O'zR ССВ huzuridagi Sanepidqo'm respublika ma'lumotnomasi (28.03.2026) va Toshkent shahar Hokimiyatiga ma'lumotnoma (14.04.2026).":
+  "Manba: O'zR SSV huzuridagi Sanepidqo'm respublika ma'lumotnomasi (28.03.2026) va Toshkent shahar Hokimiyatiga ma'lumotnoma (14.04.2026).":
     "Источник: республиканская справка Санэпидконтроля при Минздраве РУз (28.03.2026) и справка хокимияту г. Ташкент (14.04.2026).",
   "Aholi orasida tashuvchanlik darajasini o'rganish, xavf guruhlarida (bolalar va o'smirlar) laboratoriya tekshiruvlarini tashkil etish va tibbiy kuzatuvni kuchaytirish.":
     "Изучение уровня носительства среди населения, организация лабораторных обследований в группах риска (дети и подростки) и усиление медицинского наблюдения.",
@@ -261,7 +371,8 @@ const RU: Record<string, string> = {
   "vafot": "смертей",
   "100k ga": "на 100т",
   "Jami holat": "Всего случаев",
-  "ta hudud · ССВ ma'lumoti (28.03.2026)": "регионов · данные Минздрава (28.03.2026)",
+  "ta hudud · SSV ma'lumoti (28.03.2026)": "регионов · данные Минздрава (28.03.2026)",
+  "ColorBrewer YlOrRd · rang-ko‘rlikka mos": "ColorBrewer YlOrRd · подходит для дальтоников",
   "Simptom tanlanmagan": "Симптомы не выбраны",
   "Bemorda kuzatilayotgan simptomlarni belgilang.": "Отметьте наблюдаемые у больного симптомы.",
   "Bemorda meningokokk infeksiyasiga gumon yuqori.": "Высокое подозрение на менингококковую инфекцию.",
@@ -270,6 +381,10 @@ const RU: Record<string, string> = {
   "Natija va Tavsiyalar": "Результат и рекомендации",
   "Risk Ball": "Балл риска",
   "Tavsiyalar:": "Рекомендации:",
+  "Ilmiy asos va cheklov": "Научная основа и ограничения",
+  "Ball og‘irliklari belgilarning meningokokksemiyadagi diagnostik ahamiyatiga (toshma va meningial belgilarga yuqori vazn) hamda SSV klinik protokoliga asoslangan. Mos yozuvlar: WHO va CDC meningokokk infeksiyasi klinik qo‘llanmalari, Glasgow Meningococcal Septicaemia Prognostic Score (GMSPS).": "Веса баллов основаны на диагностической значимости признаков при менингококцемии (высокий вес сыпи и менингеальных признаков) и клиническом протоколе Минздрава. Источники: клинические руководства ВОЗ и CDC по менингококковой инфекции, Glasgow Meningococcal Septicaemia Prognostic Score (GMSPS).",
+  "Muhim:": "Важно:",
+  "Bu — o‘quv/saralash (triage) yordamchisi, validatsiyalangan diagnostik vosita emas. Sezgirlik (sensitivity) va xoslik (specificity) ushbu namunada hali baholanmagan; yakuniy tashxis klinik ko‘rik va laboratoriya tasdig‘iga asoslanadi.": "Это вспомогательный инструмент обучения/сортировки (triage), а не валидированное диагностическое средство. Чувствительность и специфичность на данной выборке не оценивались; окончательный диагноз основывается на клиническом осмотре и лабораторном подтверждении.",
 
   // Risk skrining — simptomlar, tavsiyalar
   "Yuqori isitma": "Высокая температура",
@@ -303,7 +418,7 @@ const RU: Record<string, string> = {
   "Yashil — bemorning belgilar profili. Kulrang — tipik meningokokksemiyaning namunaviy (taqqoslash uchun) profili.":
     "Зелёный — профиль признаков больного. Серый — типовой (эталонный) профиль менингококцемии.",
   "Bemor": "Больной",
-  "Tipik MKI (namuna)": "Типичная МКИ (эталон)",
+  "Tipik MKI (namuna)": "Типичная MKI (эталон)",
   "Isitma": "Лихорадка",
   "Bo'yin/meningial": "Шея/менингеальные",
   "Ong holati": "Состояние сознания",
@@ -333,18 +448,53 @@ const RU: Record<string, string> = {
   "bola": "детей", "katta": "взрослых", "kun": "дней",
   "kasallikdan vafotgacha": "от болезни до смерти", "natija kutilmoqda": "ожидается результат",
   "Olingan namunalar bo'yicha": "По взятым образцам",
-  "Vafot etgan beмorlar reestri": "Реестр умерших больных",
+  "Vafot etgan bemorlar reestri": "Реестр умерших больных",
   "Yakuniy tashxis: yashin tezligidagi meningokokksemiya": "Окончательный диагноз: молниеносная менингококцемия",
   "F.I.Sh yoki tuman...": "Ф.И.О. или район...",
   "F.I.Sh.": "Ф.И.О.", "Yosh": "Возраст", "Tuman": "Район", "Kasallangan": "Заболел", "Yotqizilgan": "Госпитализирован",
-  "ta yozuv": "записей", "nafari (78,9%) bolalar": "(78,9%) — дети",
+  "ta yozuv": "записей",
+
+  // Tadqiqot — Serologik diagnostika (ELISA IgM/IgG)
+  "Serologik diagnostika — ELISA (IgM/IgG)": "Серологическая диагностика — ELISA (IgM/IgG)",
+  "Usul (qisqacha)": "Метод (кратко)",
+  "Asosiy natijalar": "Основные результаты",
+  "Xulosa": "Заключение",
+  "Sezgirlik (sensitivity)": "Чувствительность (sensitivity)",
+  "Xoslik (specificity)": "Специфичность (specificity)",
+  "Antimeningokokk zardob IgM va IgG antitanalarini miqdoriy o'lchash uchun ferment bilan bog'langan immunosorbent tahlil (ELISA) ishlab chiqildi. Antigen qoplamasi sifatida B:15 meningokokk shtammi qo'llanildi; klass-spetsifik antitanalar ishqoriy fosfataza bilan markerlangan quyon anti-inson IgM yoki IgG konyugati yordamida aniqlandi.":
+    "Для количественного измерения антименингококковых сывороточных антител IgM и IgG разработан иммуноферментный анализ (ELISA). В качестве антигенного покрытия использован менингококковый штамм B:15; классоспецифические антитела выявляли с помощью конъюгата — кроличьих античеловеческих IgM или IgG, меченных щелочной фосфатазой.",
+  "Antigen qoplamasi: B:15 meningokokk shtammi (butun bakterial hujayrali ELISA).":
+    "Антигенное покрытие: менингококковый штамм B:15 (цельноклеточный бактериальный ELISA).",
+  "Konyugat: ishqoriy fosfataza bilan markerlangan quyon anti-inson IgM yoki IgG.":
+    "Конъюгат: кроличьи античеловеческие IgM или IgG, меченные щелочной фосфатазой.",
+  "Maqsad: zardobdagi spetsifik IgM va IgG antitanalarni miqdoriy aniqlash.":
+    "Цель: количественное определение специфических антител IgM и IgG в сыворотке.",
+  "Spetsifik IgG faolligi sog'lom meningokokk tashuvchilarining zardobida tashuvchi bo'lmaganlarnikiga qaraganda yuqori bo'ldi, biroq farq statistik jihatdan ahamiyatli emas edi.":
+    "Специфическая активность IgG была выше в сыворотках здоровых менингококковых носителей, чем у неносителей, но разница не была статистически значимой.",
+  "Antimeningokokk IgM antitanalari tashuvchilarda tashuvchi bo'lmaganlarga nisbatan ko'proq uchradi.":
+    "Антименингококковые IgM-антитела чаще выявлялись у носителей, чем у неносителей.",
+  "Fulminant meningokokk kasalligi bo'lgan 34 bemorning o'tkir zardoblarida sog'lom tashuvchi va tashuvchi bo'lmaganlarga nisbatan spetsifik IgG kamroq, IgM darajasi esa yuqoriroq aniqlandi.":
+    "Острые сыворотки 34 пациентов с фульминантной менингококковой болезнью содержали меньше специфического IgG и более высокий уровень IgM по сравнению со здоровыми носителями и неносителями.",
+  "Kasalxonada yotgan 18 bemordan 15 tasida (15/18) o'tkir va rekonvalessent zardoblarda IgG va IgM antitanalar miqdorining oshishi kuzatildi.":
+    "У 15 из 18 госпитализированных пациентов (15/18) в острых и реконвалесцентных сыворотках наблюдалось нарастание антител IgG и IgM.",
+  "IgG va IgM o'lchovlarini birlashtirib, 18 bemordan 15 tasida antitana o'sishi aniqlandi (15/18).":
+    "При объединении измерений IgG и IgM нарастание антител выявлено у 15 из 18 пациентов (15/18).",
+  "Meningokokk infeksiyasi bo'lmagan 118 kishidan faqat 8 tasida spetsifik IgM antitanalari aniqlandi.":
+    "Из 118 человек без менингококковой инфекции специфические IgM-антитела выявлены лишь у 8.",
+  "Butun bakterial ELISA testi orqali spetsifik antimeningokokk IgG antitanalarini miqdoriy aniqlash — alohida shaxslarda hamda epidemiologik tadqiqotlarda meningokokk kasalligiga qarshi immunitetni o'rganish uchun foydali test bo'lishi mumkin. IgG va IgM testlarini birgalikda qo'llash qon yoki orqa miya suyuqligi tahlillari salbiy bo'lgan hollarda meningokokk kasalligini tashxislashda foydalidir.":
+    "Количественное определение специфических антименингококковых антител IgG с помощью цельноклеточного бактериального теста ELISA может быть полезным для изучения иммунитета против менингококковой болезни как у отдельных людей, так и в эпидемиологических исследованиях. Совместное применение тестов IgG и IgM полезно для диагностики менингококковой болезни при отрицательных результатах анализов крови или спинномозговой жидкости.",
 };
 
 const EN: Record<string, string> = {
   "Bosh sahifa": "Home",
   "Tahlil": "Analytics",
+  "Statistika": "Statistics",
   "Xarita": "Map",
+  "Metodologiya": "Methodology",
   "Risk skrining": "Risk screening",
+  "Tadqiqot": "Research",
+  "Akademik": "Academic",
+  "2025 yilga nisbatan": "vs 2025",
   "Kabinet": "Cabinet",
   "Vaksinatsiya": "Vaccination",
   "Choralar": "Measures",
@@ -357,7 +507,7 @@ const EN: Record<string, string> = {
   "Yangilangan: 17.04.2026": "Updated: 17.04.2026",
   "Epidemiolog": "Epidemiologist",
   "O‘ZBEKISTON RESPUBLIKASI SOG‘LIQNI SAQLASH VAZIRLIGI": "MINISTRY OF HEALTH OF THE REPUBLIC OF UZBEKISTAN",
-  " · Sanitariya-epidemiologik osoyishtalik agentligi (Sanepidqo‘m)": " · Sanitary-Epidemiological Welfare Agency",
+  "Sanitariya-epidemiologik osoyishtalik agentligi (Sanepidqo‘m)": "Sanitary-Epidemiological Welfare Agency (SanEpid)",
   "— epidemiologik monitoring": "— epidemiological monitoring",
   "Hudud yoki ko'rsatkich qidirish...": "Search region or indicator...",
   "Epidemik holat: YUQORI": "Epidemic level: HIGH",
@@ -380,7 +530,7 @@ const EN: Record<string, string> = {
   "Risk skrining kalkulyatori": "Risk screening calculator",
   "Klinik reestr, laboratoriya natijalari va statistik hisobot":
     "Clinical registry, lab results and statistical report",
-  "Amalga oshirilgan tadbirlar va ССВ tavsiyalari (14.04.2026 holatiga)":
+  "Amalga oshirilgan tadbirlar va SSV tavsiyalari (14.04.2026 holatiga)":
     "Measures taken and Ministry recommendations (as of 14.04.2026)",
   "Bemorda kuzatilayotgan simptomlarni belgilang — tizim avtomatik ravishda xavf darajasini hisoblaydi.":
     "Mark the observed symptoms — the system calculates the risk level automatically.",
@@ -429,14 +579,15 @@ const EN: Record<string, string> = {
   "Meningokokk infeksiyasi o'chog'i": "Meningococcal infection outbreak",
   "Kasallanganlar": "Cases",
   "aprelda": "in April",
+  "yangi holat · aprel (1–17.04)": "new cases · April (1–17 Apr)",
   "respublika": "republic",
-  "85% bolalar": "85% children",
+  "83% bolalar": "83% children",
   "Tuzalgan": "Recovered",
   "uyga chiqarilgan": "discharged home",
   "O'lim koeffitsiyenti (CFR)": "Case fatality rate (CFR)",
 
   "Epidemiya 23-fevraldan (9-hafta) keskin ko'tarildi.": "Epidemic surged from Feb 23 (week 9).",
-  "Vafot etganlarning 85% — bolalar.": "85% of deaths are children.",
+  "Vafot etganlarning 83% — bolalar.": "83% of deaths are children.",
   "Holatlarning 97,5% — 14 yoshgacha bo'lgan bolalar.": "97.5% of cases are children under 14.",
   "Eng yuqori intensivlik: Sergeli (13,4) va Chilonzor (12,3).": "Highest incidence: Sergeli (13.4) and Chilonzor (12.3).",
   "Kasallikning ustun shakli — yashin tezligidagi meningokokksemiya.": "Predominant form — fulminant meningococcemia.",
@@ -454,8 +605,8 @@ const EN: Record<string, string> = {
     "277 cases registered in Tashkent city. 105 new cases recorded in April.",
   "Hokimiyatga ma'lumotnoma: 264 holat, 8,3/100k — 2025 yilga nisbatan 17,6 barobar ko'p. 183 ta (69,3%) lab. tasdiqlangan.":
     "Report to khokimiyat: 264 cases, 8.3/100k — 17.6× more than 2025. 183 (69.3%) lab-confirmed.",
-  "1,5 oylik chaqaloq Saidov M.X. meningokokksemiya asoratidan vafot etdi (23-vafot holati).":
-    "A 1.5-month-old infant, Saidov M.X., died of meningococcemia complications (23rd death).",
+  "1,5 oylik chaqaloq (Yashnobod tumani) meningokokksemiya asoratidan vafot etdi (23-vafot holati).":
+    "A 1.5-month-old infant (Yashnabad district) died of meningococcemia complications (23rd death).",
   "9-haftadan boshlab kasallanish keskin ko'tarildi. Epidemik ko'rsatma bo'yicha emlash boshlandi.":
     "Incidence surged from week 9. Vaccination by epidemic indication began.",
   "Muloqotdagilardan 8 358 nafar surtma topshirdi, 3 502 nafar emlandi.":
@@ -475,7 +626,7 @@ const EN: Record<string, string> = {
   "Kattalar": "Adults",
 
   "Klinik belgilar profili": "Clinical signs profile",
-  "Beмorlarda kuzatilgan belgilar chastotasi (%) — septik (meningokokksemiya) shakli ustun":
+  "Bemorlarda kuzatilgan belgilar chastotasi (%) — septik (meningokokksemiya) shakli ustun":
     "Frequency of signs in patients (%) — septic (meningococcemia) form predominates",
   "Chastota": "Frequency",
   "Isitma >38°": "Fever >38°",
@@ -491,7 +642,7 @@ const EN: Record<string, string> = {
   "Meningial belgilar kam — bu o'choq meningokokksemiya (qon sepsisi) shaklida kechgani, klassik meningit emasligini ko'rsatadi. Shu sabab kasallik yashin tezligida kechib, yuqori letallikka olib kelgan.":
     "Meningeal signs were rare — the outbreak ran as meningococcemia (blood sepsis), not classic meningitis. Hence the fulminant course and high lethality.",
 
-  "ССВ ma'lumotnomasi": "Ministry report",
+  "SSV ma'lumotnomasi": "Ministry report",
   "Hudud": "Region",
   "Jami Holat": "Total cases",
   "100k aholiga": "per 100k pop.",
@@ -500,6 +651,25 @@ const EN: Record<string, string> = {
   "O'rta": "Medium",
   "Past": "Low",
   "JAMI": "TOTAL",
+
+  // Chrome — search / notifications / settings / footer (issue #1, #3, #4, #9)
+  "Bildirishnomalar": "Notifications",
+  "Sozlamalar": "Settings",
+  "Til": "Language",
+  "Hech narsa topilmadi": "Nothing found",
+  "Natijaga o‘tish uchun Enter": "Press Enter to open result",
+  "Tez orada": "Coming soon",
+  "Barcha bo‘limlar": "All sections",
+  "Interfeys tili": "Interface language",
+  "Yordam va qo‘llanma": "Help & guide",
+  "Vafot reestri": "Death registry",
+  "CFR / o‘lim koeffitsiyenti": "CFR / case fatality rate",
+  "Vaksina ACYW135": "Vaccine ACYW135",
+  "Yangi": "New",
+  "28.03.2026 holatiga · viloyatlararo taqsimot (yangilanmoqda).": "as of 28.03.2026 · inter-regional breakdown (updating).",
+  "Eng so‘nggi shahar ko‘rsatkichi — 277 holat / 23 vafot (17.04.2026), yuqorida berilgan.": "Latest city figure — 277 cases / 23 deaths (17.04.2026), shown above.",
+  "Doimiy": "Standing",
+  "Amaldagi standart yo‘riqnoma (operativ sanaga bog‘liq emas) — emlash sxemasi va profilaktika ko‘rsatkichlari uchun.": "Standing standard guideline (not tied to an operational date) — for the vaccination scheme and prevention indicators.",
 
   // Tahlil
   "Toshkent shahri · 277 holat kesimida statistik tahlil (14.04.2026–17.04.2026)":
@@ -532,8 +702,82 @@ const EN: Record<string, string> = {
     "An estimated 31.4% of cases are suspected to have been infected at indoor children's playgrounds in malls.",
   "2025 — 2026 taqqoslash": "2025 — 2026 comparison",
   "Kasallanish 17.6 barobar oshgan": "Incidence increased 17.6-fold",
-  "Toshkent shahar Hokimiyatiga ma'lumotnoma (14.04.2026), MKI beмorlar ro'yxati (17.04.2026), 2026 tumanlar jadvali, ССВ respublika ma'lumotnomasi (28.03.2026). Tumanlar kesimi 277 ta holatga asoslangan.":
+  "Toshkent shahar Hokimiyatiga ma'lumotnoma (14.04.2026), MKI bemorlar ro'yxati (17.04.2026), 2026 tumanlar jadvali, SSV respublika ma'lumotnomasi (28.03.2026). Tumanlar kesimi 277 ta holatga asoslangan.":
     "Report to Tashkent khokimiyat (14.04.2026), MKI patient list (17.04.2026), 2026 districts table, Ministry republic report (28.03.2026). District breakdown based on 277 cases.",
+
+  // Statistics — historical dynamics
+  "15 yillik tarixiy dinamika (2012–2026)": "15-year dynamics (2012–2026)",
+  "Tarixiy qamrov": "Historical coverage",
+
+  // Tahlil — statistical precision (95% CI)
+  "Statistik aniqlik (95% ishonch oralig‘i)": "Statistical precision (95% CI)",
+  "Nuqta-baholar 95% CI bilan; nisbatlar uchun Wilson, kasallanish nisbati uchun Poisson usuli": "Point estimates with 95% CI; Wilson method for proportions, Poisson for the rate ratio",
+  "Ko‘rsatkich": "Indicator",
+  "Nuqta-baho": "Point estimate",
+  "Asos": "Basis",
+  "Usul": "Method",
+  "O‘lim koeffitsiyenti (CFR)": "Case fatality rate (CFR)",
+  "14 yoshgacha bolalar ulushi (holatlar)": "Share of children under 14 (cases)",
+  "Bolalar ulushi (vafot etganlar)": "Share of children (among deaths)",
+  "Kasallanish nisbati (IRR, 2026 ÷ 2025)": "Incidence rate ratio (IRR, 2026 ÷ 2025)",
+  "Ahamiyatlilik testi (χ²)": "Significance test (χ²)",
+  "2026 vs 2025 kasallanish farqi": "2026 vs 2025 incidence difference",
+  "Farq statistik jihatdan yuqori ahamiyatli (p < 0,05).": "The difference is statistically highly significant (p < 0.05).",
+
+  // Methodology — codebook / international context / references
+  "Manba": "Source",
+  "Yangilangan": "Updated",
+  "Codebook (ma‘lumotlar lug‘ati)": "Codebook (data dictionary)",
+  "O‘zgaruvchi": "Variable",
+  "Ta‘rifi": "Definition",
+  "Birlik": "Unit",
+  "FAIR printsipi: ma‘lumotlar Topiladigan, Ochiq, O‘zaro moslashuvchan va Qayta ishlatiladigan.": "FAIR principle: data are Findable, Accessible, Interoperable and Reusable.",
+  "Xalqaro kontekst va taqqoslash": "International context and comparison",
+  "Toshkent sh. (joriy)": "Tashkent city (current)",
+  "Xalqaro (WHO/ECDC/CDC)": "Global (WHO/ECDC/CDC)",
+  "Adabiyotlar": "References",
+  "Eslatma: mintaqaviy taqqoslash (Rossiya, Qozog‘iston epidemiyalari) uchun aniq raqamlar va iqtiboslar dissertatsiya matnidan qo‘shiladi.": "Note: exact figures and citations for regional comparison (epidemics in Russia, Kazakhstan) are added from the dissertation text.",
+
+  // Research page
+  "Tadqiqot pasporti": "Research passport",
+  "Dissertatsiya maqsadi, vazifalari, dizayni, material va usullari hamda etika asoslari": "Dissertation aim, objectives, design, materials & methods, and ethical basis",
+  "Mavzu va identifikatsiya": "Topic & identification",
+  "Dissertatsiya mavzusi": "Dissertation topic",
+  "Muallif": "Author",
+  "Ilmiy rahbar": "Scientific supervisor",
+  "Ilmiy maslahatchi": "Scientific consultant",
+  "Muassasa": "Institution",
+  "Ixtisoslik shifri": "Specialty code",
+  "Himoya yili": "Defense year",
+  "Sariq bilan belgilangan maydonlar real qiymatlar bilan to‘ldiriladi (research.ts).": "Fields highlighted in yellow are filled with real values (research.ts).",
+  "Tadqiqot maqsadi": "Research aim",
+  "Tadqiqot vazifalari": "Research objectives",
+  "Ilmiy gipoteza": "Scientific hypothesis",
+  "Material va usullar": "Materials & methods",
+  "Tadqiqot dizayni": "Study design",
+  "Davr": "Period",
+  "Statistik dastur": "Statistical software",
+  "Inklyuziya mezonlari": "Inclusion criteria",
+  "Eksklyuziya mezonlari": "Exclusion criteria",
+  "Statistik usullar": "Statistical methods",
+  "Natijalar «Tahlil» sahifasida 95% CI bilan ko‘rsatilgan.": "Results are shown with 95% CI on the “Analytics” page.",
+  "Etika asoslari": "Ethical basis",
+  "Ilmiy yangilik": "Scientific novelty",
+  "Dissertatsiya maqsadi, vazifalari, ko‘p yillik dinamika va TBATS bashorat tahlili": "Dissertation aim, objectives, multi-year dynamics and TBATS forecast",
+  "Kirish (mavzuning dolzarbligi)": "Introduction (relevance of the topic)",
+  "Ilmiy rahbarlar": "Scientific supervisors",
+  "Ixtisosliklar": "Specialties",
+  "Ko‘p yillik dinamika (2012–2021)": "Multi-year dynamics (2012–2021)",
+  "Respublika · 2019": "Republic · 2019",
+  "Toshkent sh. · 2019": "Tashkent city · 2019",
+  "100 000 aholiga": "per 100,000 population",
+  "Tahlil va xulosalar": "Analysis & conclusions",
+  "TBATS eksponensial model bilan bashoratlash": "Forecasting with the TBATS exponential model",
+  "Model": "Model",
+  "Bashorat ufqi": "Forecast horizon",
+  "yil": "years",
+  "Bashorat qilingan epidemik cho‘qqilar": "Forecasted epidemic peaks",
+  "holat": "cases",
 
   // Choralar
   "Amalga oshirilgan tadbirlar": "Measures taken",
@@ -550,7 +794,7 @@ const EN: Record<string, string> = {
   "Ijtimoiy tarmoq chiqishlari": "Social media posts",
   "Infografika": "Infographics",
   "Tibbiy seminarlar": "Medical seminars",
-  "Manba: O'zR ССВ huzuridagi Sanepidqo'm respublika ma'lumotnomasi (28.03.2026) va Toshkent shahar Hokimiyatiga ma'lumotnoma (14.04.2026).":
+  "Manba: O'zR SSV huzuridagi Sanepidqo'm respublika ma'lumotnomasi (28.03.2026) va Toshkent shahar Hokimiyatiga ma'lumotnoma (14.04.2026).":
     "Source: republic report of the Sanitary-Epidemiological Service under the MoH (28.03.2026) and report to Tashkent khokimiyat (14.04.2026).",
   "Aholi orasida tashuvchanlik darajasini o'rganish, xavf guruhlarida (bolalar va o'smirlar) laboratoriya tekshiruvlarini tashkil etish va tibbiy kuzatuvni kuchaytirish.":
     "Study carriage rates in the population, organize lab testing in risk groups (children and adolescents) and strengthen medical surveillance.",
@@ -587,7 +831,8 @@ const EN: Record<string, string> = {
   "vafot": "deaths",
   "100k ga": "per 100k",
   "Jami holat": "Total cases",
-  "ta hudud · ССВ ma'lumoti (28.03.2026)": "regions · Ministry data (28.03.2026)",
+  "ta hudud · SSV ma'lumoti (28.03.2026)": "regions · Ministry data (28.03.2026)",
+  "ColorBrewer YlOrRd · rang-ko‘rlikka mos": "ColorBrewer YlOrRd · colorblind-safe",
   "Simptom tanlanmagan": "No symptoms selected",
   "Bemorda kuzatilayotgan simptomlarni belgilang.": "Mark the symptoms observed in the patient.",
   "Bemorda meningokokk infeksiyasiga gumon yuqori.": "High suspicion of meningococcal infection.",
@@ -596,6 +841,10 @@ const EN: Record<string, string> = {
   "Natija va Tavsiyalar": "Result & Recommendations",
   "Risk Ball": "Risk score",
   "Tavsiyalar:": "Recommendations:",
+  "Ilmiy asos va cheklov": "Scientific basis & limitations",
+  "Ball og‘irliklari belgilarning meningokokksemiyadagi diagnostik ahamiyatiga (toshma va meningial belgilarga yuqori vazn) hamda SSV klinik protokoliga asoslangan. Mos yozuvlar: WHO va CDC meningokokk infeksiyasi klinik qo‘llanmalari, Glasgow Meningococcal Septicaemia Prognostic Score (GMSPS).": "Score weights are based on the diagnostic significance of signs in meningococcemia (high weight for rash and meningeal signs) and the Ministry of Health clinical protocol. References: WHO and CDC clinical guidance on meningococcal disease, Glasgow Meningococcal Septicaemia Prognostic Score (GMSPS).",
+  "Muhim:": "Important:",
+  "Bu — o‘quv/saralash (triage) yordamchisi, validatsiyalangan diagnostik vosita emas. Sezgirlik (sensitivity) va xoslik (specificity) ushbu namunada hali baholanmagan; yakuniy tashxis klinik ko‘rik va laboratoriya tasdig‘iga asoslanadi.": "This is an educational/triage aid, not a validated diagnostic tool. Sensitivity and specificity have not yet been assessed on this sample; the final diagnosis rests on clinical examination and laboratory confirmation.",
 
   // Risk screening
   "Yuqori isitma": "High fever",
@@ -659,11 +908,41 @@ const EN: Record<string, string> = {
   "bola": "children", "katta": "adults", "kun": "days",
   "kasallikdan vafotgacha": "from onset to death", "natija kutilmoqda": "awaiting result",
   "Olingan namunalar bo'yicha": "By collected samples",
-  "Vafot etgan beмorlar reestri": "Registry of deceased patients",
+  "Vafot etgan bemorlar reestri": "Registry of deceased patients",
   "Yakuniy tashxis: yashin tezligidagi meningokokksemiya": "Final diagnosis: fulminant meningococcemia",
   "F.I.Sh yoki tuman...": "Name or district...",
   "F.I.Sh.": "Name", "Yosh": "Age", "Tuman": "District", "Kasallangan": "Onset", "Yotqizilgan": "Hospitalized",
-  "ta yozuv": "records", "nafari (78,9%) bolalar": "(78.9%) are children",
+  "ta yozuv": "records",
+
+  // Research — Serological diagnostics (ELISA IgM/IgG)
+  "Serologik diagnostika — ELISA (IgM/IgG)": "Serological diagnostics — ELISA (IgM/IgG)",
+  "Usul (qisqacha)": "Method (brief)",
+  "Asosiy natijalar": "Key findings",
+  "Xulosa": "Conclusion",
+  "Sezgirlik (sensitivity)": "Sensitivity",
+  "Xoslik (specificity)": "Specificity",
+  "Antimeningokokk zardob IgM va IgG antitanalarini miqdoriy o'lchash uchun ferment bilan bog'langan immunosorbent tahlil (ELISA) ishlab chiqildi. Antigen qoplamasi sifatida B:15 meningokokk shtammi qo'llanildi; klass-spetsifik antitanalar ishqoriy fosfataza bilan markerlangan quyon anti-inson IgM yoki IgG konyugati yordamida aniqlandi.":
+    "An enzyme-linked immunosorbent assay (ELISA) was developed to quantify antimeningococcal serum IgM and IgG antibodies. Meningococcal strain B:15 was used as the coating antigen; class-specific antibodies were detected using alkaline-phosphatase-labelled rabbit anti-human IgM or IgG as the conjugate.",
+  "Antigen qoplamasi: B:15 meningokokk shtammi (butun bakterial hujayrali ELISA).":
+    "Coating antigen: meningococcal strain B:15 (whole-cell bacterial ELISA).",
+  "Konyugat: ishqoriy fosfataza bilan markerlangan quyon anti-inson IgM yoki IgG.":
+    "Conjugate: alkaline-phosphatase-labelled rabbit anti-human IgM or IgG.",
+  "Maqsad: zardobdagi spetsifik IgM va IgG antitanalarni miqdoriy aniqlash.":
+    "Aim: quantitative determination of specific serum IgM and IgG antibodies.",
+  "Spetsifik IgG faolligi sog'lom meningokokk tashuvchilarining zardobida tashuvchi bo'lmaganlarnikiga qaraganda yuqori bo'ldi, biroq farq statistik jihatdan ahamiyatli emas edi.":
+    "Specific IgG activity was higher in the sera of healthy meningococcal carriers than in non-carriers, but the difference was not statistically significant.",
+  "Antimeningokokk IgM antitanalari tashuvchilarda tashuvchi bo'lmaganlarga nisbatan ko'proq uchradi.":
+    "Antimeningococcal IgM antibodies were more frequent in carriers than in non-carriers.",
+  "Fulminant meningokokk kasalligi bo'lgan 34 bemorning o'tkir zardoblarida sog'lom tashuvchi va tashuvchi bo'lmaganlarga nisbatan spetsifik IgG kamroq, IgM darajasi esa yuqoriroq aniqlandi.":
+    "Acute sera from 34 patients with fulminant meningococcal disease contained less specific IgG and higher IgM levels compared with healthy carriers and non-carriers.",
+  "Kasalxonada yotgan 18 bemordan 15 tasida (15/18) o'tkir va rekonvalessent zardoblarda IgG va IgM antitanalar miqdorining oshishi kuzatildi.":
+    "In 15 of 18 hospitalized patients (15/18), a rise in IgG and IgM antibodies was observed in acute and convalescent sera.",
+  "IgG va IgM o'lchovlarini birlashtirib, 18 bemordan 15 tasida antitana o'sishi aniqlandi (15/18).":
+    "Combining IgG and IgM measurements, an antibody rise was detected in 15 of 18 patients (15/18).",
+  "Meningokokk infeksiyasi bo'lmagan 118 kishidan faqat 8 tasida spetsifik IgM antitanalari aniqlandi.":
+    "Of 118 individuals without meningococcal infection, only 8 had detectable specific IgM antibodies.",
+  "Butun bakterial ELISA testi orqali spetsifik antimeningokokk IgG antitanalarini miqdoriy aniqlash — alohida shaxslarda hamda epidemiologik tadqiqotlarda meningokokk kasalligiga qarshi immunitetni o'rganish uchun foydali test bo'lishi mumkin. IgG va IgM testlarini birgalikda qo'llash qon yoki orqa miya suyuqligi tahlillari salbiy bo'lgan hollarda meningokokk kasalligini tashxislashda foydalidir.":
+    "Quantitative determination of specific antimeningococcal IgG antibodies by a whole-cell bacterial ELISA may be a useful test for studying immunity against meningococcal disease in individuals as well as in epidemiological studies. The combined use of IgG and IgM tests is useful for diagnosing meningococcal disease when blood or cerebrospinal fluid cultures are negative.",
 };
 
 const DICT = { ru: RU, en: EN } as const;
@@ -672,9 +951,16 @@ interface I18nValue {
   lang: Lang;
   setLang: (l: Lang) => void;
   t: (s: string) => string;
+  // Locale-ga mos raqam formatlash. decimals berilmasa — eng ko'pi 2 kasr.
+  fmt: (n: number, decimals?: number) => string;
 }
 
-const Ctx = createContext<I18nValue>({ lang: "uz", setLang: () => {}, t: (s) => s });
+const Ctx = createContext<I18nValue>({
+  lang: "uz",
+  setLang: () => {},
+  t: (s) => s,
+  fmt: (n) => String(n),
+});
 
 export function LangProvider({ children }: { children: ReactNode }) {
   const [lang, setLangState] = useState<Lang>(() => {
@@ -690,15 +976,31 @@ export function LangProvider({ children }: { children: ReactNode }) {
     try {
       localStorage.setItem("mng_lang", l);
     } catch {}
-    document.documentElement.lang = l;
   }, []);
+
+  // <html lang> va brauzer yorlig'ini tanlangan tilga moslash (issue #7)
+  useEffect(() => {
+    document.documentElement.lang = lang;
+    document.title = TITLES[lang];
+  }, [lang]);
 
   const t = useCallback(
     (s: string) => (lang === "uz" ? s : DICT[lang][s] ?? s),
     [lang]
   );
 
-  return <Ctx.Provider value={{ lang, setLang, t }}>{children}</Ctx.Provider>;
+  const fmt = useCallback(
+    (n: number, decimals?: number) =>
+      new Intl.NumberFormat(
+        LOCALE[lang],
+        decimals === undefined
+          ? { maximumFractionDigits: 2 }
+          : { minimumFractionDigits: decimals, maximumFractionDigits: decimals }
+      ).format(n),
+    [lang]
+  );
+
+  return <Ctx.Provider value={{ lang, setLang, t, fmt }}>{children}</Ctx.Provider>;
 }
 
 export const useI18n = () => useContext(Ctx);

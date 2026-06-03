@@ -2,9 +2,9 @@
 // MeningoUz — Haqiqiy ma'lumotlar (real data)
 // Manbalar:
 //   • Hokimiyatga ma'lumotnoma (14.04.2026) — Toshkent shahar, eng to'liq
-//   • Toshkent shahar MKI beмorlar ro'yxati (17.04.2026) — operativ reestr
-//   • 2026 tumanlar jadvali (МКИ varaqasi) — 277 holat kesimi
-//   • ССВ respublika ma'lumotnomasi (28.03.2026) — hududlar kesimi
+//   • Toshkent shahar MKI bemorlar ro'yxati (17.04.2026) — operativ reestr
+//   • 2026 tumanlar jadvali (MKI varaqasi) — 277 holat kesimi
+//   • SSV respublika ma'lumotnomasi (28.03.2026) — hududlar kesimi
 //   • Vaksina yo'riqnomasi (ACYW135)
 // Barcha raqamlar yuqoridagi rasmiy hujjatlardan olingan.
 // ============================================================================
@@ -13,7 +13,7 @@ export const META = {
   title: "Meningokokk infeksiyasi monitoringi",
   region: "Toshkent shahri · O'zbekiston",
   lastUpdate: "17.04.2026",
-  reportDate: "28.03.2026", // ССВ respublika ma'lumotnomasi sanasi
+  reportDate: "28.03.2026", // SSV respublika ma'lumotnomasi sanasi
   cityReportDate: "14.04.2026", // Hokimiyatga ma'lumotnoma sanasi
 };
 
@@ -23,7 +23,7 @@ export const TOTALS = {
   deaths: 23, // "Вафот этганлар" varaqasi (umumiy)
   cityDeaths: 20, // shahar fuqarolari (tumanlar jadvali)
   regionPatients: 48, // boshqa viloyatlardan Toshkentda davolanganlar
-  republicCases: 235, // ССВ 28.03.2026 — respublika bo'yicha
+  republicCases: 235, // SSV 28.03.2026 — respublika bo'yicha
   per100k: 8.7, // Toshkent shahri intensiv ko'rsatkichi (100k aholiga)
   per100kRepublic: 0.6,
   growthVs2025: 17.6, // 2025 yilga nisbatan necha marta oshgan (shahar, 14.04)
@@ -66,7 +66,7 @@ export const WEEKLY = [
   { week: "14-h", cases: 33 },
 ];
 
-// --- HUDUDLAR KESIMI (ССВ 28.03.2026 rasmiy taqsimoti) ---
+// --- HUDUDLAR KESIMI (SSV 28.03.2026 rasmiy taqsimoti) ---
 export const REGIONS = [
   { id: 1, name: "Toshkent sh.", cases: 173, per100k: 5.4, risk: "high", deaths: 19 },
   { id: 2, name: "Toshkent v.", cases: 51, per100k: 1.6, risk: "high", deaths: 2 },
@@ -85,7 +85,7 @@ export const LAB = {
   inProgress: 40, // jarayon davom etmoqda
 };
 
-// --- TARQALISH MANBALARI (ССВ/Hokimiyat epid surishtiruvi) ---
+// --- TARQALISH MANBALARI (SSV/Hokimiyat epid surishtiruvi) ---
 export const TRANSMISSION = [
   { source: "Yopiq bolalar o'yingohlari (savdo majmualari)", value: 31.4, type: "pct" },
   { source: "Oila a'zolari / yaqin qarindosh (sog'lom tashuvchi)", value: 29, type: "abs" },
@@ -125,7 +125,7 @@ export const AWARENESS = {
   seminars: 16, // tibbiyot xodimlari uchun
 };
 
-// --- KASALLIK TO'G'RISIDA (ССВ + vaksina yo'riqnomasi) ---
+// --- KASALLIK TO'G'RISIDA (SSV + vaksina yo'riqnomasi) ---
 export const DISEASE = {
   pathogen: "Neisseria meningitidis",
   transmission: "Havo-tomchi yo'li orqali",
@@ -135,7 +135,7 @@ export const DISEASE = {
   incubation: "2–10 kun (o'rtacha 3–4 kun)",
 };
 
-// --- XAVF GURUHLARI (ССВ) ---
+// --- XAVF GURUHLARI (SSV) ---
 export const RISK_GROUPS = [
   "5 yoshgacha bo'lgan bolalar",
   "15–24 yoshli o'smirlar",
@@ -146,7 +146,7 @@ export const RISK_GROUPS = [
 // --- "HIGHLIGHTS" — asosiy faktlar (Worldometer uslubida) ---
 export const HIGHLIGHTS = [
   "Epidemiya 23-fevraldan (9-hafta) keskin ko'tarildi.",
-  "Vafot etganlarning 85% — bolalar.",
+  "Vafot etganlarning 83% — bolalar.",
   "Holatlarning 97,5% — 14 yoshgacha bo'lgan bolalar.",
   "Eng yuqori intensivlik: Sergeli (13,4) va Chilonzor (12,3).",
   "Kasallikning ustun shakli — yashin tezligidagi meningokokksemiya.",
@@ -172,4 +172,4 @@ export const TYPICAL_PROFILE = [
 ];
 
 export const RISK_SOURCE =
-  "Belgilar va og'irlik koeffitsiyentlari ССВ klinik protokoli asosida.";
+  "Belgilar va og'irlik koeffitsiyentlari SSV klinik protokoli asosida.";

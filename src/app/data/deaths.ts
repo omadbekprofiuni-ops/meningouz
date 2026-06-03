@@ -1,5 +1,5 @@
 // ============================================================================
-// Vafot etgan beмorlar reestri — "Вафот этганлар" varaqasidan (17.04.2026).
+// Vafot etgan bemorlar reestri — "Вафот этганлар" varaqasidan (17.04.2026).
 // Maxfiylik uchun F.I.Sh. faqat bosh harflar bilan ko'rsatilgan.
 // Barchasida yakuniy tashxis: "Meningokokk infeksiya, tarqoq turi,
 // meningokokksemiya — yashin tezligida o'ta og'ir kechishi".
@@ -43,10 +43,15 @@ export const DEATHS: DeathRecord[] = [
 ];
 
 // Vafot bo'yicha tahlil
+const _total = DEATHS.length;
+const _children = DEATHS.filter((d) => d.isChild).length;
+
 export const DEATH_STATS = {
-  total: DEATHS.length,
-  children: DEATHS.filter((d) => d.isChild).length,
+  total: _total,
+  children: _children,
   adults: DEATHS.filter((d) => !d.isChild).length,
+  // bolalar ulushi (%) — 19/23 ≈ 82,6% (issue #5: avval 78,9% noto'g'ri edi)
+  childrenPct: Math.round((_children / _total) * 1000) / 10,
   // kasal bo'lgandan vafotgacha o'rtacha kunlar (yashin tezligi)
   avgDaysToDeath: 2,
 };

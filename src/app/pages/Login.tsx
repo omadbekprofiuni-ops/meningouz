@@ -28,7 +28,7 @@ export function Login() {
 
         <div className="relative z-10 flex items-center gap-3">
           <div className="w-11 h-11 rounded-xl flex items-center justify-center font-display font-bold text-xl"
-            style={{ background: "linear-gradient(135deg, #8B5CF6, #6D28D9)", boxShadow: "0 8px 24px rgba(139,92,246,0.45)" }}>M</div>
+            style={{ background: "linear-gradient(135deg, #10B981, #047857)", boxShadow: "0 8px 24px rgba(16,185,129,0.45)" }}>M</div>
           <div>
             <div className="font-display font-bold text-[20px]">MeningoUz</div>
             <div className="text-[12px] text-slate-400">Epidemiologik monitoring platformasi</div>
@@ -49,7 +49,7 @@ export function Login() {
 
           <div className="flex gap-8 mt-9">
             {[
-              { v: "277", l: "Kasallangan", c: "#A78BFA" },
+              { v: "277", l: "Kasallangan", c: "#34D399" },
               { v: "23", l: "Vafot", c: "#F43F5E" },
               { v: "8.3%", l: "CFR", c: "#FBBF24" },
             ].map((s) => (
@@ -71,7 +71,7 @@ export function Login() {
         <div className="w-full max-w-[420px] bg-white rounded-2xl shadow-xl border border-[#E2E8F0] p-8">
           <div className="lg:hidden flex flex-col items-center mb-6 text-center">
             <div className="w-12 h-12 rounded-xl flex items-center justify-center text-white font-display font-bold text-2xl mb-3"
-              style={{ background: "linear-gradient(135deg, #8B5CF6, #6D28D9)" }}>M</div>
+              style={{ background: "linear-gradient(135deg, #10B981, #047857)" }}>M</div>
             <h1 className="font-display text-2xl font-bold text-[#0F172A]">MeningoUz</h1>
           </div>
 
@@ -93,7 +93,7 @@ export function Login() {
                       onClick={() => setRole(r.id)}
                       className={clsx(
                         "flex flex-col items-center gap-2 p-3 rounded-xl border-2 transition-all text-center",
-                        isActive ? "border-[#8B5CF6] bg-[#8B5CF6]/[0.06] text-[#6D28D9]" : "border-[#E2E8F0] hover:border-[#CBD5E1] text-[#64748B]"
+                        isActive ? "border-[#10B981] bg-[#10B981]/[0.06] text-[#047857]" : "border-[#E2E8F0] hover:border-[#CBD5E1] text-[#64748B]"
                       )}
                     >
                       <r.icon className="w-5 h-5" />
@@ -108,18 +108,18 @@ export function Login() {
               <div className="space-y-1.5">
                 <label className="text-[13px] font-medium text-[#374151]">Email yoki ID</label>
                 <input type="text" defaultValue="epidemiolog@sanepid.uz"
-                  className="w-full px-4 py-2.5 rounded-lg border border-[#E2E8F0] text-[14px] focus:ring-2 focus:ring-[#8B5CF6] focus:border-[#8B5CF6] outline-none transition-all" required />
+                  className="w-full px-4 py-2.5 rounded-lg border border-[#E2E8F0] text-[14px] focus:ring-2 focus:ring-[#10B981] focus:border-[#10B981] outline-none transition-all" required />
               </div>
               <div className="space-y-1.5">
                 <label className="text-[13px] font-medium text-[#374151]">Parol</label>
                 <input type="password" defaultValue="password123"
-                  className="w-full px-4 py-2.5 rounded-lg border border-[#E2E8F0] text-[14px] focus:ring-2 focus:ring-[#8B5CF6] focus:border-[#8B5CF6] outline-none transition-all" required />
+                  className="w-full px-4 py-2.5 rounded-lg border border-[#E2E8F0] text-[14px] focus:ring-2 focus:ring-[#10B981] focus:border-[#10B981] outline-none transition-all" required />
               </div>
             </div>
 
             <button type="submit"
               className="w-full text-white font-semibold py-3 rounded-lg transition-all text-[14px] flex items-center justify-center gap-2"
-              style={{ background: "linear-gradient(135deg, #8B5CF6, #6D28D9)", boxShadow: "0 8px 20px rgba(139,92,246,0.35)" }}>
+              style={{ background: "linear-gradient(135deg, #10B981, #047857)", boxShadow: "0 8px 20px rgba(16,185,129,0.35)" }}>
               <Activity className="w-4 h-4" /> Tizimga kirish
             </button>
           </form>

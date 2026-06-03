@@ -13,6 +13,7 @@ import {
   AlertCircle
 } from "lucide-react";
 import clsx from "clsx";
+import { Info } from "lucide-react";
 import { RadarPanel } from "../components/RadarPanel";
 import { PageHeader } from "../components/PageHeader";
 import { TYPICAL_PROFILE } from "../data/stats";
@@ -236,6 +237,22 @@ export function RiskScreening() {
                 {t("Natijani saqlash")}
               </button>
             )}
+          </div>
+        </div>
+
+        {/* Ilmiy asos va cheklov (issue #9 — validatsiya/iqtibos) */}
+        <div className="lg:col-span-12">
+          <div className="rounded-xl border border-[#FDE68A] bg-[#FFFBEB] p-5 flex items-start gap-3">
+            <Info className="w-5 h-5 text-[#B45309] flex-shrink-0 mt-0.5" />
+            <div className="text-[12.5px] text-[#78350F] leading-relaxed">
+              <p className="font-semibold text-[#92400E] mb-1">{t("Ilmiy asos va cheklov")}</p>
+              <p className="mb-2">
+                {t("Ball og‘irliklari belgilarning meningokokksemiyadagi diagnostik ahamiyatiga (toshma va meningial belgilarga yuqori vazn) hamda SSV klinik protokoliga asoslangan. Mos yozuvlar: WHO va CDC meningokokk infeksiyasi klinik qo‘llanmalari, Glasgow Meningococcal Septicaemia Prognostic Score (GMSPS).")}
+              </p>
+              <p className="text-[#B45309]">
+                <b>{t("Muhim:")}</b> {t("Bu — o‘quv/saralash (triage) yordamchisi, validatsiyalangan diagnostik vosita emas. Sezgirlik (sensitivity) va xoslik (specificity) ushbu namunada hali baholanmagan; yakuniy tashxis klinik ko‘rik va laboratoriya tasdig‘iga asoslanadi.")}
+              </p>
+            </div>
           </div>
         </div>
 

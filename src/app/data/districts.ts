@@ -1,5 +1,5 @@
 // ============================================================================
-// Toshkent shahri — TUMANLAR kesimida (2026, rasmiy jadval "МКИ" varaqasi).
+// Toshkent shahri — TUMANLAR kesimida (2026, rasmiy jadval "MKI" varaqasi).
 // Jami 277 holat. Har tuman: holat, intensivlik (100k), vafot, ijtimoiy guruh,
 // yosh guruhi, aholi soni.
 // ============================================================================

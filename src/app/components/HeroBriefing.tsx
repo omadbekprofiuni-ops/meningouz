@@ -1,5 +1,7 @@
+import { CalendarDays } from "lucide-react";
 import { TOTALS, OUTCOMES, LAB, WEEKLY, MONTHLY } from "../data/stats";
 import { useI18n } from "../i18n";
+import { CountUp } from "./CountUp";
 
 // Epidemik egri (backdrop sparkline) — WEEKLY ma'lumotidan SVG area path
 function curvePath(w: number, h: number) {
@@ -11,33 +13,32 @@ function curvePath(w: number, h: number) {
 }
 
 export function HeroBriefing() {
-  const { t } = useI18n();
+  const { t, fmt } = useI18n();
   const { line, area } = curvePath(800, 200);
   const aprel = MONTHLY[MONTHLY.length - 1].cases;
 
   const stats = [
-    { label: "Vafot etgan", value: TOTALS.deaths, sub: "85% bolalar", color: "#F43F5E" },
-    { label: "Tuzalgan", value: OUTCOMES.recovered, sub: "uyga chiqarilgan", color: "#34D399" },
-    { label: "Lab. tasdiq", value: LAB.confirmed, sub: `${LAB.confirmedPct}% · N. meningitidis`, color: "#22D3EE" },
+    { label: "Vafot etgan", value: TOTALS.deaths, sub: "83% bolalar", color: "#F43F5E" },
+    { label: "Tuzalgan", value: OUTCOMES.recovered, sub: "uyga chiqarilgan", color: "#10B981" },
+    { label: "Lab. tasdiq", value: LAB.confirmed, sub: `${LAB.confirmedPct}% · N. meningitidis`, color: "#0891B2" },
   ];
 
   return (
-    <div className="relative overflow-hidden rounded-[20px] border border-white/[0.07] shadow-2xl"
-      style={{ background: "radial-gradient(120% 120% at 80% 0%, #1B1030 0%, #0C1020 45%, #080B14 100%)" }}>
-      {/* mesh + petechiae motiflar */}
-      <div className="absolute inset-0 grid-mesh opacity-60 pointer-events-none" />
-      <div className="absolute -top-10 -right-10 w-[340px] h-[340px] petechiae opacity-90 pointer-events-none" />
+    <div className="relative overflow-hidden rounded-[20px] border border-[#E2E8F0] shadow-sm"
+      style={{ background: "radial-gradient(120% 120% at 80% 0%, #ECFDF5 0%, #F6FEFB 45%, #FFFFFF 100%)" }}>
+      {/* nozik yashil petexiya motivi (juda past opacity) */}
+      <div className="absolute -top-10 -right-10 w-[340px] h-[340px] petechiae opacity-20 pointer-events-none" />
 
       {/* epidemik egri backdrop */}
       <svg viewBox="0 0 800 200" preserveAspectRatio="none" className="absolute bottom-0 left-0 w-full h-[46%] pointer-events-none">
         <defs>
           <linearGradient id="heroCurve" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#8B5CF6" stopOpacity="0.35" />
-            <stop offset="100%" stopColor="#8B5CF6" stopOpacity="0" />
+            <stop offset="0%" stopColor="#10B981" stopOpacity="0.35" />
+            <stop offset="100%" stopColor="#10B981" stopOpacity="0" />
           </linearGradient>
         </defs>
         <path d={area} fill="url(#heroCurve)" />
-        <path d={line} fill="none" stroke="#A78BFA" strokeWidth="2" opacity="0.5" />
+        <path d={line} fill="none" stroke="#34D399" strokeWidth="2" opacity="0.5" />
       </svg>
 
       <div className="relative z-10 p-6 md:p-9">
@@ -51,7 +52,7 @@ export function HeroBriefing() {
             <span className="text-[11px] font-semibold tracking-[0.18em] text-[#F43F5E] uppercase">{t("Jonli o'choq monitoringi")}</span>
           </div>
           <div className="flex items-center gap-3">
-            <span className="text-[12px] text-slate-400">{t("Toshkent shahri")} · 17.04.2026</span>
+            <span className="text-[12px] text-[#64748B]">{t("Toshkent shahri")} · 17.04.2026</span>
             <span className="text-[11px] font-bold tracking-wide text-[#FCA5A5] bg-[#F43F5E]/15 border border-[#F43F5E]/30 px-2.5 py-1 rounded-full">
               {t("XAVF: YUQORI")}
             </span>
@@ -61,22 +62,24 @@ export function HeroBriefing() {
         <div className="grid grid-cols-1 lg:grid-cols-[1.4fr_1fr] gap-8 items-end">
           {/* big number */}
           <div>
-            <h2 className="text-[15px] md:text-[17px] font-semibold text-slate-300 mb-1">
+            <h2 className="text-[15px] md:text-[17px] font-semibold text-[#475569] mb-1">
               {t("Meningokokk infeksiyasi o'chog'i")}
             </h2>
-            <div className="text-[11px] font-semibold tracking-[0.2em] text-slate-500 uppercase mb-2">
+            <div className="text-[11px] font-semibold tracking-[0.2em] text-[#94A3B8] uppercase mb-2">
               {t("Kasallanganlar")} · Toshkent sh.
             </div>
             <div className="flex items-end gap-4">
-              <span className="font-display text-white text-[72px] md:text-[96px] leading-[0.85] text-glow-violet">
-                {TOTALS.totalCases}
+              <span className="font-display text-[#0F172A] text-[72px] md:text-[96px] leading-[0.85]">
+                <CountUp value={TOTALS.totalCases} />
               </span>
               <div className="pb-2 space-y-1.5">
-                <div className="inline-flex items-center gap-1.5 text-[12px] font-semibold text-[#FCA5A5] bg-[#F43F5E]/10 px-2 py-0.5 rounded">
-                  ↑ +{aprel} {t("aprelda")}
+                {/* Aprelda qayd etilgan yangi holatlar soni (1–17.04) — "o'sish" emas (issue #10) */}
+                <div className="inline-flex items-center gap-1.5 text-[12px] font-semibold text-[#475569] bg-[#F1F5F9] border border-[#E2E8F0] px-2 py-0.5 rounded">
+                  <CalendarDays className="w-3.5 h-3.5 text-[#94A3B8]" />
+                  {fmt(aprel)} {t("yangi holat · aprel (1–17.04)")}
                 </div>
-                <div className="text-[12px] text-slate-400">
-                  {t("2025 yilga nisbatan")} <span className="text-[#FBBF24] font-bold">{TOTALS.growthVs2025}×</span> · {t("respublika")} {TOTALS.republicCases}
+                <div className="text-[12px] text-[#64748B]">
+                  {t("2025 yilga nisbatan")} <span className="text-[#D97706] font-bold">{fmt(TOTALS.growthVs2025, 1)}×</span> · {t("respublika")} {fmt(TOTALS.republicCases)}
                 </div>
               </div>
             </div>
@@ -85,25 +88,25 @@ export function HeroBriefing() {
           {/* stat chips */}
           <div className="grid grid-cols-3 gap-3">
             {stats.map((s) => (
-              <div key={s.label} className="relative rounded-xl bg-white/[0.04] border border-white/[0.06] px-3 py-3 overflow-hidden">
+              <div key={s.label} className="relative rounded-xl bg-white border border-[#E2E8F0] shadow-sm px-3 py-3 overflow-hidden">
                 <div className="absolute top-0 left-0 right-0 h-[3px]" style={{ backgroundColor: s.color }} />
-                <div className="text-[10px] font-semibold uppercase tracking-wide text-slate-300 mb-1">{t(s.label)}</div>
+                <div className="text-[10px] font-semibold uppercase tracking-wide text-[#64748B] mb-1">{t(s.label)}</div>
                 <div className="font-display text-[28px] md:text-[32px] leading-none" style={{ color: s.color }}>
-                  {s.value}
+                  <CountUp value={s.value} />
                 </div>
-                <div className="text-[10px] text-slate-400 mt-1 leading-tight">{t(s.sub)}</div>
+                <div className="text-[10px] text-[#94A3B8] mt-1 leading-tight">{t(s.sub)}</div>
               </div>
             ))}
           </div>
         </div>
 
         {/* severity meter */}
-        <div className="mt-7 pt-5 border-t border-white/[0.06]">
-          <div className="flex items-center justify-between text-[11px] text-slate-400 mb-2">
-            <span>{t("O'lim koeffitsiyenti (CFR)")}</span>
-            <span className="text-[#F43F5E] font-bold">{TOTALS.cfr}%</span>
+        <div className="mt-7 pt-5 border-t border-[#E2E8F0]">
+          <div className="flex items-center justify-between text-[11px] text-[#64748B] mb-2">
+            <span>{t("O'lim koeffitsiyenti (CFR)")} <span className="text-[#94A3B8]">(23/277)</span></span>
+            <span className="text-[#F43F5E] font-bold">{fmt(TOTALS.cfr, 1)}%</span>
           </div>
-          <div className="h-1.5 w-full bg-white/[0.06] rounded-full overflow-hidden">
+          <div className="h-1.5 w-full bg-[#F1F5F9] rounded-full overflow-hidden">
             <div className="h-full rounded-full bg-gradient-to-r from-[#FBBF24] via-[#F43F5E] to-[#F43F5E]"
               style={{ width: `${Math.min(TOTALS.cfr * 6, 100)}%` }} />
           </div>

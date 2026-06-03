@@ -13,9 +13,25 @@ const labData = [
   { name: "Jarayonda", value: LAB.inProgress, color: "#F59E0B" },
 ];
 
+// Maxfiylik — familiyani niqoblash: "Saidov M.X." -> "S. M.X."
+function maskFio(fio: string): string {
+  const parts = fio.trim().split(/\s+/);
+  if (parts.length === 0) return fio;
+  const masked = parts[0].charAt(0).toUpperCase() + ".";
+  return [masked, ...parts.slice(1)].join(" ");
+}
+
 export function Kabinet() {
-  const { t } = useI18n();
+  const { t, lang, fmt } = useI18n();
   const [query, setQuery] = useState("");
+  // Bolalar ulushi (issue #5): 19/23 ≈ 82,6% — avvalgi 78,9% xato edi
+  const childrenPct = fmt(DEATH_STATS.childrenPct, 1);
+  const childrenSummary =
+    lang === "ru"
+      ? `${DEATH_STATS.children} (${childrenPct}%) — дети`
+      : lang === "en"
+        ? `${DEATH_STATS.children} (${childrenPct}%) are children`
+        : `${DEATH_STATS.children} nafari (${childrenPct}%) bolalar`;
   const filtered = DEATHS.filter(
     (d) => d.fio.toLowerCase().includes(query.toLowerCase()) || d.district.toLowerCase().includes(query.toLowerCase())
   );
@@ -62,7 +78,7 @@ export function Kabinet() {
           <div className="h-[220px]">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
-                <Pie data={labData} dataKey="value" nameKey="name" cx="50%" cy="50%" innerRadius={50} outerRadius={85} paddingAngle={2}>
+                <Pie data={labData} dataKey="value" nameKey="name" cx="50%" cy="50%" innerRadius={50} outerRadius={85} paddingAngle={2} isAnimationActive={false}>
                   {labData.map((d) => <Cell key={d.name} fill={d.color} />)}
                 </Pie>
                 <Tooltip contentStyle={{ borderRadius: 8, fontSize: 13 }} />
@@ -83,7 +99,7 @@ export function Kabinet() {
         <div className="lg:col-span-2 bg-white rounded-2xl border border-[#E5E7EB] shadow-sm overflow-hidden flex flex-col">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-5 border-b border-[#E5E7EB] bg-[#FAFAFA]">
             <div>
-              <h2 className="text-[16px] font-semibold text-[#111827]">{t("Vafot etgan beмorlar reestri")}</h2>
+              <h2 className="text-[16px] font-semibold text-[#111827]">{t("Vafot etgan bemorlar reestri")}</h2>
               <p className="text-[13px] text-[#6B7280]">{t("Yakuniy tashxis: yashin tezligidagi meningokokksemiya")}</p>
             </div>
             <input
@@ -106,7 +122,7 @@ export function Kabinet() {
                 {filtered.map((d) => (
                   <tr key={d.n} className="hover:bg-[#F3F4F6] transition-colors">
                     <td className="px-3 py-2 text-[13px] text-[#6B7280] text-center">{d.n}</td>
-                    <td className="px-3 py-2 text-[13px] font-medium text-[#111827] whitespace-nowrap">{d.fio}</td>
+                    <td className="px-3 py-2 text-[13px] font-medium text-[#111827] whitespace-nowrap">{maskFio(d.fio)}</td>
                     <td className="px-3 py-2">
                       <span className={clsx("text-[12px] px-2 py-0.5 rounded font-medium", d.isChild ? "bg-[#FEE2E2] text-[#EF4444]" : "bg-[#EFF6FF] text-[#3B82F6]")}>
                         {d.age}
@@ -122,7 +138,7 @@ export function Kabinet() {
             </table>
           </div>
           <div className="px-5 py-3 border-t border-[#E5E7EB] bg-[#FAFAFA] text-[12px] text-[#6B7280]">
-            {t("Jami")} {filtered.length} {t("ta yozuv")} · {DEATH_STATS.children} {t("nafari (78,9%) bolalar")}
+            {t("Jami")} {filtered.length} {t("ta yozuv")} · {childrenSummary}
           </div>
         </div>
       </div>

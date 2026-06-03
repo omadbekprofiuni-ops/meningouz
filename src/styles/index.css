@@ -10,8 +10,8 @@
 :root {
   --mng-ink: #0A0E1A;        /* eng to'q fon */
   --mng-panel: #0F1626;      /* panel */
-  --mng-violet: #8B5CF6;     /* petexiya binafsha (brend) */
-  --mng-violet-2: #A78BFA;
+  --mng-violet: #10B981;     /* petexiya binafsha (brend) */
+  --mng-violet-2: #34D399;
   --mng-crimson: #F43F5E;    /* xavf / o'lim */
   --mng-cyan: #22D3EE;       /* ma'lumot */
   --mng-amber: #FBBF24;
@@ -28,13 +28,13 @@
 .petechiae {
   background-image:
     radial-gradient(circle at 12% 18%, rgba(244, 63, 94, 0.55) 0 2px, transparent 3px),
-    radial-gradient(circle at 22% 62%, rgba(139, 92, 246, 0.5) 0 3px, transparent 4px),
+    radial-gradient(circle at 22% 62%, rgba(16, 185, 129, 0.5) 0 3px, transparent 4px),
     radial-gradient(circle at 31% 30%, rgba(244, 63, 94, 0.4) 0 1.5px, transparent 2.5px),
-    radial-gradient(circle at 8% 78%, rgba(139, 92, 246, 0.45) 0 2px, transparent 3px),
+    radial-gradient(circle at 8% 78%, rgba(16, 185, 129, 0.45) 0 2px, transparent 3px),
     radial-gradient(circle at 42% 80%, rgba(244, 63, 94, 0.35) 0 2.5px, transparent 3.5px),
-    radial-gradient(circle at 18% 42%, rgba(167, 139, 250, 0.4) 0 1.5px, transparent 2.5px),
+    radial-gradient(circle at 18% 42%, rgba(52, 211, 153, 0.4) 0 1.5px, transparent 2.5px),
     radial-gradient(circle at 37% 12%, rgba(244, 63, 94, 0.3) 0 2px, transparent 3px),
-    radial-gradient(circle at 27% 90%, rgba(139, 92, 246, 0.35) 0 1.5px, transparent 2.5px);
+    radial-gradient(circle at 27% 90%, rgba(16, 185, 129, 0.35) 0 1.5px, transparent 2.5px);
   background-repeat: no-repeat;
 }
 
@@ -47,10 +47,58 @@
 }
 
 .text-glow-crimson { text-shadow: 0 0 28px rgba(244, 63, 94, 0.45); }
-.text-glow-violet  { text-shadow: 0 0 28px rgba(139, 92, 246, 0.45); }
+.text-glow-violet  { text-shadow: 0 0 28px rgba(16, 185, 129, 0.45); }
 
 @keyframes mng-pulse {
   0%, 100% { opacity: 1; transform: scale(1); }
   50% { opacity: 0.4; transform: scale(0.85); }
 }
 .animate-mng-pulse { animation: mng-pulse 1.8s ease-in-out infinite; }
+
+/* ---- Stage 3: mikro-interaksiyalar va a11y ---- */
+
+/* Kartochka hover: yengil ko'tarilish + soya */
+.card-interactive {
+  transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+}
+.card-interactive:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px rgba(15, 23, 42, 0.10);
+}
+
+/* Klaviatura fokusi — brend rangli ko'rinadigan halqa (sichqoncha bosishda emas) */
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: 2px solid var(--mng-violet);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Tabular raqamlar uchun yordamchi util (ustunlarni tekislaydi) */
+.num { font-variant-numeric: tabular-nums; }
+
+/* Count-up paydo bo'lish — raqam joyiga "tushadi" */
+@keyframes mng-rise {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.animate-mng-rise { animation: mng-rise .5s ease both; }
+
+/* Skeleton (yuklanish) shimmer */
+@keyframes mng-shimmer {
+  0% { background-position: -468px 0; }
+  100% { background-position: 468px 0; }
+}
+.skeleton {
+  background: linear-gradient(90deg, rgba(148,163,184,0.10) 25%, rgba(148,163,184,0.22) 37%, rgba(148,163,184,0.10) 63%);
+  background-size: 936px 100%;
+  animation: mng-shimmer 1.4s linear infinite;
+  border-radius: 6px;
+}
+
+/* Harakatni kamaytirishni afzal ko'rganlar uchun (a11y) */
+@media (prefers-reduced-motion: reduce) {
+  .animate-mng-pulse, .animate-mng-rise, .skeleton, .card-interactive {
+    animation: none !important;
+    transition: none !important;
+  }
+}

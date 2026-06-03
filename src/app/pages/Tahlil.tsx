@@ -13,8 +13,9 @@ import {
   Legend,
 } from "recharts";
 import clsx from "clsx";
-import { TrendingUp, Users, FlaskConical, Activity, Layers, BarChart3 } from "lucide-react";
+import { TrendingUp, Users, FlaskConical, Activity, Layers, BarChart3, Sigma } from "lucide-react";
 import { PageHeader } from "../components/PageHeader";
+import { SourceLine } from "../components/SourceLine";
 import {
   LAB,
   TRANSMISSION,
@@ -24,6 +25,8 @@ import {
   META,
 } from "../data/stats";
 import { DISTRICTS, AGE_DISTRIBUTION, SOCIAL_DISTRIBUTION, DISTRICT_TOTALS } from "../data/districts";
+import { DEATH_STATS } from "../data/deaths";
+import { wilsonCI, rateRatioCI, chiSquare2x2, formatP } from "../lib/stats";
 import { useI18n } from "../i18n";
 
 const labData = [
@@ -47,8 +50,54 @@ function Section({ icon: Icon, title, sub, children }: { icon: any; title: strin
 }
 
 export function Tahlil() {
-  const { t } = useI18n();
+  const { t, fmt, lang } = useI18n();
   const [districtMetric, setDistrictMetric] = useState<"cases" | "intensity">("cases");
+
+  // --- Statistik aniqlik: 95% ishonch oraliqlari va ahamiyatlilik testi ---
+  const locale = lang === "ru" ? "ru-RU" : lang === "en" ? "en-US" : "uz-UZ";
+  const cfrCI = wilsonCI(TOTALS.deaths, TOTALS.totalCases); // 23 / 277
+  const childCasesCI = wilsonCI(DISTRICT_TOTALS.children, DISTRICT_TOTALS.cases); // 270 / 277
+  const childDeathsCI = wilsonCI(DEATH_STATS.children, DEATH_STATS.total); // 19 / 23
+  const irr = rateRatioCI(COMPARISON.year2026, COMPARISON.year2025); // 277 / 15
+  const pop = TOTALS.population;
+  const irrTest = chiSquare2x2(
+    COMPARISON.year2026,
+    pop - COMPARISON.year2026,
+    COMPARISON.year2025,
+    pop - COMPARISON.year2025
+  );
+  const ci = (c: { low: number; high: number }) => `${fmt(c.low, 1)}–${fmt(c.high, 1)}`;
+
+  const STAT_ROWS = [
+    {
+      label: "O‘lim koeffitsiyenti (CFR)",
+      point: `${fmt(cfrCI.estimate, 1)}%`,
+      ci: `${ci(cfrCI)}%`,
+      basis: "23 / 277",
+      method: "Wilson",
+    },
+    {
+      label: "14 yoshgacha bolalar ulushi (holatlar)",
+      point: `${fmt(childCasesCI.estimate, 1)}%`,
+      ci: `${ci(childCasesCI)}%`,
+      basis: "270 / 277",
+      method: "Wilson",
+    },
+    {
+      label: "Bolalar ulushi (vafot etganlar)",
+      point: `${fmt(childDeathsCI.estimate, 1)}%`,
+      ci: `${ci(childDeathsCI)}%`,
+      basis: "19 / 23",
+      method: "Wilson",
+    },
+    {
+      label: "Kasallanish nisbati (IRR, 2026 ÷ 2025)",
+      point: `${fmt(irr.estimate, 1)}×`,
+      ci: `${fmt(irr.low, 1)}–${fmt(irr.high, 1)}×`,
+      basis: "277 vs 15",
+      method: "Poisson",
+    },
+  ];
   const districtsSorted = [...DISTRICTS].sort((a, b) =>
     districtMetric === "cases" ? b.cases - a.cases : b.intensity - a.intensity
   );
@@ -155,7 +204,7 @@ export function Tahlil() {
           <div className="h-[240px]">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
-                <Pie data={labData} dataKey="value" nameKey="name" cx="50%" cy="50%" innerRadius={55} outerRadius={90} paddingAngle={2}>
+                <Pie data={labData} dataKey="value" nameKey="name" cx="50%" cy="50%" innerRadius={55} outerRadius={90} paddingAngle={2} isAnimationActive={false}>
                   {labData.map((d) => <Cell key={d.name} fill={d.color} />)}
                 </Pie>
                 <Legend wrapperStyle={{ fontSize: 12 }} />
@@ -183,6 +232,9 @@ export function Tahlil() {
               );
             })}
           </div>
+          <p className="text-[11px] text-[#9CA3AF] mt-3">
+            {t("292 — shifoxonaga yotqizilgan barcha bemorlar (Toshkent sh. + boshqa viloyatlardan kelganlar). Toshkent shahri holatlari soni — 277.")}
+          </p>
         </Section>
       </div>
 
@@ -220,9 +272,50 @@ export function Tahlil() {
         </Section>
       </div>
 
+      {/* Statistik aniqlik — 95% CI va ahamiyatlilik (dissertatsiya darajasi) */}
+      <Section
+        icon={Sigma}
+        title="Statistik aniqlik (95% ishonch oralig‘i)"
+        sub="Nuqta-baholar 95% CI bilan; nisbatlar uchun Wilson, kasallanish nisbati uchun Poisson usuli"
+      >
+        <div className="overflow-x-auto -mx-1">
+          <table className="w-full text-left border-collapse min-w-[560px]">
+            <thead>
+              <tr className="border-b-2 border-[#E5E7EB]">
+                <th className="px-3 py-2 text-[11px] font-bold text-[#6B7280] uppercase tracking-wider">{t("Ko‘rsatkich")}</th>
+                <th className="px-3 py-2 text-[11px] font-bold text-[#6B7280] uppercase tracking-wider text-right">{t("Nuqta-baho")}</th>
+                <th className="px-3 py-2 text-[11px] font-bold text-[#6B7280] uppercase tracking-wider text-right">95% CI</th>
+                <th className="px-3 py-2 text-[11px] font-bold text-[#6B7280] uppercase tracking-wider text-right hidden sm:table-cell">{t("Asos")}</th>
+                <th className="px-3 py-2 text-[11px] font-bold text-[#6B7280] uppercase tracking-wider text-right">{t("Usul")}</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-[#F1F5F9]">
+              {STAT_ROWS.map((r) => (
+                <tr key={r.label} className="hover:bg-[#F9FAFB]">
+                  <td className="px-3 py-2.5 text-[13px] text-[#374151]">{t(r.label)}</td>
+                  <td className="px-3 py-2.5 text-[14px] font-bold text-[#0F172A] tabular-nums text-right">{r.point}</td>
+                  <td className="px-3 py-2.5 text-[13px] text-[#1d3d63] tabular-nums text-right font-medium">{r.ci}</td>
+                  <td className="px-3 py-2.5 text-[12px] text-[#9CA3AF] tabular-nums text-right hidden sm:table-cell">{r.basis}</td>
+                  <td className="px-3 py-2.5 text-[12px] text-[#6B7280] text-right">{r.method}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <div className="mt-4 rounded-lg bg-[#F0FDF4] border border-[#D1FAE5] p-3.5 text-[12.5px] text-[#374151] leading-relaxed">
+          <b>{t("Ahamiyatlilik testi (χ²)")}:</b>{" "}
+          {t("2026 vs 2025 kasallanish farqi")} — χ² = {fmt(irrTest.chi2, 1)}, p {formatP(irrTest.p, locale)}.{" "}
+          {t("Farq statistik jihatdan yuqori ahamiyatli (p < 0,05).")}
+        </div>
+        <p className="text-[11px] text-[#9CA3AF] mt-3 leading-relaxed">
+          {t("IRR eng so‘nggi 277 holat (2026) va 2025 yil bazaviy darajasi (≈15) bo‘yicha hisoblangan; rasmiy ma'lumotnomadagi 17,6× ko‘rsatkichi 264 ta shahar holatiga asoslangan. Aholi soni yil davomida ~o‘zgarmas deb qabul qilindi (Toshkent sh. ≈ 3,18 mln).")}
+        </p>
+        <SourceLine source="MKI bemorlar ro'yxati" updated={META.lastUpdate} license="Hisob: R / Wilson, Poisson, χ²" />
+      </Section>
+
       {/* Source footer */}
       <div className="text-[12px] text-[#9CA3AF] border-t border-[#E5E7EB] pt-4">
-        <b>{t("Ma‘lumot manbalari")}:</b> {t("Toshkent shahar Hokimiyatiga ma'lumotnoma (14.04.2026), MKI beмorlar ro'yxati (17.04.2026), 2026 tumanlar jadvali, ССВ respublika ma'lumotnomasi (28.03.2026). Tumanlar kesimi 277 ta holatga asoslangan.")}
+        <b>{t("Ma‘lumot manbalari")}:</b> {t("Toshkent shahar Hokimiyatiga ma'lumotnoma (14.04.2026), MKI bemorlar ro'yxati (17.04.2026), 2026 tumanlar jadvali, SSV respublika ma'lumotnomasi (28.03.2026). Tumanlar kesimi 277 ta holatga asoslangan.")}
       </div>
     </div>
   );

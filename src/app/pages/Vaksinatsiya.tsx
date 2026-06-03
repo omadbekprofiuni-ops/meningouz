@@ -87,20 +87,20 @@ export function Vaksinatsiya() {
         </div>
 
         {/* Coverage radar */}
-        <div className="bg-[#0F172A] rounded-2xl p-5 shadow-sm text-white">
+        <div className="bg-white rounded-2xl border border-[#E5E7EB] p-5 shadow-sm text-[#111827]">
           <h2 className="text-[16px] font-semibold mb-1">{t("Seroguruh qamrovi")}</h2>
-          <p className="text-[12px] text-slate-400 mb-2">{t("ACYW135 — to'rt seroguruhga qarshi himoya")}</p>
+          <p className="text-[12px] text-[#6B7280] mb-2">{t("ACYW135 — to'rt seroguruhga qarshi himoya")}</p>
           <div className="h-[240px]">
             <ResponsiveContainer width="100%" height="100%">
               <RadarChart data={coverageData} outerRadius="70%">
-                <PolarGrid stroke="#334155" />
-                <PolarAngleAxis dataKey="axis" tick={{ fill: "#CBD5E1", fontSize: 13, fontWeight: 600 }} />
-                <Radar dataKey="value" stroke="#10B981" fill="#10B981" fillOpacity={0.3} strokeWidth={2} />
-                <Tooltip contentStyle={{ backgroundColor: "#1E293B", border: "none", borderRadius: 8, fontSize: 13 }} formatter={(v: number) => [`${v}%`, "qamrov"]} />
+                <PolarGrid stroke="#E5E7EB" />
+                <PolarAngleAxis dataKey="axis" tick={{ fill: "#374151", fontSize: 13, fontWeight: 600 }} />
+                <Radar dataKey="value" stroke="#10B981" fill="#10B981" fillOpacity={0.25} strokeWidth={2} />
+                <Tooltip contentStyle={{ backgroundColor: "#111827", border: "none", borderRadius: 8, fontSize: 13, color: "#fff" }} formatter={(v: number) => [`${v}%`, "qamrov"]} />
               </RadarChart>
             </ResponsiveContainer>
           </div>
-          <p className="text-[12px] text-slate-400 text-center">
+          <p className="text-[12px] text-[#6B7280] text-center">
             {t("Eslatma: vaksina B seroguruhga qarshi himoya qilmaydi.")}
           </p>
         </div>

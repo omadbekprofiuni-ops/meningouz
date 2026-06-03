@@ -11,7 +11,7 @@ import {
   PieChart,
   Pie,
 } from "recharts";
-import { Clock, ShieldAlert, FlaskConical, Syringe } from "lucide-react";
+import { Clock, ShieldAlert, FlaskConical, Syringe, Download } from "lucide-react";
 import clsx from "clsx";
 import {
   META,
@@ -28,6 +28,8 @@ import {
 import { AGE_DISTRIBUTION, SOCIAL_DISTRIBUTION } from "../data/districts";
 import { RadarPanel } from "../components/RadarPanel";
 import { HeroBriefing } from "../components/HeroBriefing";
+import { CountUp } from "../components/CountUp";
+import { SourceLine } from "../components/SourceLine";
 import { useI18n } from "../i18n";
 
 const AGE_GROUPS = AGE_DISTRIBUTION;
@@ -36,19 +38,38 @@ const SETTINGS = SOCIAL_DISTRIBUTION;
 const liveUpdates = [
   { id: 1, time: "17.04.2026", text: "Toshkent shahri bo'yicha jami 277 ta holat ro'yxatga olindi. Aprel oyida 105 ta yangi holat qayd etildi." },
   { id: 2, time: "14.04.2026", text: "Hokimiyatga ma'lumotnoma: 264 holat, 8,3/100k — 2025 yilga nisbatan 17,6 barobar ko'p. 183 ta (69,3%) lab. tasdiqlangan." },
-  { id: 3, time: "12.04.2026", text: "1,5 oylik chaqaloq Saidov M.X. meningokokksemiya asoratidan vafot etdi (23-vafot holati)." },
+  { id: 3, time: "12.04.2026", text: "1,5 oylik chaqaloq (Yashnobod tumani) meningokokksemiya asoratidan vafot etdi (23-vafot holati)." },
   { id: 4, time: "23.02.2026", text: "9-haftadan boshlab kasallanish keskin ko'tarildi. Epidemik ko'rsatma bo'yicha emlash boshlandi." },
   { id: 5, time: "Profilaktika", text: `Muloqotdagilardan ${PREVENTION.contactsSwabbed.toLocaleString()} nafar surtma topshirdi, ${PREVENTION.vaccinated.toLocaleString()} nafar emlandi.` },
 ];
 
 export function Dashboard() {
-  const { t } = useI18n();
+  const { t, fmt } = useI18n();
   const [chartMetric, setChartMetric] = useState<"monthly" | "weekly">("monthly");
 
   const chartData =
     chartMetric === "monthly"
       ? MONTHLY.map((m) => ({ label: m.month, cases: m.cases }))
       : WEEKLY.map((w) => ({ label: w.week, cases: w.cases }));
+
+  // Hududlar jadvalini CSV qilib yuklab olish (mijoz tomonida, tashqi bog'lamsiz)
+  function exportRegionsCsv() {
+    const header = ["#", "Hudud", "Jami holat", "Vafot", "100k aholiga", "Xavf"];
+    const riskLabel = (r: string) => (r === "high" ? "Yuqori" : r === "medium" ? "O'rta" : "Past");
+    const escape = (v: string | number) => `"${String(v).replace(/"/g, '""')}"`;
+    const rows = REGIONS.map((r, i) =>
+      [i + 1, r.name, r.cases, r.deaths, r.per100k, riskLabel(r.risk)].map(escape).join(",")
+    );
+    // BOM — Excel kirill/lotin matnni to'g'ri ochishi uchun
+    const csv = "﻿" + [header.map(escape).join(","), ...rows].join("\r\n");
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `meningouz-hududlar-${META.reportDate.replace(/\./g, "-")}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+  }
 
   return (
     <div className="p-4 md:p-8 max-w-[1440px] mx-auto space-y-8">
@@ -71,19 +92,20 @@ export function Dashboard() {
       {/* 2. PROFILAKTIKA KO'RSATKICHLARI */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {[
-          { label: "Surtma topshirdi", value: PREVENTION.contactsSwabbed, sub: "muloqotdagilar", color: "#3B82F6", icon: FlaskConical },
-          { label: "Sog'lom tashuvchi", value: PREVENTION.carriersFound, sub: "aniqlangan (0,5%)", color: "#F59E0B", icon: ShieldAlert },
-          { label: "Emlanganlar", value: PREVENTION.vaccinated, sub: "muloqotdagilar", color: "#10B981", icon: Syringe },
-          { label: "Kimyoviy profilaktika", value: PREVENTION.chemoProphylaxis, sub: "tavsiya etilgan", color: "#6B7280", icon: ShieldAlert },
+          { label: "Surtma topshirdi", value: PREVENTION.contactsSwabbed, sub: "muloqotdagilar", icon: FlaskConical },
+          { label: "Sog'lom tashuvchi", value: PREVENTION.carriersFound, sub: "aniqlangan (0,5%)", icon: ShieldAlert },
+          { label: "Emlanganlar", value: PREVENTION.vaccinated, sub: "muloqotdagilar", icon: Syringe },
+          { label: "Kimyoviy profilaktika", value: PREVENTION.chemoProphylaxis, sub: "tavsiya etilgan", icon: ShieldAlert },
         ].map((c) => (
-          <div key={c.label} className="bg-white rounded-xl border border-[#E5E7EB] p-5 shadow-sm relative overflow-hidden">
-            <div className="absolute left-0 top-0 bottom-0 w-1" style={{ backgroundColor: c.color }} />
-            <div className="flex items-center gap-2 mb-2">
-              <c.icon className="w-4 h-4" style={{ color: c.color }} />
-              <span className="text-[12px] font-medium text-[#6B7280] uppercase tracking-wide">{t(c.label)}</span>
+          <div key={c.label} className="bg-white rounded-xl border border-[#E5E7EB] p-5">
+            <div className="flex items-center gap-2.5 mb-3">
+              <div className="w-8 h-8 rounded-lg bg-[#F0FDF4] flex items-center justify-center flex-shrink-0">
+                <c.icon className="w-4 h-4 text-[#10B981]" />
+              </div>
+              <span className="text-[12.5px] font-medium text-[#64748B]">{t(c.label)}</span>
             </div>
-            <div className="text-[28px] font-bold text-[#111827] tabular-nums leading-none">{c.value.toLocaleString()}</div>
-            <p className="text-[12px] text-[#9CA3AF] mt-1">{t(c.sub)}</p>
+            <div className="text-[30px] font-bold text-[#0F172A] tabular-nums leading-none"><CountUp value={c.value} /></div>
+            <p className="text-[12px] text-[#94A3B8] mt-1.5">{t(c.sub)}</p>
           </div>
         ))}
       </div>
@@ -129,9 +151,9 @@ export function Dashboard() {
                   labelStyle={{ color: "#fff" }}
                   formatter={(v: number) => [v, "Holat"]}
                 />
-                <Bar dataKey="cases" fill="#10B981" radius={[4, 4, 0, 0]} maxBarSize={48}>
+                <Bar dataKey="cases" fill="#34D399" radius={[4, 4, 0, 0]} maxBarSize={48}>
                   {chartData.map((_, index) => (
-                    <Cell key={`cell-${index}`} fill={index === chartData.length - 1 ? "#3B82F6" : "#10B981"} />
+                    <Cell key={`cell-${index}`} fill={index === chartData.length - 1 ? "#059669" : "#34D399"} />
                   ))}
                 </Bar>
               </BarChart>
@@ -142,6 +164,7 @@ export function Dashboard() {
               ? t("Epidemiya 9-haftada (23-fevral) keskin ko'tarildi.")
               : t("* Aprel — 17-aprelgacha bo'lgan ma'lumot.")}
           </p>
+          <SourceLine source="MKI bemorlar ro'yxati" updated={META.lastUpdate} />
         </div>
 
         {/* Live Updates Timeline */}
@@ -179,7 +202,7 @@ export function Dashboard() {
             <div className="h-[180px] w-[180px] flex-shrink-0">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
-                  <Pie data={AGE_GROUPS} dataKey="value" nameKey="label" cx="50%" cy="50%" innerRadius={45} outerRadius={80} paddingAngle={2}>
+                  <Pie data={AGE_GROUPS} dataKey="value" nameKey="label" cx="50%" cy="50%" innerRadius={45} outerRadius={80} paddingAngle={2} isAnimationActive={false}>
                     {AGE_GROUPS.map((g) => (
                       <Cell key={g.label} fill={g.color} />
                     ))}
@@ -200,6 +223,7 @@ export function Dashboard() {
               ))}
             </div>
           </div>
+          <SourceLine source="Bemorlar yosh tahlili (MKI ro'yxati)" updated={META.lastUpdate} />
         </div>
 
         {/* Settings / o'choq */}
@@ -221,15 +245,15 @@ export function Dashboard() {
               </div>
             ))}
           </div>
+          <SourceLine source="Ijtimoiy guruh tahlili (MKI ro'yxati)" updated={META.lastUpdate} />
         </div>
       </div>
 
       {/* 4b. KLINIK BELGILAR RADARI (FIFA-uslubidagi pentagon) */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <RadarPanel
-          dark
           title="Klinik belgilar profili"
-          subtitle="Beмorlarda kuzatilgan belgilar chastotasi (%) — septik (meningokokksemiya) shakli ustun"
+          subtitle="Bemorlarda kuzatilgan belgilar chastotasi (%) — septik (meningokokksemiya) shakli ustun"
           data={CLINICAL_SIGNS}
           axisKey="sign"
           series={[{ name: "Chastota", key: "value", color: "#10B981" }]}
@@ -257,9 +281,24 @@ export function Dashboard() {
       <div className="bg-white rounded-xl border border-[#E5E7EB] shadow-sm overflow-hidden flex flex-col">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-5 border-b border-[#E5E7EB] bg-[#FAFAFA] gap-4">
           <div>
-            <h2 className="text-[18px] font-bold text-[#111827]">{t("Hududlar kesimida tahlil")}</h2>
-            <p className="text-[13px] text-[#6B7280]">{t("ССВ ma'lumotnomasi")} · {META.reportDate}</p>
+            <div className="flex items-center gap-2 flex-wrap">
+              <h2 className="text-[18px] font-bold text-[#111827]">{t("Hududlar kesimida tahlil")}</h2>
+              <span className="inline-flex items-center gap-1 text-[10.5px] font-semibold text-[#92400E] bg-[#FEF3C7] border border-[#FDE68A] px-1.5 py-0.5 rounded">
+                <Clock className="w-3 h-3" /> {t("SSV ma'lumotnomasi")} · {META.reportDate}
+              </span>
+            </div>
+            <p className="text-[12px] text-[#9CA3AF] mt-1 max-w-xl leading-relaxed">
+              {t("28.03.2026 holatiga · viloyatlararo taqsimot (yangilanmoqda).")}{" "}
+              {t("Eng so‘nggi shahar ko‘rsatkichi — 277 holat / 23 vafot (17.04.2026), yuqorida berilgan.")}
+            </p>
           </div>
+          <button
+            onClick={exportRegionsCsv}
+            className="inline-flex items-center gap-2 px-3.5 py-2 text-[13px] font-medium text-[#374151] bg-white border border-[#E5E7EB] rounded-lg shadow-sm hover:bg-[#F9FAFB] hover:border-[#CBD5E1] transition-colors"
+          >
+            <Download className="w-4 h-4" />
+            {t("CSV yuklab olish")}
+          </button>
         </div>
 
         <div className="overflow-x-auto">
@@ -279,9 +318,9 @@ export function Dashboard() {
                 <tr key={row.id} className="hover:bg-[#F3F4F6] transition-colors">
                   <td className="px-4 py-2.5 text-[13px] text-[#6B7280] border-r border-[#E5E7EB] text-center font-medium">{idx + 1}</td>
                   <td className="px-4 py-2.5 font-bold text-[#3B82F6] text-[14px] border-r border-[#E5E7EB]">{row.name}</td>
-                  <td className="px-4 py-2.5 font-semibold text-[#111827] tabular-nums text-right border-r border-[#E5E7EB]">{row.cases.toLocaleString()}</td>
+                  <td className="px-4 py-2.5 font-semibold text-[#111827] tabular-nums text-right border-r border-[#E5E7EB]">{fmt(row.cases)}</td>
                   <td className="px-4 py-2.5 font-semibold tabular-nums text-right border-r border-[#E5E7EB]" style={{ color: row.deaths ? "#EF4444" : "#9CA3AF" }}>{row.deaths}</td>
-                  <td className="px-4 py-2.5 text-[#6B7280] tabular-nums text-right border-r border-[#E5E7EB] font-medium">{row.per100k}</td>
+                  <td className="px-4 py-2.5 text-[#6B7280] tabular-nums text-right border-r border-[#E5E7EB] font-medium">{fmt(row.per100k)}</td>
                   <td className="px-4 py-2.5 text-right">
                     <span
                       className={clsx(
@@ -300,7 +339,7 @@ export function Dashboard() {
                 <td className="px-4 py-3 border-r border-[#E5E7EB]"></td>
                 <td className="px-4 py-3 font-bold text-[#111827] text-[14px] border-r border-[#E5E7EB] text-right">{t("JAMI")}:</td>
                 <td className="px-4 py-3 font-bold text-[#111827] tabular-nums text-right border-r border-[#E5E7EB]">
-                  {REGIONS.reduce((a, r) => a + r.cases, 0).toLocaleString()}
+                  {fmt(REGIONS.reduce((a, r) => a + r.cases, 0))}
                 </td>
                 <td className="px-4 py-3 font-bold text-[#EF4444] tabular-nums text-right border-r border-[#E5E7EB]">
                   {REGIONS.reduce((a, r) => a + r.deaths, 0)}

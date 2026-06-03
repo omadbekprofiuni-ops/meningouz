@@ -27,7 +27,7 @@ export const INDICATIONS = [
   "Yuqori xavf guruhidagi shaxslar uchun epidemik meningitdan profilaktika",
   "Meningit xavfi yuqori hududlarga (masalan, Afrikaning Sahroi Kabir yaqini) sayohat qiluvchilar",
   "Vaksina ishlab chiqarish va tahlili bilan bog'liq xodimlar",
-  "ССВ bashorati bo'yicha epidemiya kutilayotgan hududlar aholisi",
+  "SSV bashorati bo'yicha epidemiya kutilayotgan hududlar aholisi",
 ];
 
 export const CONTRAINDICATIONS = [

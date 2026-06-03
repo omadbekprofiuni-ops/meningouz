@@ -1,0 +1,99 @@
+<!doctype html><html lang="uz"><head><meta charset="utf-8">
+<title>MeningoUz — Chuqur dizayn auditi</title>
+<style>
+  @page { margin: 18mm 16mm; }
+  * { box-sizing: border-box; }
+  body { font-family: -apple-system, "Segoe UI", Inter, Roboto, sans-serif; color: #1f2937; line-height: 1.55; font-size: 12.5px; }
+  h1 { font-size: 26px; color: #0F172A; border-bottom: 3px solid #8B5CF6; padding-bottom: 10px; margin-bottom: 4px; }
+  .sub { color: #6B7280; font-size: 12px; margin-bottom: 22px; }
+  h2 { font-size: 16px; color: #6D28D9; margin-top: 26px; border-left: 4px solid #8B5CF6; padding-left: 10px; page-break-after: avoid; }
+  h3 { font-size: 13px; color: #0F172A; margin: 14px 0 4px; }
+  p { margin: 6px 0; }
+  ul { margin: 6px 0; padding-left: 20px; }
+  li { margin: 3px 0; }
+  code, pre { font-family: "JetBrains Mono", "SF Mono", Consolas, monospace; font-size: 11px; }
+  pre { background: #0F172A; color: #E2E8F0; padding: 12px 14px; border-radius: 8px; overflow-x: auto; white-space: pre-wrap; }
+  code { background: #F1F5F9; color: #6D28D9; padding: 1px 5px; border-radius: 4px; }
+  .bad { color: #DC2626; font-weight: 600; }
+  .good { color: #059669; font-weight: 600; }
+  .box { background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 10px; padding: 12px 16px; margin: 12px 0; page-break-inside: avoid; }
+  .plan { background: #FFFBEB; border-left: 4px solid #F59E0B; border-radius: 0 8px 8px 0; padding: 10px 16px; }
+  .tag { display:inline-block; background:#EDE9FE; color:#6D28D9; font-size:10px; font-weight:700; padding:2px 8px; border-radius:20px; margin-right:6px; }
+  footer { margin-top: 30px; border-top: 1px solid #E2E8F0; padding-top: 10px; color: #9CA3AF; font-size: 10px; }
+</style></head><body>
+
+<h1>MeningoUz — Chuqur dizayn auditi</h1>
+<div class="sub">Jahon darajasidagi epidemiologik saytlar bilan taqqoslash · Etalonlar: Our World in Data, CDC, WHO, ECDC, IHME/GBD + 30+ modern dark dashboard · Sana: 2026-05-24</div>
+
+<h2>1. Rang falsafasi — eng katta farq</h2>
+<p>CDC, WHO, ECDC <b>dark theme ishlatmaydi</b> — oq fon, sokin ko'k-yashil-kulrang. Sabab: epidemiologik ma'lumot uzoq o'qish uchun. CDC: navy <code>#005EAA</code>, oq, <code>#F5F5F5</code>. Ranglar faqat xabar uchun. IHME: firuza <code>#1ABFD5</code> brand, oq fon. Our World in Data: oq fon, navy <code>#1d3d63</code>.</p>
+<p class="bad">MeningoUz muammosi: 6 ta neon rang parallel — hech qaysi semantik ma'no bermaydi.</p>
+<div class="box"><b>Yechim — palitra:</b><pre>Background #0A0E1A · Surface #151B2D · Border #1F2937
+Text #F1F5F9 · Muted #94A3B8
+Primary #3B82F6 · Danger #EF4444 · Warning #F59E0B · Success #10B981</pre>Bittadan ortiq accent rang ishlatmang.</div>
+
+<h2>2. KPI kartochkalari</h2>
+<p><b>CDC:</b> bitta gauge — "Respiratory illness is very low" 1 soniyada xulosa. <b>IHME:</b> 4 ta katta raqam bir xil o'lcham/rangda (alohida faktlar). <b>OWID:</b> KPI yo'q, faqat chart.</p>
+<p class="bad">MeningoUz: 277 / 23 / 231 / 183 turli o'lcham, rang, pozitsiya — xaos.</p>
+<div class="box"><b>Hero KPI patterni:</b> bir asosiy raqam (72px, oq) + 3 ta yordamchi (24px, muted), ranglarsiz, kontekst kichik matnda.</div>
+
+<h2>3. Data-ink ratio (Tufte)</h2>
+<p>WHO/OWID: chartlarda chartjunk yo'q, gridlines <code>opacity:0.1</code>, 1 accent rang.</p>
+<p class="bad">MeningoUz: binafsha glow + sariq nuqta + gridline + gradient bir vaqtda.</p>
+<div class="box"><b>Yechim:</b> fon dekoratsiyasini 50% kamaytirish; faqat chart line accent rangda.</div>
+
+<h2>4. Tipografik ierarxiya</h2>
+<div class="box"><pre>--display 48px/700/-0.02em   --h1 32px/700   --h2 24px/600
+--h3 18px/600   --body 16px/400/1.6   --label 12px/500/0.08em/uppercase
+--micro 11px/500/muted</pre>2 shrift: Inter (UI) + JetBrains Mono (raqam). <b>Hech qachon font-weight 300 emas.</b></div>
+
+<h2>5. Raqam formatlash</h2>
+<p><code>font-variant-numeric: tabular-nums</code> barcha raqam ustunlariga. Katta raqam: <code>Intl.NumberFormat('uz-UZ')</code>. WHO: <code>1.2M</code>, tooltip'da to'liq.</p>
+
+<h2>6. Xarita dizayni</h2>
+<p class="bad">Xato: Toshkent sh. 173 ta — sariq ko'rsatilgan, qizil bo'lishi kerak (150+). Data binding xatosi.</p>
+<div class="box"><pre>const getColor = (n) =>
+  n>=150 ? '#DC2626' : n>=51 ? '#F59E0B' :
+  n>=11  ? '#10B981' : n>=1  ? '#A7F3D0' : '#374151';</pre></div>
+
+<h2>7. Spacing va whitespace (8pt grid)</h2>
+<div class="box"><pre>xs 4 · sm 8 · md 16 · lg 24 · xl 32 · 2xl 48 · 3xl 64 (px)</pre>Kartochka padding ≥24px, sectionlar orasi 48px, elementlar 16px.</div>
+
+<h2>8. Responsive / mobil</h2>
+<div class="box"><pre>@media (max-width:1024px){ .sidebar{width:64px} .label{display:none} }
+@media (max-width:768px){ .sidebar{transform:translateX(-100%)} + hamburger }</pre></div>
+
+<h2>9. Semantik indikator (status)</h2>
+<p>CDC: Very Low / Low / Moderate / High / Very High — raqamli xavf yo'q.</p>
+<p class="bad">MeningoUz: "Risk Ball 0" + "Past xavf" yashil — noto'g'ri signal.</p>
+<div class="box">Bo'sh holat → "Simptomlarni belgilang"; 1–2 → Past; 3–5 → O'rta; 6+ → Yuqori + "Shifokorga zudlik bilan murojaat".</div>
+
+<h2>10. Ma'lumot manbalari va ishonch</h2>
+<p>WHO: har chart ostida 3 qator metadata. OWID: "Cite/Reuse". CDC: "Updated on Fridays".</p>
+<div class="box">Har chart ostiga: <code>Manba: SSV Sanepid · Yangilangan 17.04.2026 · CC BY 4.0</code></div>
+
+<h2>11. Informatsiya sustligi (progressive disclosure)</h2>
+<p class="bad">Bosh sahifa: 8 karta + 3 chart + 2 jadval bir ekranda.</p>
+<div class="box">1) bitta hero KPI → 2) 3 segment (Bugun/Hafta/Oy) → 3) bitta trend chart → 4) "Batafsil tahlil →".</div>
+
+<h2>12. Mikro-interaksiyalar</h2>
+<div class="box"><pre>.card{transition:transform .2s, box-shadow .2s}
+.card:hover{transform:translateY(-2px); box-shadow:0 12px 24px rgba(59,130,246,.15)}</pre>+ count-up animatsiya, skeleton loader, chart crosshair.</div>
+
+<h2>13. Dark mode detallari (elevation)</h2>
+<div class="box"><pre>Level 0 page #0F172A · L1 card #1E293B · L2 modal #334155 · L3 hover #475569
+Border rgba(255,255,255,0.08) · Toza #000 ishlatmang</pre></div>
+
+<h2>Harakatlar rejasi</h2>
+<div class="plan">
+<p><span class="tag">1-bosqich</span><b>Tezkor:</b> palitrani 3 semantik+1 brand; sidebar responsive; xarita threshold (173=qizil); "Asosiy faktlar" dark surface.</p>
+<p><span class="tag">2-bosqich</span><b>Struktural:</b> Hero KPI qayta dizayn (IHME 4-column); tipografik shkala; tabular-nums; chart metadata.</p>
+<p><span class="tag">3-bosqich</span><b>UX:</b> Risk empty state; skeleton; hover/focus; count-up; a11y audit.</p>
+<p><span class="tag">4-bosqich</span><b>Strategik:</b> Public + Pro rejimlar (CDC modeli); Methodology sahifasi (WHO); API/CSV eksport (OWID).</p>
+</div>
+
+<h2>Falsafiy xulosa</h2>
+<p>Epidemiologik sayt — estetik dashboard emas, xalq sog'ligi vositasi. CDC/WHO neon "cool" qilmaydi, chunki shifokor/vazirlar 8 soat o'qiydi. Tavsiya: <b>2 rejim</b> — "Public" (dark, ommaviy) va "Pro" (light, dense, professional).</p>
+
+<footer>MeningoUz dizayn auditi · keyingi ish sessiyasi uchun saqlangan · meningouz-app/docs/DIZAYN-AUDIT.pdf</footer>
+</body></html>

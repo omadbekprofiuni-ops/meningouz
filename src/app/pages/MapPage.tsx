@@ -7,19 +7,21 @@ import { useI18n } from "../i18n";
 
 type Risk = "high" | "medium" | "low";
 
+// ColorBrewer "YlOrRd" — rang-ko'rlik (deuteran/protan) uchun xavfsiz, tartibli
+// ketma-ketlik. Qizil-yashil chalkashligini oldini olish uchun yashil ishlatilmaydi.
 const riskColor: Record<Risk, string> = {
-  high: "#EF4444",
-  medium: "#F59E0B",
-  low: "#10B981",
+  high: "#e31a1c",
+  medium: "#fd8d3c",
+  low: "#fecc5c",
 };
 
-// Holatlar soniga qarab xarita rangi (choropleth)
+// Holatlar soniga qarab xarita rangi (choropleth, YlOrRd — CVD-safe)
 function fillForCases(cases: number | undefined): string {
-  if (cases === undefined || cases === 0) return "#CBD5E1"; // ma'lumot yo'q — ko'rinadigan kulrang
-  if (cases <= 10) return "#A7F3D0";
-  if (cases <= 50) return "#34D399";
-  if (cases <= 150) return "#FBBF24";
-  return "#EF4444";
+  if (cases === undefined || cases === 0) return "#CBD5E1"; // ma'lumot yo'q — kulrang
+  if (cases <= 10) return "#ffffb2";
+  if (cases <= 50) return "#fecc5c";
+  if (cases <= 150) return "#fd8d3c";
+  return "#e31a1c";
 }
 
 export function MapPage() {
@@ -175,10 +177,10 @@ export function MapPage() {
         <div className="absolute bottom-6 left-6 bg-white rounded-lg shadow-sm border border-[#E5E7EB] p-3 text-[12px] space-y-1.5 z-10">
           <div className="font-semibold text-[#374151] mb-1">{t("Holatlar soni")}</div>
           {[
-            ["#EF4444", "150+"],
-            ["#FBBF24", "51–150"],
-            ["#34D399", "11–50"],
-            ["#A7F3D0", "1–10"],
+            ["#e31a1c", "150+"],
+            ["#fd8d3c", "51–150"],
+            ["#fecc5c", "11–50"],
+            ["#ffffb2", "1–10"],
             ["#CBD5E1", "Holat qayd etilmagan"],
           ].map(([c, l]) => (
             <div key={l} className="flex items-center gap-2 text-[#6B7280]">
@@ -186,17 +188,18 @@ export function MapPage() {
               {t(l)}
             </div>
           ))}
+          <div className="pt-1 mt-1 border-t border-[#F1F5F9] text-[10.5px] text-[#94A3B8]">{t("ColorBrewer YlOrRd · rang-ko‘rlikka mos")}</div>
         </div>
 
         {/* Zoom Controls */}
         <div className="absolute bottom-6 right-6 md:right-[340px] flex flex-col gap-2 z-10">
           <div className="bg-white rounded-lg shadow-sm border border-[#E5E7EB] flex flex-col p-1">
-            <button onClick={() => setZoom((z) => Math.min(z + 0.3, 3))} className="p-2 text-[#4B5563] hover:text-[#111827] hover:bg-[#F3F4F6] rounded transition-colors"><ZoomIn className="w-5 h-5" /></button>
+            <button onClick={() => setZoom((z) => Math.min(z + 0.3, 3))} aria-label={t("Kattalashtirish")} title={t("Kattalashtirish")} className="p-2 text-[#4B5563] hover:text-[#111827] hover:bg-[#F3F4F6] rounded transition-colors"><ZoomIn className="w-5 h-5" /></button>
             <div className="w-full h-px bg-[#E5E7EB] my-1" />
-            <button onClick={() => setZoom((z) => Math.max(z - 0.3, 1))} className="p-2 text-[#4B5563] hover:text-[#111827] hover:bg-[#F3F4F6] rounded transition-colors"><ZoomOut className="w-5 h-5" /></button>
+            <button onClick={() => setZoom((z) => Math.max(z - 0.3, 1))} aria-label={t("Kichraytirish")} title={t("Kichraytirish")} className="p-2 text-[#4B5563] hover:text-[#111827] hover:bg-[#F3F4F6] rounded transition-colors"><ZoomOut className="w-5 h-5" /></button>
           </div>
           <div className="bg-white rounded-lg shadow-sm border border-[#E5E7EB] p-1">
-            <button onClick={() => setZoom(1)} className="p-2 text-[#4B5563] hover:text-[#111827] hover:bg-[#F3F4F6] rounded transition-colors"><Maximize className="w-5 h-5" /></button>
+            <button onClick={() => setZoom(1)} aria-label={t("Asliga qaytarish")} title={t("Asliga qaytarish")} className="p-2 text-[#4B5563] hover:text-[#111827] hover:bg-[#F3F4F6] rounded transition-colors"><Maximize className="w-5 h-5" /></button>
           </div>
         </div>
       </div>
@@ -205,7 +208,7 @@ export function MapPage() {
       <div className="absolute top-0 right-0 bottom-0 w-full md:w-[320px] bg-white border-l border-[#E5E7EB] shadow-xl z-20 flex flex-col overflow-y-auto hidden md:flex">
         <div className="p-5 border-b border-[#E5E7EB]">
           <h2 className="text-[16px] font-semibold text-[#111827]">{t("Viloyatlar ro'yxati")}</h2>
-          <p className="text-[13px] text-[#6B7280] mt-1">{filtered.length} {t("ta hudud · ССВ ma'lumoti (28.03.2026)")}</p>
+          <p className="text-[13px] text-[#6B7280] mt-1">{filtered.length} {t("ta hudud · SSV ma'lumoti (28.03.2026)")}</p>
         </div>
 
         {selected && (

@@ -14,7 +14,7 @@ import { AWARENESS, PREVENTION } from "../data/stats";
 import { PageHeader } from "../components/PageHeader";
 import { useI18n } from "../i18n";
 
-// ССВ ma'lumotnomasidagi tavsiya etilgan chora-tadbirlar
+// SSV ma'lumotnomasidagi tavsiya etilgan chora-tadbirlar
 const RECOMMENDATIONS = [
   "Aholi orasida tashuvchanlik darajasini o'rganish, xavf guruhlarida (bolalar va o'smirlar) laboratoriya tekshiruvlarini tashkil etish va tibbiy kuzatuvni kuchaytirish.",
   "Davlat va nodavlat muassasalarda \"Nazofaringit\" tashxisi qo'yilganlardan diagnostik laborator tahlillarni o'tkazish.",
@@ -35,7 +35,7 @@ const RECOMMENDATIONS = [
 const doneMeasures = [
   { icon: Syringe, label: "Emlanganlar (muloqotdagilar)", value: PREVENTION.vaccinated, color: "#10B981" },
   { icon: ShieldCheck, label: "Kimyoviy profilaktika", value: PREVENTION.chemoProphylaxis, color: "#3B82F6" },
-  { icon: Syringe, label: "Harid qilingan vaksina (doza)", value: PREVENTION.dosesPurchased, color: "#8B5CF6" },
+  { icon: Syringe, label: "Harid qilingan vaksina (doza)", value: PREVENTION.dosesPurchased, color: "#10B981" },
   { icon: Users, label: "Emlangan tibbiyot xodimlari", value: PREVENTION.medicalStaffVaccinated, color: "#F59E0B" },
 ];
 
@@ -57,12 +57,12 @@ export function Choralar() {
       <PageHeader
         icon={ShieldCheck}
         title="Profilaktika va epidemiyaga qarshi choralar"
-        subtitle="Amalga oshirilgan tadbirlar va ССВ tavsiyalari (14.04.2026 holatiga)"
+        subtitle="Amalga oshirilgan tadbirlar va SSV tavsiyalari (14.04.2026 holatiga)"
         accent="#34D399"
         kpis={[
           { label: "Emlangan", value: PREVENTION.vaccinated.toLocaleString(), color: "#34D399" },
           { label: "Kimyoviy prof.", value: PREVENTION.chemoProphylaxis.toLocaleString(), color: "#22D3EE" },
-          { label: "Vaksina (doza)", value: PREVENTION.dosesPurchased.toLocaleString(), color: "#A78BFA" },
+          { label: "Vaksina (doza)", value: PREVENTION.dosesPurchased.toLocaleString(), color: "#34D399" },
         ]}
       />
 
@@ -119,7 +119,7 @@ export function Choralar() {
       </div>
 
       <div className="text-[12px] text-[#9CA3AF] border-t border-[#E5E7EB] pt-4">
-        {t("Manba: O'zR ССВ huzuridagi Sanepidqo'm respublika ma'lumotnomasi (28.03.2026) va Toshkent shahar Hokimiyatiga ma'lumotnoma (14.04.2026).")}
+        {t("Manba: O'zR SSV huzuridagi Sanepidqo'm respublika ma'lumotnomasi (28.03.2026) va Toshkent shahar Hokimiyatiga ma'lumotnoma (14.04.2026).")}
       </div>
     </div>
   );
