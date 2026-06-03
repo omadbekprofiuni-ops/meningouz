@@ -126,16 +126,7 @@ export function Layout() {
     <div className="flex flex-col h-screen bg-[#F1F5F9] font-inter text-[#111827] overflow-hidden">
       {/* Government utility banner */}
       <div className="h-8 bg-[#ECFDF5] text-[#475569] border-b border-[#D1FAE5] flex items-center justify-between px-4 md:px-6 flex-shrink-0 text-[11px]">
-        <div className="flex items-center gap-2 min-w-0">
-          <Emblem size={16} />
-          <span
-            className="truncate font-medium tracking-wide"
-            title={t("O‘ZBEKISTON RESPUBLIKASI SOG‘LIQNI SAQLASH VAZIRLIGI") + " · " + t("Sanitariya-epidemiologik osoyishtalik agentligi (Sanepidqo‘m)")}
-          >
-            {t("O‘ZBEKISTON RESPUBLIKASI SOG‘LIQNI SAQLASH VAZIRLIGI")}
-            <span className="hidden lg:inline text-[#94A3B8]"> · {t("Sanitariya-epidemiologik osoyishtalik agentligi (Sanepidqo‘m)")}</span>
-          </span>
-        </div>
+        <div className="flex items-center gap-2 min-w-0" />
         <div className="flex items-center gap-3 flex-shrink-0">
           <span className="hidden sm:flex items-center gap-1 text-[#94A3B8]"><Globe className="w-3 h-3" /></span>
           <div className="flex items-center gap-1.5 font-medium">
@@ -294,7 +285,6 @@ export function Layout() {
             <div className="w-8 h-8 rounded-full bg-[#0B5FA5] flex items-center justify-center text-white text-[12px] font-semibold flex-shrink-0">{USER.initials}</div>
             <div className="hidden md:block leading-tight max-w-[180px]">
               <div className="text-[13px] font-semibold text-[#0F172A] truncate" title={USER.name}>{USER.name}</div>
-              <div className="text-[11px] text-[#94A3B8]">{t(USER.role)}</div>
             </div>
           </div>
         </div>
