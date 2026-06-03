@@ -67,9 +67,12 @@ if ! command -v nginx >/dev/null 2>&1; then
   apt-get install -y nginx
 fi
 SERVER_NAME="${DOMAIN:-_}"
+# Boshqa standart nginx bloklarini olib tashlash (404 sababi shu bo'lishi mumkin)
+rm -f /etc/nginx/sites-enabled/default /etc/nginx/conf.d/default.conf
 cat > "/etc/nginx/sites-available/${SERVICE}" <<EOF
 server {
-    listen 80;
+    listen 80 default_server;
+    listen [::]:80 default_server;
     server_name ${SERVER_NAME};
 
     location / {
