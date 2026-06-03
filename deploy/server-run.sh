@@ -16,7 +16,10 @@ set -euo pipefail
 
 # Repo ildizini aniqlash (bu skript deploy/ ichida)
 APP_DIR="$(cd "$(dirname "$0")/.." && pwd)"
-DOMAIN="${DOMAIN:-}"
+# DOMAINS — serverга doimий ulanган barcha domenlar (bo'sh joy bilan ajratилган).
+# Misol: DOMAINS="gargamel.uz www.gargamel.uz meningo.uz www.meningo.uz"
+# Eski DOMAIN o'zgaruvchиси ham qo'llab-quvvatlanади (orqага moslик uchun).
+DOMAINS="${DOMAINS:-${DOMAIN:-}}"
 CERTBOT_EMAIL="${CERTBOT_EMAIL:-}"
 APP_PORT="${APP_PORT:-3000}"
 SERVICE="meningouz"
@@ -66,7 +69,8 @@ echo "==> 5/6  nginx..."
 if ! command -v nginx >/dev/null 2>&1; then
   apt-get install -y nginx
 fi
-SERVER_NAME="${DOMAIN:-_}"
+# Barcha domenlar + catch-all (_). Domenlar bo'lmasa, faqat catch-all.
+SERVER_NAME="${DOMAINS:+$DOMAINS }_"
 # Boshqa standart nginx bloklarini olib tashlash (404 sababi shu bo'lishi mumkin)
 rm -f /etc/nginx/sites-enabled/default /etc/nginx/conf.d/default.conf
 cat > "/etc/nginx/sites-available/${SERVICE}" <<EOF
@@ -90,10 +94,25 @@ rm -f /etc/nginx/sites-enabled/default
 nginx -t && systemctl reload nginx
 
 echo "==> 6/6  HTTPS..."
-if [ -n "$DOMAIN" ] && [ -n "$CERTBOT_EMAIL" ]; then
+if [ -n "$DOMAINS" ] && [ -n "$CERTBOT_EMAIL" ]; then
   command -v certbot >/dev/null 2>&1 || apt-get install -y certbot python3-certbot-nginx
-  certbot --nginx -d "$DOMAIN" --non-interactive --agree-tos -m "$CERTBOT_EMAIL" --redirect \
-    || echo "    ! Sertifikat olinmadi — domen DNS'i server IP'ga yo'naltirilganini tekshiring."
+  # Faqat HOZIR resolve bo'layotgan domenlarга sertifikat olamiz (tarqalmaganи
+  # butun jarayonni to'xtatmaslиgи uchun). Tarqalmagan domen keyин qo'shилади.
+  CERT_ARGS=""
+  for d in $DOMAINS; do
+    if getent hosts "$d" >/dev/null 2>&1; then
+      CERT_ARGS="$CERT_ARGS -d $d"
+      echo "    ✓ $d resolve bo'lяпти — sertifikatga qo'shilади"
+    else
+      echo "    ⏳ $d hali tarqalmagan — o'tkazib yuborildi (keyин qo'shamиз)"
+    fi
+  done
+  if [ -n "$CERT_ARGS" ]; then
+    certbot --nginx $CERT_ARGS --non-interactive --agree-tos -m "$CERTBOT_EMAIL" --redirect \
+      || echo "    ! Sertifikat olinmadi — DNS tarqалишини tekshиring."
+  else
+    echo "    Hech bir domen hali resolve bo'lmaяпти — HTTPS keyинга qoldirildi."
+  fi
 else
   echo "    Domen/email berilmadi — HTTPS o'tkazib yuborildi (IP orqali ishlaydi)."
 fi
